@@ -31,5 +31,6 @@
 
 @property (nonatomic, weak) IBOutlet UISwitch *advertisingSwitch;
 @property (nonatomic, weak) IBOutlet UISwitch *rangingSwitch;
+@property (nonatomic, weak) IBOutlet UITextView *consoleTextView;
 
 @end
