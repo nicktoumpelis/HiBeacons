@@ -3,7 +3,8 @@ HiBeacons
 
 HiBeacons is a fully functional demo app for the new iBeacons API in iOS 7. The app can be used to demonstrate both beacon advertising and ranging, by toggling on/off two switches. You can easily see any beacons in the vicinity, with all their info, under the 'Detected Beacons' section.
 
-You can find a screenshot in the project.
+## Screenshot
+![Screenshot](https://raw.github.com/nicktoumpelis/HiBeacons/master/screenshot.png)
 
 ## Notes
 
