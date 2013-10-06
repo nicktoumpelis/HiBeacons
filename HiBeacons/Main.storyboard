@@ -36,42 +36,37 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" bouncesZoom="NO" editable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EdL-yq-tB8">
-                                <rect key="frame" x="26" y="32" width="268" height="408"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" red="0.90196079019999997" green="0.90196079019999997" blue="0.90196079019999997" alpha="1" colorSpace="calibratedRGB"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" priority="250" constant="408" id="dfi-k7-Alh"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" name="Courier" family="Courier" pointSize="12"/>
-                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="52" sectionHeaderHeight="26" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="CS9-7M-geh">
+                                <rect key="frame" x="0.0" y="20" width="320" height="437"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <connections>
-                                    <outlet property="delegate" destination="vXZ-lx-hvc" id="mLo-3B-t6D"/>
+                                    <outlet property="dataSource" destination="vXZ-lx-hvc" id="Czn-Td-yrn"/>
+                                    <outlet property="delegate" destination="vXZ-lx-hvc" id="ue4-SY-ipJ"/>
                                 </connections>
-                            </textView>
+                            </tableView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstAttribute="centerX" secondItem="Cds-q7-g9T" secondAttribute="centerX" constant="-115.5" id="4kH-LM-eLD"/>
-                            <constraint firstItem="TQk-42-Sf6" firstAttribute="top" secondItem="EdL-yq-tB8" secondAttribute="bottom" constant="128" id="5Rw-4k-re3"/>
                             <constraint firstItem="U3w-jj-HVl" firstAttribute="centerY" secondItem="Cds-q7-g9T" secondAttribute="centerY" id="6es-J3-bPP"/>
                             <constraint firstItem="U3w-jj-HVl" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leading" priority="250" constant="20" symbolic="YES" id="9Vr-p8-IMt"/>
+                            <constraint firstItem="8Ua-PS-yVS" firstAttribute="top" secondItem="CS9-7M-geh" secondAttribute="bottom" constant="8" symbolic="YES" id="ArV-qK-yKz"/>
                             <constraint firstItem="TQk-42-Sf6" firstAttribute="top" secondItem="U3w-jj-HVl" secondAttribute="bottom" constant="38" id="Av2-TH-mco"/>
                             <constraint firstItem="U3w-jj-HVl" firstAttribute="leading" secondItem="MnH-3s-6S0" secondAttribute="leading" id="AwR-qf-gC3"/>
-                            <constraint firstItem="EdL-yq-tB8" firstAttribute="centerX" secondItem="kh9-bI-dsS" secondAttribute="centerX" id="IXH-xA-SeY"/>
-                            <constraint firstItem="EdL-yq-tB8" firstAttribute="top" secondItem="fQI-hj-WaS" secondAttribute="bottom" constant="12" id="LJX-IR-VCo"/>
+                            <constraint firstItem="CS9-7M-geh" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leading" id="M8a-U0-Br2"/>
                             <constraint firstItem="Cds-q7-g9T" firstAttribute="top" secondItem="8Ua-PS-yVS" secondAttribute="bottom" constant="8" symbolic="YES" id="MQi-80-NxX"/>
+                            <constraint firstAttribute="trailing" secondItem="CS9-7M-geh" secondAttribute="trailing" id="U0b-9i-hL0"/>
                             <constraint firstItem="U3w-jj-HVl" firstAttribute="top" secondItem="MnH-3s-6S0" secondAttribute="bottom" constant="18" id="VPr-k1-4Dt"/>
-                            <constraint firstItem="EdL-yq-tB8" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leading" constant="26" id="YqQ-4Y-fOH"/>
-                            <constraint firstAttribute="trailing" secondItem="Cds-q7-g9T" secondAttribute="trailing" priority="250" constant="20" symbolic="YES" id="ZYc-Qd-iB6"/>
                             <constraint firstItem="8Ua-PS-yVS" firstAttribute="leading" secondItem="MnH-3s-6S0" secondAttribute="trailing" constant="28" id="gAQ-Re-p14"/>
+                            <constraint firstItem="CS9-7M-geh" firstAttribute="top" secondItem="kh9-bI-dsS" secondAttribute="top" constant="20" symbolic="YES" id="gyh-QH-j63"/>
                             <constraint firstItem="Cds-q7-g9T" firstAttribute="leading" secondItem="U3w-jj-HVl" secondAttribute="trailing" constant="54" id="jjn-kL-ZL9"/>
                             <constraint firstItem="8Ua-PS-yVS" firstAttribute="leading" secondItem="Cds-q7-g9T" secondAttribute="leading" id="qOJ-88-znE"/>
                         </constraints>
                     </view>
                     <connections>
                         <outlet property="advertisingSwitch" destination="8Ua-PS-yVS" id="Xji-pb-0Zv"/>
-                        <outlet property="consoleTextView" destination="EdL-yq-tB8" id="71Q-dW-cEK"/>
+                        <outlet property="beaconTableView" destination="CS9-7M-geh" id="hb4-1u-FP4"/>
                         <outlet property="rangingSwitch" destination="Cds-q7-g9T" id="kMu-Vm-wZg"/>
                     </connections>
                 </viewController>

@@ -27,10 +27,10 @@
 #import <CoreLocation/CoreLocation.h>
 #import <CoreBluetooth/CoreBluetooth.h>
 
-@interface NTViewController : UIViewController <CLLocationManagerDelegate, CBPeripheralManagerDelegate>
+@interface NTViewController : UIViewController <CLLocationManagerDelegate, CBPeripheralManagerDelegate, UITableViewDataSource, UITableViewDelegate>
 
 @property (nonatomic, weak) IBOutlet UISwitch *advertisingSwitch;
 @property (nonatomic, weak) IBOutlet UISwitch *rangingSwitch;
-@property (nonatomic, weak) IBOutlet UITextView *consoleTextView;
+@property (nonatomic, weak) IBOutlet UITableView *beaconTableView;
 
 @end

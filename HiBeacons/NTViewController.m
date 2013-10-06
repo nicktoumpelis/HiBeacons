@@ -25,34 +25,21 @@
 //
 
 #import "NTViewController.h"
-#import <asl.h>
 
 static NSString * const kUUID = @"00000000-0000-0000-0000-000000000000";
 static NSString * const kIdentifier = @"SomeIdentifier";
+static NSString * const kCellIdentifier = @"BeaconCell";
 
 @interface NTViewController ()
 
 @property (nonatomic, strong) CLLocationManager *locationManager;
 @property (nonatomic, strong) CLBeaconRegion *beaconRegion;
 @property (nonatomic, strong) CBPeripheralManager *peripheralManager;
-@property (nonatomic, strong) NSMutableString *consoleString;
-@property (nonatomic, strong) NSTimer *consoleTimer;
+@property (nonatomic, strong) NSArray *detectedBeacons;
 
 @end
 
 @implementation NTViewController
-
-- (void) viewDidAppear:(BOOL)animated {
-    [super viewDidAppear:animated];
-    
-    self.consoleTextView.contentInset = UIEdgeInsetsZero;
-    self.consoleTimer = [NSTimer scheduledTimerWithTimeInterval:1.0f
-                                                         target:self
-                                                       selector:@selector(timerFireMethod:)
-                                                       userInfo:nil
-                                                        repeats:YES];
-    [self updateConsoleTextViewForInterval:0.0f];
-}
 
 - (void)viewDidLoad
 {
@@ -127,6 +114,9 @@ static NSString * const kIdentifier = @"SomeIdentifier";
     
     [self.locationManager stopRangingBeaconsInRegion:self.beaconRegion];
     
+    self.detectedBeacons = nil;
+    [self.beaconTableView reloadData];
+
     NSLog(@"Turned off ranging.");
 }
 
@@ -153,22 +143,12 @@ static NSString * const kIdentifier = @"SomeIdentifier";
                inRegion:(CLBeaconRegion *)region {
     if ([beacons count] == 0) {
         NSLog(@"No beacons found nearby.");
-        return;
+    } else {
+        NSLog(@"Found beacons!");
     }
     
-    NSLog(@"Found beacons: \n");
-    NSUInteger count = 1;
-    for (CLBeacon *beacon in beacons) {
-        NSLog(@"    %lu:: (%@, %li, %li), prox: %li, accur: %f, rssi: %ld\n",
-              count,
-              beacon.proximityUUID,
-              beacon.major.integerValue,
-              beacon.minor.integerValue,
-              beacon.proximity,
-              beacon.accuracy,
-              beacon.rssi);
-        count++;
-    }
+    self.detectedBeacons = beacons;
+    [self.beaconTableView reloadData];
 }
 
 #pragma mark - Beacon advertising
@@ -180,9 +160,11 @@ static NSString * const kIdentifier = @"SomeIdentifier";
         return;
     }
     
+    time_t t;
+    srand((unsigned) time(&t));
     CLBeaconRegion *region = [[CLBeaconRegion alloc] initWithProximityUUID:self.beaconRegion.proximityUUID
-                                                                     major:1
-                                                                     minor:1
+                                                                     major:rand()
+                                                                     minor:rand()
                                                                 identifier:self.beaconRegion.identifier];
     NSDictionary *beaconPeripheralData = [region peripheralDataWithMeasuredPower:nil];
     [self.peripheralManager startAdvertising:beaconPeripheralData];
@@ -244,54 +226,52 @@ static NSString * const kIdentifier = @"SomeIdentifier";
     [self turnOnAdvertising];
 }
 
-#pragma mark - Console text view functionality
-- (void)updateConsoleTextViewForInterval:(double)interval {
-    if (!self.consoleString)
-        _consoleString = [NSMutableString string];
+#pragma mark - Table view functionality
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    CLBeacon *beacon = self.detectedBeacons[indexPath.row];
     
-    @try {
-        aslclient client = asl_open(NULL, "org.nicktoumpelis.HiBeacons", ASL_OPT_STDERR|ASL_LEVEL_DEBUG);
-        
-        aslmsg query = asl_new(ASL_TYPE_QUERY);
-        if (interval == 0) {
-            asl_set_query(query, ASL_KEY_MSG, NULL, ASL_QUERY_OP_NOT_EQUAL);
-        } else {
-            asl_set_query(query, ASL_KEY_TIME,
-                          [[NSString stringWithFormat:@"%lf", [[NSDate date] timeIntervalSince1970] - interval] UTF8String],
-                          ASL_QUERY_OP_GREATER_EQUAL);
-        }
-        aslresponse response = asl_search(client, query);
-        
-        asl_free(query);
-        
-        aslmsg message;
-        BOOL hadAtLeastOneMessage = NO;
-        while ((message = aslresponse_next(response))) {
-            const char *msg = asl_get(message, ASL_KEY_MSG);
-            [self.consoleString appendString:[NSString stringWithCString:msg encoding:NSUTF8StringEncoding]];
-            [self.consoleString appendString:@"\n"];
-            hadAtLeastOneMessage = YES;
-        }
-        
-        if (hadAtLeastOneMessage) {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [self.consoleTextView setText:self.consoleString];
-                [self.consoleTextView scrollRangeToVisible:NSMakeRange([self.consoleTextView.text length]-1, 0)];
-                [self.consoleTextView setNeedsDisplay];
-            });
-        }
-        
-        aslresponse_free(response);
-        asl_close(client);
-    } @catch (NSException *exception) {
-        NSLog(@"Console exception: %@", exception);
+    UITableViewCell *defaultCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle
+                                                          reuseIdentifier:kCellIdentifier];
+    
+    defaultCell.textLabel.text = beacon.proximityUUID.UUIDString;
+
+    NSString *proximityString;
+    switch (beacon.proximity) {
+        case CLProximityNear:
+            proximityString = @"Near";
+            break;
+        case CLProximityImmediate:
+            proximityString = @"Immediate";
+            break;
+        case CLProximityFar:
+            proximityString = @"Far";
+            break;
+        case CLProximityUnknown:
+        default:
+            proximityString = @"Unknown";
+            break;
     }
+    defaultCell.detailTextLabel.text = [NSString stringWithFormat:@"%@, %@ • %@ • %f • %li",
+        beacon.major.stringValue, beacon.minor.stringValue, proximityString, beacon.accuracy, (long)beacon.rssi];
+    defaultCell.detailTextLabel.textColor = [UIColor grayColor];
+    
+    return defaultCell;
 }
 
-- (void)timerFireMethod:(NSTimer *)theTimer {
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        [self updateConsoleTextViewForInterval:1.0];
-    });
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+    return 1;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    return self.detectedBeacons.count;
+}
+
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
+{
+    return @"Detected beacons";
 }
 
 @end
