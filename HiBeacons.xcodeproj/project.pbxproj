@@ -12,13 +12,17 @@
 		CF2BC92718019D6100C66D15 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF2BC92618019D6100C66D15 /* UIKit.framework */; };
 		CF2BC92D18019D6100C66D15 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = CF2BC92B18019D6100C66D15 /* InfoPlist.strings */; };
 		CF2BC92F18019D6100C66D15 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = CF2BC92E18019D6100C66D15 /* main.m */; };
-		CF2BC93318019D6100C66D15 /* NTAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = CF2BC93218019D6100C66D15 /* NTAppDelegate.m */; };
+		CF2BC93318019D6100C66D15 /* NTHiBeaconsDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = CF2BC93218019D6100C66D15 /* NTHiBeaconsDelegate.m */; };
 		CF2BC93518019D6100C66D15 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CF2BC93418019D6100C66D15 /* Images.xcassets */; };
 		CF2BC93C18019D6100C66D15 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF2BC93B18019D6100C66D15 /* XCTest.framework */; };
 		CF2BC93D18019D6100C66D15 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF2BC92218019D6100C66D15 /* Foundation.framework */; };
 		CF2BC93E18019D6100C66D15 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF2BC92618019D6100C66D15 /* UIKit.framework */; };
 		CF2BC94618019D6100C66D15 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = CF2BC94418019D6100C66D15 /* InfoPlist.strings */; };
 		CF2BC94818019D6100C66D15 /* HiBeaconsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = CF2BC94718019D6100C66D15 /* HiBeaconsTests.m */; };
+		CF2BC9521801A09D00C66D15 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CF2BC9511801A09D00C66D15 /* Main.storyboard */; };
+		CF2BC9551801A0C700C66D15 /* NTViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CF2BC9541801A0C700C66D15 /* NTViewController.m */; };
+		CF2BC9571801A34900C66D15 /* CoreBluetooth.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF2BC9561801A34900C66D15 /* CoreBluetooth.framework */; };
+		CF2BC9591801A35E00C66D15 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF2BC9581801A35E00C66D15 /* CoreLocation.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -40,14 +44,19 @@
 		CF2BC92C18019D6100C66D15 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		CF2BC92E18019D6100C66D15 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		CF2BC93018019D6100C66D15 /* HiBeacons-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "HiBeacons-Prefix.pch"; sourceTree = "<group>"; };
-		CF2BC93118019D6100C66D15 /* NTAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NTAppDelegate.h; sourceTree = "<group>"; };
-		CF2BC93218019D6100C66D15 /* NTAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NTAppDelegate.m; sourceTree = "<group>"; };
+		CF2BC93118019D6100C66D15 /* NTHiBeaconsDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NTHiBeaconsDelegate.h; sourceTree = "<group>"; };
+		CF2BC93218019D6100C66D15 /* NTHiBeaconsDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NTHiBeaconsDelegate.m; sourceTree = "<group>"; };
 		CF2BC93418019D6100C66D15 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		CF2BC93A18019D6100C66D15 /* HiBeaconsTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = HiBeaconsTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		CF2BC93B18019D6100C66D15 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		CF2BC94318019D6100C66D15 /* HiBeaconsTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "HiBeaconsTests-Info.plist"; sourceTree = "<group>"; };
 		CF2BC94518019D6100C66D15 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		CF2BC94718019D6100C66D15 /* HiBeaconsTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HiBeaconsTests.m; sourceTree = "<group>"; };
+		CF2BC9511801A09D00C66D15 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
+		CF2BC9531801A0C700C66D15 /* NTViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NTViewController.h; sourceTree = "<group>"; };
+		CF2BC9541801A0C700C66D15 /* NTViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NTViewController.m; sourceTree = "<group>"; };
+		CF2BC9561801A34900C66D15 /* CoreBluetooth.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreBluetooth.framework; path = System/Library/Frameworks/CoreBluetooth.framework; sourceTree = SDKROOT; };
+		CF2BC9581801A35E00C66D15 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -55,6 +64,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CF2BC9591801A35E00C66D15 /* CoreLocation.framework in Frameworks */,
+				CF2BC9571801A34900C66D15 /* CoreBluetooth.framework in Frameworks */,
 				CF2BC92518019D6100C66D15 /* CoreGraphics.framework in Frameworks */,
 				CF2BC92718019D6100C66D15 /* UIKit.framework in Frameworks */,
 				CF2BC92318019D6100C66D15 /* Foundation.framework in Frameworks */,
@@ -96,6 +107,8 @@
 		CF2BC92118019D6100C66D15 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				CF2BC9581801A35E00C66D15 /* CoreLocation.framework */,
+				CF2BC9561801A34900C66D15 /* CoreBluetooth.framework */,
 				CF2BC92218019D6100C66D15 /* Foundation.framework */,
 				CF2BC92418019D6100C66D15 /* CoreGraphics.framework */,
 				CF2BC92618019D6100C66D15 /* UIKit.framework */,
@@ -107,8 +120,11 @@
 		CF2BC92818019D6100C66D15 /* HiBeacons */ = {
 			isa = PBXGroup;
 			children = (
-				CF2BC93118019D6100C66D15 /* NTAppDelegate.h */,
-				CF2BC93218019D6100C66D15 /* NTAppDelegate.m */,
+				CF2BC93118019D6100C66D15 /* NTHiBeaconsDelegate.h */,
+				CF2BC93218019D6100C66D15 /* NTHiBeaconsDelegate.m */,
+				CF2BC9511801A09D00C66D15 /* Main.storyboard */,
+				CF2BC9531801A0C700C66D15 /* NTViewController.h */,
+				CF2BC9541801A0C700C66D15 /* NTViewController.m */,
 				CF2BC93418019D6100C66D15 /* Images.xcassets */,
 				CF2BC92918019D6100C66D15 /* Supporting Files */,
 			);
@@ -192,6 +208,13 @@
 				LastUpgradeCheck = 0500;
 				ORGANIZATIONNAME = "Nick Toumpelis";
 				TargetAttributes = {
+					CF2BC91E18019D6100C66D15 = {
+						SystemCapabilities = {
+							com.apple.BackgroundModes = {
+								enabled = 1;
+							};
+						};
+					};
 					CF2BC93918019D6100C66D15 = {
 						TestTargetID = CF2BC91E18019D6100C66D15;
 					};
@@ -222,6 +245,7 @@
 			files = (
 				CF2BC92D18019D6100C66D15 /* InfoPlist.strings in Resources */,
 				CF2BC93518019D6100C66D15 /* Images.xcassets in Resources */,
+				CF2BC9521801A09D00C66D15 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -240,8 +264,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CF2BC93318019D6100C66D15 /* NTAppDelegate.m in Sources */,
+				CF2BC93318019D6100C66D15 /* NTHiBeaconsDelegate.m in Sources */,
 				CF2BC92F18019D6100C66D15 /* main.m in Sources */,
+				CF2BC9551801A0C700C66D15 /* NTViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

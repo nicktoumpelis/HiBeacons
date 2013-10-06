@@ -1,5 +1,5 @@
 //
-//  NTAppDelegate.h
+//  NTViewController.h
 //  HiBeacons
 //
 //  Created by Nick Toumpelis on 2013-10-06.
@@ -24,10 +24,12 @@
 //  THE SOFTWARE.
 //
 
-#import <UIKit/UIKit.h>
+#import <CoreLocation/CoreLocation.h>
+#import <CoreBluetooth/CoreBluetooth.h>
 
-@interface NTAppDelegate : UIResponder <UIApplicationDelegate>
+@interface NTViewController : UIViewController <CLLocationManagerDelegate, CBPeripheralManagerDelegate>
 
-@property (strong, nonatomic) UIWindow *window;
+@property (nonatomic, weak) IBOutlet UISwitch *advertisingSwitch;
+@property (nonatomic, weak) IBOutlet UISwitch *rangingSwitch;
 
 @end
