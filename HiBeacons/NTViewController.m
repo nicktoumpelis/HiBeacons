@@ -28,7 +28,29 @@
 
 static NSString * const kUUID = @"00000000-0000-0000-0000-000000000000";
 static NSString * const kIdentifier = @"SomeIdentifier";
-static NSString * const kCellIdentifier = @"BeaconCell";
+
+static NSString * const kOperationCellIdentifier = @"OperationCell";
+static NSString * const kBeaconCellIdentifier = @"BeaconCell";
+
+static NSString * const kAdvertisingOperationTitle = @"Advertising";
+static NSString * const kRangingOperationTitle = @"Ranging";
+static NSUInteger const kNumberOfSections = 2;
+static NSUInteger const kNumberOfAvailableOperations = 2;
+static CGFloat const kOperationCellHeight = 44;
+static CGFloat const kBeaconCellHeight = 52;
+static NSString * const kBeaconSectionTitle = @"Looking for beacons...";
+static CGPoint const kActivityIndicatorPosition = (CGPoint){205, 12};
+static NSString * const kBeaconsHeaderViewIdentifier = @"BeaconsHeader";
+
+typedef NS_ENUM(NSUInteger, NTSectionType) {
+    NTOperationsSection,
+    NTDetectedBeaconsSection
+};
+
+typedef NS_ENUM(NSUInteger, NTOperationsRow) {
+    NTAdvertisingRow,
+    NTRangingRow
+};
 
 @interface NTViewController ()
 
@@ -36,22 +58,12 @@ static NSString * const kCellIdentifier = @"BeaconCell";
 @property (nonatomic, strong) CLBeaconRegion *beaconRegion;
 @property (nonatomic, strong) CBPeripheralManager *peripheralManager;
 @property (nonatomic, strong) NSArray *detectedBeacons;
+@property (nonatomic, weak) UISwitch *advertisingSwitch;
+@property (nonatomic, weak) UISwitch *rangingSwitch;
 
 @end
 
 @implementation NTViewController
-
-- (void)viewDidLoad
-{
-    [super viewDidLoad];
-    
-    [self.advertisingSwitch addTarget:self
-                              action:@selector(changeAdvertisingState:)
-                    forControlEvents:UIControlEventValueChanged];
-    [self.rangingSwitch addTarget:self
-                              action:@selector(changeRangingState:)
-                    forControlEvents:UIControlEventValueChanged];
-}
 
 #pragma mark - Beacon ranging
 - (void)createBeaconRegion
@@ -99,6 +111,8 @@ static NSString * const kCellIdentifier = @"BeaconCell";
     self.locationManager = [[CLLocationManager alloc] init];
     self.locationManager.delegate = self;
     
+    self.detectedBeacons = [NSArray array];
+    
     [self turnOnRanging];
 }
 
@@ -110,11 +124,116 @@ static NSString * const kCellIdentifier = @"BeaconCell";
     }
     
     [self.locationManager stopRangingBeaconsInRegion:self.beaconRegion];
+
+    NSIndexSet *deletedSections = [self deletedSections];
+    self.detectedBeacons = [NSArray array];
     
-    self.detectedBeacons = nil;
-    [self.beaconTableView reloadData];
+    [self.beaconTableView beginUpdates];
+    if (deletedSections)
+        [self.beaconTableView deleteSections:deletedSections withRowAnimation:UITableViewRowAnimationFade];
+    [self.beaconTableView endUpdates];
 
     NSLog(@"Turned off ranging.");
+}
+
+#pragma mark - Index path management
+- (NSArray *)indexPathsOfRemovedBeacons:(NSArray *)beacons
+{
+    NSMutableArray *indexPaths = nil;
+    
+    NSUInteger row = 0;
+    for (CLBeacon *existingBeacon in self.detectedBeacons) {
+        BOOL stillExists = NO;
+        for (CLBeacon *beacon in beacons) {
+            if ((existingBeacon.major.integerValue == beacon.major.integerValue) &&
+                (existingBeacon.minor.integerValue == beacon.minor.integerValue)) {
+                stillExists = YES;
+                break;
+            }
+        }
+        if (!stillExists) {
+            if (!indexPaths)
+                indexPaths = [NSMutableArray new];
+            [indexPaths addObject:[NSIndexPath indexPathForRow:row inSection:NTDetectedBeaconsSection]];
+        }
+        row++;
+    }
+    
+    return indexPaths;
+}
+
+- (NSArray *)indexPathsOfInsertedBeacons:(NSArray *)beacons
+{
+    NSMutableArray *indexPaths = nil;
+    
+    NSUInteger row = 0;
+    for (CLBeacon *beacon in beacons) {
+        BOOL isNewBeacon = YES;
+        for (CLBeacon *existingBeacon in self.detectedBeacons) {
+            if ((existingBeacon.major.integerValue == beacon.major.integerValue) &&
+                (existingBeacon.minor.integerValue == beacon.minor.integerValue)) {
+                isNewBeacon = NO;
+                break;
+            }
+        }
+        if (isNewBeacon) {
+            if (!indexPaths)
+                indexPaths = [NSMutableArray new];
+            [indexPaths addObject:[NSIndexPath indexPathForRow:row inSection:NTDetectedBeaconsSection]];
+        }
+        row++;
+    }
+    
+    return indexPaths;
+}
+
+- (NSArray *)indexPathsForBeacons:(NSArray *)beacons
+{
+    NSMutableArray *indexPaths = [NSMutableArray new];
+    for (NSUInteger row = 0; row < beacons.count; row++) {
+        [indexPaths addObject:[NSIndexPath indexPathForRow:row inSection:NTDetectedBeaconsSection]];
+    }
+    
+    return indexPaths;
+}
+
+- (NSIndexSet *)insertedSections
+{
+    if (self.rangingSwitch.on && [self.beaconTableView numberOfSections] == kNumberOfSections - 1) {
+        return [NSIndexSet indexSetWithIndex:1];
+    } else {
+        return nil;
+    }
+}
+
+- (NSIndexSet *)deletedSections
+{
+    if (!self.rangingSwitch.on && [self.beaconTableView numberOfSections] == kNumberOfSections) {
+        return [NSIndexSet indexSetWithIndex:1];
+    } else {
+        return nil;
+    }
+}
+
+- (NSArray *)filteredBeacons:(NSArray *)beacons
+{
+    // Filters duplicate beacons out; this may happen temporarily if the originating device changes its Bluetooth id
+    NSMutableArray *mutableBeacons = [beacons mutableCopy];
+    
+    NSMutableSet *lookup = [[NSMutableSet alloc] init];
+    for (int index = 0; index < [beacons count]; index++) {
+        CLBeacon *curr = [beacons objectAtIndex:index];
+        NSString *identifier = [NSString stringWithFormat:@"%@/%@", curr.major, curr.minor];
+        
+        // this is very fast constant time lookup in a hash table
+        if ([lookup containsObject:identifier]) {
+            [mutableBeacons removeObjectAtIndex:index];
+        } else {
+            [lookup addObject:identifier];
+        }
+    }
+    
+    return [mutableBeacons copy];
 }
 
 #pragma mark - Beacon ranging delegate methods
@@ -125,7 +244,7 @@ static NSString * const kCellIdentifier = @"BeaconCell";
         self.rangingSwitch.on = NO;
         return;
     }
-     
+    
     if ([CLLocationManager authorizationStatus] != kCLAuthorizationStatusAuthorized) {
         NSLog(@"Couldn't turn on ranging: Location services not authorised.");
         self.rangingSwitch.on = NO;
@@ -138,14 +257,37 @@ static NSString * const kCellIdentifier = @"BeaconCell";
 - (void)locationManager:(CLLocationManager *)manager
         didRangeBeacons:(NSArray *)beacons
                inRegion:(CLBeaconRegion *)region {
-    if ([beacons count] == 0) {
+    NSArray *filteredBeacons = [self filteredBeacons:beacons];
+    
+    if (filteredBeacons.count == 0) {
         NSLog(@"No beacons found nearby.");
     } else {
-        NSLog(@"Found %lu %@.", (unsigned long)[beacons count], [beacons count] > 1 ? @"beacons" : @"beacon");
+        NSLog(@"Found %lu %@.", (unsigned long)[filteredBeacons count],
+                [filteredBeacons count] > 1 ? @"beacons" : @"beacon");
     }
     
-    self.detectedBeacons = beacons;
-    [self.beaconTableView reloadData];
+    NSIndexSet *insertedSections = [self insertedSections];
+    NSIndexSet *deletedSections = [self deletedSections];
+    NSArray *deletedRows = [self indexPathsOfRemovedBeacons:filteredBeacons];
+    NSArray *insertedRows = [self indexPathsOfInsertedBeacons:filteredBeacons];
+    NSArray *reloadedRows = nil;
+    if (!deletedRows && !insertedRows)
+        reloadedRows = [self indexPathsForBeacons:filteredBeacons];
+    
+    self.detectedBeacons = filteredBeacons;
+    
+    [self.beaconTableView beginUpdates];
+    if (insertedSections)
+        [self.beaconTableView insertSections:insertedSections withRowAnimation:UITableViewRowAnimationFade];
+    if (deletedSections)
+        [self.beaconTableView deleteSections:deletedSections withRowAnimation:UITableViewRowAnimationFade];
+    if (insertedRows)
+        [self.beaconTableView insertRowsAtIndexPaths:insertedRows withRowAnimation:UITableViewRowAnimationFade];
+    if (deletedRows)
+        [self.beaconTableView deleteRowsAtIndexPaths:deletedRows withRowAnimation:UITableViewRowAnimationFade];
+    if (reloadedRows)
+        [self.beaconTableView reloadRowsAtIndexPaths:reloadedRows withRowAnimation:UITableViewRowAnimationNone];
+    [self.beaconTableView endUpdates];
 }
 
 #pragma mark - Beacon advertising
@@ -226,51 +368,131 @@ static NSString * const kCellIdentifier = @"BeaconCell";
 }
 
 #pragma mark - Table view functionality
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+- (NSString *)detailsStringForBeacon:(CLBeacon *)beacon
 {
-    CLBeacon *beacon = self.detectedBeacons[indexPath.row];
-    
-    UITableViewCell *defaultCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle
-                                                          reuseIdentifier:kCellIdentifier];
-    
-    defaultCell.textLabel.text = beacon.proximityUUID.UUIDString;
-
-    NSString *proximityString;
+    NSString *proximity;
     switch (beacon.proximity) {
         case CLProximityNear:
-            proximityString = @"Near";
+            proximity = @"Near";
             break;
         case CLProximityImmediate:
-            proximityString = @"Immediate";
+            proximity = @"Immediate";
             break;
         case CLProximityFar:
-            proximityString = @"Far";
+            proximity = @"Far";
             break;
         case CLProximityUnknown:
         default:
-            proximityString = @"Unknown";
+            proximity = @"Unknown";
             break;
     }
-    defaultCell.detailTextLabel.text = [NSString stringWithFormat:@"%@, %@ • %@ • %f • %li",
-        beacon.major.stringValue, beacon.minor.stringValue, proximityString, beacon.accuracy, (long)beacon.rssi];
-    defaultCell.detailTextLabel.textColor = [UIColor grayColor];
     
-    return defaultCell;
+    NSString *format = @"%@, %@ • %@ • %f • %li";
+    return [NSString stringWithFormat:format, beacon.major, beacon.minor, proximity, beacon.accuracy, beacon.rssi];
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    UITableViewCell *cell = nil;
+    switch (indexPath.section) {
+        case NTOperationsSection: {
+            cell = [tableView dequeueReusableCellWithIdentifier:kOperationCellIdentifier];
+            switch (indexPath.row) {
+                case NTAdvertisingRow:
+                    cell.textLabel.text = kAdvertisingOperationTitle;
+                    self.advertisingSwitch = (UISwitch *)cell.accessoryView;
+                    [self.advertisingSwitch addTarget:self
+                                               action:@selector(changeAdvertisingState:)
+                                     forControlEvents:UIControlEventValueChanged];
+                    break;
+                case NTRangingRow:
+                default:
+                    cell.textLabel.text = kRangingOperationTitle;
+                    self.rangingSwitch = (UISwitch *)cell.accessoryView;
+                    [self.rangingSwitch addTarget:self
+                                           action:@selector(changeRangingState:)
+                                 forControlEvents:UIControlEventValueChanged];
+                    break;
+            }
+        }
+            break;
+        case NTDetectedBeaconsSection:
+        default: {
+            CLBeacon *beacon = self.detectedBeacons[indexPath.row];
+
+            cell = [tableView dequeueReusableCellWithIdentifier:kBeaconCellIdentifier];
+            
+            if (!cell)
+                cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle
+                                              reuseIdentifier:kBeaconCellIdentifier];
+            
+            cell.textLabel.text = beacon.proximityUUID.UUIDString;
+            cell.detailTextLabel.text = [self detailsStringForBeacon:beacon];
+            cell.detailTextLabel.textColor = [UIColor grayColor];
+        }
+            break;
+    }
+    
+    return cell;
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return 1;
+    if (self.rangingSwitch.on) {
+        return kNumberOfSections;       // All sections visible
+    } else {
+        return kNumberOfSections - 1;   // Beacons section not visible
+    }
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return self.detectedBeacons.count;
+    switch (section) {
+        case NTOperationsSection:
+            return kNumberOfAvailableOperations;
+        case NTDetectedBeaconsSection:
+        default:
+            return self.detectedBeacons.count;
+    }
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
-    return @"Detected beacons";
+    switch (section) {
+        case NTOperationsSection:
+            return nil;
+        case NTDetectedBeaconsSection:
+        default:
+            return kBeaconSectionTitle;
+    }
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    switch (indexPath.section) {
+        case NTOperationsSection:
+            return kOperationCellHeight;
+        case NTDetectedBeaconsSection:
+        default:
+            return kBeaconCellHeight;
+    }
+}
+
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+{
+    UITableViewHeaderFooterView *headerView =
+        [[UITableViewHeaderFooterView alloc] initWithReuseIdentifier:kBeaconsHeaderViewIdentifier];
+    
+    // Adds an activity indicator view to the section header
+    UIActivityIndicatorView *indicatorView =
+        [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+    [headerView addSubview:indicatorView];
+
+    indicatorView.frame = (CGRect){kActivityIndicatorPosition, indicatorView.frame.size};
+    
+    [indicatorView startAnimating];
+    
+    return headerView;
 }
 
 @end
