@@ -24,8 +24,6 @@
 //  THE SOFTWARE.
 //
 
-#import <UIKit/UIKit.h>
-
 @interface NTHiBeaconsDelegate : UIResponder <UIApplicationDelegate>
 
 @property (strong, nonatomic) UIWindow *window;

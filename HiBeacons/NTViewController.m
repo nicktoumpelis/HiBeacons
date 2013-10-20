@@ -98,9 +98,6 @@ static NSString * const kCellIdentifier = @"BeaconCell";
 {
     self.locationManager = [[CLLocationManager alloc] init];
     self.locationManager.delegate = self;
-    self.locationManager.activityType = CLActivityTypeFitness;
-    self.locationManager.distanceFilter = kCLDistanceFilterNone;
-    self.locationManager.desiredAccuracy = kCLLocationAccuracyBest;
     
     [self turnOnRanging];
 }
@@ -144,7 +141,7 @@ static NSString * const kCellIdentifier = @"BeaconCell";
     if ([beacons count] == 0) {
         NSLog(@"No beacons found nearby.");
     } else {
-        NSLog(@"Found beacons!");
+        NSLog(@"Found %lu %@.", (unsigned long)[beacons count], [beacons count] > 1 ? @"beacons" : @"beacon");
     }
     
     self.detectedBeacons = beacons;
@@ -154,7 +151,7 @@ static NSString * const kCellIdentifier = @"BeaconCell";
 #pragma mark - Beacon advertising
 - (void)turnOnAdvertising
 {
-    if (self.peripheralManager.state != 5) {
+    if (self.peripheralManager.state != CBPeripheralManagerStatePoweredOn) {
         NSLog(@"Peripheral manager is off.");
         self.advertisingSwitch.on = NO;
         return;
@@ -168,6 +165,8 @@ static NSString * const kCellIdentifier = @"BeaconCell";
                                                                 identifier:self.beaconRegion.identifier];
     NSDictionary *beaconPeripheralData = [region peripheralDataWithMeasuredPower:nil];
     [self.peripheralManager startAdvertising:beaconPeripheralData];
+    
+    NSLog(@"Turning on advertising for region: %@.", region);
 }
 
 - (void)changeAdvertisingState:sender
@@ -216,7 +215,7 @@ static NSString * const kCellIdentifier = @"BeaconCell";
 
 - (void)peripheralManagerDidUpdateState:(CBPeripheralManager *)peripheralManager
 {
-    if (peripheralManager.state != 5) {
+    if (peripheralManager.state != CBPeripheralManagerStatePoweredOn) {
         NSLog(@"Peripheral manager is off.");
         self.advertisingSwitch.on = NO;
         return;

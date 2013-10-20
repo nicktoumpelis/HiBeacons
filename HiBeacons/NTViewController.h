@@ -24,10 +24,11 @@
 //  THE SOFTWARE.
 //
 
-#import <CoreLocation/CoreLocation.h>
-#import <CoreBluetooth/CoreBluetooth.h>
+@import CoreLocation;
+@import CoreBluetooth;
 
-@interface NTViewController : UIViewController <CLLocationManagerDelegate, CBPeripheralManagerDelegate, UITableViewDataSource, UITableViewDelegate>
+@interface NTViewController : UIViewController <CLLocationManagerDelegate, CBPeripheralManagerDelegate,
+    UITableViewDataSource, UITableViewDelegate>
 
 @property (nonatomic, weak) IBOutlet UISwitch *advertisingSwitch;
 @property (nonatomic, weak) IBOutlet UISwitch *rangingSwitch;
