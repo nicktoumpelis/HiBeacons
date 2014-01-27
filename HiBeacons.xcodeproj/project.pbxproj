@@ -467,6 +467,7 @@
 				CF2BC94D18019D6100C66D15 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		CF2BC94E18019D6100C66D15 /* Build configuration list for PBXNativeTarget "HiBeaconsTests" */ = {
 			isa = XCConfigurationList;
@@ -475,6 +476,7 @@
 				CF2BC95018019D6100C66D15 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
