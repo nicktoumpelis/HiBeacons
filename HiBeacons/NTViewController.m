@@ -32,15 +32,19 @@ static NSString * const kIdentifier = @"SomeIdentifier";
 static NSString * const kOperationCellIdentifier = @"OperationCell";
 static NSString * const kBeaconCellIdentifier = @"BeaconCell";
 
+static NSString * const kMonitoringOperationTitle = @"Monitoring";
 static NSString * const kAdvertisingOperationTitle = @"Advertising";
 static NSString * const kRangingOperationTitle = @"Ranging";
 static NSUInteger const kNumberOfSections = 2;
-static NSUInteger const kNumberOfAvailableOperations = 2;
+static NSUInteger const kNumberOfAvailableOperations = 3;
 static CGFloat const kOperationCellHeight = 44;
 static CGFloat const kBeaconCellHeight = 52;
 static NSString * const kBeaconSectionTitle = @"Looking for beacons...";
 static CGPoint const kActivityIndicatorPosition = (CGPoint){205, 12};
 static NSString * const kBeaconsHeaderViewIdentifier = @"BeaconsHeader";
+
+static void * const kMonitoringOperationContext = (void *)&kMonitoringOperationContext;
+static void * const kRangingOperationContext = (void *)&kRangingOperationContext;
 
 typedef NS_ENUM(NSUInteger, NTSectionType) {
     NTOperationsSection,
@@ -48,6 +52,7 @@ typedef NS_ENUM(NSUInteger, NTSectionType) {
 };
 
 typedef NS_ENUM(NSUInteger, NTOperationsRow) {
+    NTMonitoringRow,
     NTAdvertisingRow,
     NTRangingRow
 };
@@ -58,8 +63,10 @@ typedef NS_ENUM(NSUInteger, NTOperationsRow) {
 @property (nonatomic, strong) CLBeaconRegion *beaconRegion;
 @property (nonatomic, strong) CBPeripheralManager *peripheralManager;
 @property (nonatomic, strong) NSArray *detectedBeacons;
+@property (nonatomic, weak) UISwitch *monitoringSwitch;
 @property (nonatomic, weak) UISwitch *advertisingSwitch;
 @property (nonatomic, weak) UISwitch *rangingSwitch;
+@property (nonatomic, unsafe_unretained) void *operationContext;
 
 @end
 
@@ -196,6 +203,13 @@ typedef NS_ENUM(NSUInteger, NTOperationsRow) {
         case NTOperationsSection: {
             cell = [tableView dequeueReusableCellWithIdentifier:kOperationCellIdentifier];
             switch (indexPath.row) {
+                case NTMonitoringRow:
+                    cell.textLabel.text = kMonitoringOperationTitle;
+                    self.monitoringSwitch = (UISwitch *)cell.accessoryView;
+                    [self.monitoringSwitch addTarget:self
+                                              action:@selector(changeMonitoringState:)
+                                    forControlEvents:UIControlEventTouchUpInside];
+                    break;
                 case NTAdvertisingRow:
                     cell.textLabel.text = kAdvertisingOperationTitle;
                     self.advertisingSwitch = (UISwitch *)cell.accessoryView;
@@ -336,8 +350,12 @@ typedef NS_ENUM(NSUInteger, NTOperationsRow) {
 
 - (void)startRangingForBeacons
 {
-    self.locationManager = [[CLLocationManager alloc] init];
-    self.locationManager.delegate = self;
+    self.operationContext = kRangingOperationContext;
+    
+    if (!self.locationManager) {
+        self.locationManager = [[CLLocationManager alloc] init];
+        self.locationManager.delegate = self;
+    }
     
     self.detectedBeacons = [NSArray array];
     
@@ -364,22 +382,84 @@ typedef NS_ENUM(NSUInteger, NTOperationsRow) {
     NSLog(@"Turned off ranging.");
 }
 
-#pragma mark - Beacon ranging delegate methods
+#pragma mark - Beacon region monitoring
+- (void)turnOnMonitoring
+{
+    NSLog(@"Turning on monitoring...");
+    
+    if (![CLLocationManager isMonitoringAvailableForClass:[CLBeaconRegion class]]) {
+        NSLog(@"Couldn't turn on region monitoring: Region monitoring is not available for CLBeaconRegion class.");
+        self.monitoringSwitch.on = NO;
+        return;
+    }
+    
+    [self createBeaconRegion];
+    [self.locationManager startMonitoringForRegion:self.beaconRegion];
+    
+    NSLog(@"Monitoring turned on for region: %@.", self.beaconRegion);
+}
+
+- (void)changeMonitoringState:sender
+{
+    UISwitch *theSwitch = (UISwitch *)sender;
+    if (theSwitch.on) {
+        [self startMonitoringForBeacons];
+    } else {
+        [self stopMonitoringForBeacons];
+    }
+}
+
+- (void)startMonitoringForBeacons
+{
+    self.operationContext = kMonitoringOperationContext;
+    
+    if (!self.locationManager) {
+        self.locationManager = [[CLLocationManager alloc] init];
+        self.locationManager.delegate = self;
+    }
+    
+    [self turnOnMonitoring];
+}
+
+- (void)stopMonitoringForBeacons
+{
+    [self.locationManager stopMonitoringForRegion:self.beaconRegion];
+    
+    NSLog(@"Turned off monitoring");
+}
+
+#pragma mark - Location manager delegate methods
 - (void)locationManager:(CLLocationManager *)manager didChangeAuthorizationStatus:(CLAuthorizationStatus)status
 {
     if (![CLLocationManager locationServicesEnabled]) {
-        NSLog(@"Couldn't turn on ranging: Location services are not enabled.");
-        self.rangingSwitch.on = NO;
-        return;
+        if (self.operationContext == kMonitoringOperationContext) {
+            NSLog(@"Couldn't turn on monitoring: Location services are not enabled.");
+            self.monitoringSwitch.on = NO;
+            return;
+        } else {
+            NSLog(@"Couldn't turn on ranging: Location services are not enabled.");
+            self.rangingSwitch.on = NO;
+            return;
+        }
     }
     
     if ([CLLocationManager authorizationStatus] != kCLAuthorizationStatusAuthorized) {
-        NSLog(@"Couldn't turn on ranging: Location services not authorised.");
-        self.rangingSwitch.on = NO;
-        return;
+        if (self.operationContext == kMonitoringOperationContext) {
+            NSLog(@"Couldn't turn on monitoring: Location services not authorised.");
+            self.monitoringSwitch.on = NO;
+            return;
+        } else {
+            NSLog(@"Couldn't turn on ranging: Location services not authorised.");
+            self.rangingSwitch.on = NO;
+            return;
+        }
     }
     
-    self.rangingSwitch.on = YES;
+    if (self.operationContext == kMonitoringOperationContext) {
+        self.monitoringSwitch.on = YES;
+    } else {
+        self.rangingSwitch.on = YES;
+    }
 }
 
 - (void)locationManager:(CLLocationManager *)manager
@@ -416,6 +496,33 @@ typedef NS_ENUM(NSUInteger, NTOperationsRow) {
     if (reloadedRows)
         [self.beaconTableView reloadRowsAtIndexPaths:reloadedRows withRowAnimation:UITableViewRowAnimationNone];
     [self.beaconTableView endUpdates];
+}
+
+- (void)locationManager:(CLLocationManager *)manager didEnterRegion:(CLRegion *)region
+{
+    NSLog(@"Entered region: %@", region);
+}
+
+- (void)locationManager:(CLLocationManager *)manager didExitRegion:(CLRegion *)region
+{
+    NSLog(@"Exited region: %@", region);
+}
+
+- (void)locationManager:(CLLocationManager *)manager didDetermineState:(CLRegionState)state forRegion:(CLRegion *)region
+{
+    NSString *stateString = nil;
+    switch (state) {
+        case CLRegionStateInside:
+            stateString = @"Inside";
+            break;
+        case CLRegionStateOutside:
+            stateString = @"Outside";
+            break;
+        case CLRegionStateUnknown:
+            stateString = @"Unknown";
+            break;
+    }
+    NSLog(@"State changed to %@ for region %@.", stateString, region);
 }
 
 #pragma mark - Beacon advertising
