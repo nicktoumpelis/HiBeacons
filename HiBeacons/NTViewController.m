@@ -307,7 +307,7 @@ typedef NS_ENUM(NSUInteger, NTOperationsRow) {
     return headerView;
 }
 
-#pragma mark - Beacon ranging
+#pragma mark - Common
 - (void)createBeaconRegion
 {
     if (self.beaconRegion)
@@ -315,6 +315,35 @@ typedef NS_ENUM(NSUInteger, NTOperationsRow) {
     
     NSUUID *proximityUUID = [[NSUUID alloc] initWithUUIDString:kUUID];
     self.beaconRegion = [[CLBeaconRegion alloc] initWithProximityUUID:proximityUUID identifier:kIdentifier];
+}
+
+- (void)createLocationManager
+{
+    if (!self.locationManager) {
+        self.locationManager = [[CLLocationManager alloc] init];
+        self.locationManager.delegate = self;
+    }
+}
+
+#pragma mark - Beacon ranging
+- (void)changeRangingState:sender
+{
+    UISwitch *theSwitch = (UISwitch *)sender;
+    if (theSwitch.on) {
+        [self startRangingForBeacons];
+    } else {
+        [self stopRangingForBeacons];
+    }
+}
+
+- (void)startRangingForBeacons
+{
+    self.operationContext = kRangingOperationContext;
+    
+    [self createLocationManager];
+    
+    self.detectedBeacons = [NSArray array];
+    [self turnOnRanging];
 }
 
 - (void)turnOnRanging
@@ -338,30 +367,6 @@ typedef NS_ENUM(NSUInteger, NTOperationsRow) {
     NSLog(@"Ranging turned on for region: %@.", self.beaconRegion);
 }
 
-- (void)changeRangingState:sender
-{
-    UISwitch *theSwitch = (UISwitch *)sender;
-    if (theSwitch.on) {
-        [self startRangingForBeacons];
-    } else {
-        [self stopRangingForBeacons];
-    }
-}
-
-- (void)startRangingForBeacons
-{
-    self.operationContext = kRangingOperationContext;
-    
-    if (!self.locationManager) {
-        self.locationManager = [[CLLocationManager alloc] init];
-        self.locationManager.delegate = self;
-    }
-    
-    self.detectedBeacons = [NSArray array];
-    
-    [self turnOnRanging];
-}
-
 - (void)stopRangingForBeacons
 {
     if (self.locationManager.rangedRegions.count == 0) {
@@ -383,22 +388,6 @@ typedef NS_ENUM(NSUInteger, NTOperationsRow) {
 }
 
 #pragma mark - Beacon region monitoring
-- (void)turnOnMonitoring
-{
-    NSLog(@"Turning on monitoring...");
-    
-    if (![CLLocationManager isMonitoringAvailableForClass:[CLBeaconRegion class]]) {
-        NSLog(@"Couldn't turn on region monitoring: Region monitoring is not available for CLBeaconRegion class.");
-        self.monitoringSwitch.on = NO;
-        return;
-    }
-    
-    [self createBeaconRegion];
-    [self.locationManager startMonitoringForRegion:self.beaconRegion];
-    
-    NSLog(@"Monitoring turned on for region: %@.", self.beaconRegion);
-}
-
 - (void)changeMonitoringState:sender
 {
     UISwitch *theSwitch = (UISwitch *)sender;
@@ -413,12 +402,25 @@ typedef NS_ENUM(NSUInteger, NTOperationsRow) {
 {
     self.operationContext = kMonitoringOperationContext;
     
-    if (!self.locationManager) {
-        self.locationManager = [[CLLocationManager alloc] init];
-        self.locationManager.delegate = self;
-    }
+    [self createLocationManager];
     
     [self turnOnMonitoring];
+}
+
+- (void)turnOnMonitoring
+{
+    NSLog(@"Turning on monitoring...");
+    
+    if (![CLLocationManager isMonitoringAvailableForClass:[CLBeaconRegion class]]) {
+        NSLog(@"Couldn't turn on region monitoring: Region monitoring is not available for CLBeaconRegion class.");
+        self.monitoringSwitch.on = NO;
+        return;
+    }
+    
+    [self createBeaconRegion];
+    [self.locationManager startMonitoringForRegion:self.beaconRegion];
+    
+    NSLog(@"Monitoring turned on for region: %@.", self.beaconRegion);
 }
 
 - (void)stopMonitoringForBeacons
@@ -513,39 +515,19 @@ typedef NS_ENUM(NSUInteger, NTOperationsRow) {
     NSString *stateString = nil;
     switch (state) {
         case CLRegionStateInside:
-            stateString = @"Inside";
+            stateString = @"inside";
             break;
         case CLRegionStateOutside:
-            stateString = @"Outside";
+            stateString = @"outside";
             break;
         case CLRegionStateUnknown:
-            stateString = @"Unknown";
+            stateString = @"unknown";
             break;
     }
     NSLog(@"State changed to %@ for region %@.", stateString, region);
 }
 
 #pragma mark - Beacon advertising
-- (void)turnOnAdvertising
-{
-    if (self.peripheralManager.state != CBPeripheralManagerStatePoweredOn) {
-        NSLog(@"Peripheral manager is off.");
-        self.advertisingSwitch.on = NO;
-        return;
-    }
-    
-    time_t t;
-    srand((unsigned) time(&t));
-    CLBeaconRegion *region = [[CLBeaconRegion alloc] initWithProximityUUID:self.beaconRegion.proximityUUID
-                                                                     major:rand()
-                                                                     minor:rand()
-                                                                identifier:self.beaconRegion.identifier];
-    NSDictionary *beaconPeripheralData = [region peripheralDataWithMeasuredPower:nil];
-    [self.peripheralManager startAdvertising:beaconPeripheralData];
-    
-    NSLog(@"Turning on advertising for region: %@.", region);
-}
-
 - (void)changeAdvertisingState:sender
 {
     UISwitch *theSwitch = (UISwitch *)sender;
@@ -566,6 +548,26 @@ typedef NS_ENUM(NSUInteger, NTOperationsRow) {
         self.peripheralManager = [[CBPeripheralManager alloc] initWithDelegate:self queue:nil options:nil];
     
     [self turnOnAdvertising];
+}
+
+- (void)turnOnAdvertising
+{
+    if (self.peripheralManager.state != CBPeripheralManagerStatePoweredOn) {
+        NSLog(@"Peripheral manager is off.");
+        self.advertisingSwitch.on = NO;
+        return;
+    }
+    
+    time_t t;
+    srand((unsigned) time(&t));
+    CLBeaconRegion *region = [[CLBeaconRegion alloc] initWithProximityUUID:self.beaconRegion.proximityUUID
+                                                                     major:rand()
+                                                                     minor:rand()
+                                                                identifier:self.beaconRegion.identifier];
+    NSDictionary *beaconPeripheralData = [region peripheralDataWithMeasuredPower:nil];
+    [self.peripheralManager startAdvertising:beaconPeripheralData];
+    
+    NSLog(@"Turning on advertising for region: %@.", region);
 }
 
 - (void)stopAdvertisingBeacon
