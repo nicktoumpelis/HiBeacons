@@ -65,77 +65,6 @@ typedef NS_ENUM(NSUInteger, NTOperationsRow) {
 
 @implementation NTViewController
 
-#pragma mark - Beacon ranging
-- (void)createBeaconRegion
-{
-    if (self.beaconRegion)
-        return;
-    
-    NSUUID *proximityUUID = [[NSUUID alloc] initWithUUIDString:kUUID];
-    self.beaconRegion = [[CLBeaconRegion alloc] initWithProximityUUID:proximityUUID identifier:kIdentifier];
-}
-
-- (void)turnOnRanging
-{
-    NSLog(@"Turning on ranging...");
-    
-    if (![CLLocationManager isRangingAvailable]) {
-        NSLog(@"Couldn't turn on ranging: Ranging is not available.");
-        self.rangingSwitch.on = NO;
-        return;
-    }
-    
-    if (self.locationManager.rangedRegions.count > 0) {
-        NSLog(@"Didn't turn on ranging: Ranging already on.");
-        return;
-    }
-    
-    [self createBeaconRegion];
-    [self.locationManager startRangingBeaconsInRegion:self.beaconRegion];
-    
-    NSLog(@"Ranging turned on for region: %@.", self.beaconRegion);
-}
-
-- (void)changeRangingState:sender
-{
-    UISwitch *theSwitch = (UISwitch *)sender;
-    if (theSwitch.on) {
-        [self startRangingForBeacons];
-    } else {
-        [self stopRangingForBeacons];
-    }
-}
-
-- (void)startRangingForBeacons
-{
-    self.locationManager = [[CLLocationManager alloc] init];
-    self.locationManager.delegate = self;
-    
-    self.detectedBeacons = [NSArray array];
-    
-    [self turnOnRanging];
-}
-
-- (void)stopRangingForBeacons
-{
-    if (self.locationManager.rangedRegions.count == 0) {
-        NSLog(@"Didn't turn off ranging: Ranging already off.");
-        return;
-    }
-    
-    [self.locationManager stopRangingBeaconsInRegion:self.beaconRegion];
-
-    NSIndexSet *deletedSections = [self deletedSections];
-    self.detectedBeacons = [NSArray array];
-    
-    [self.beaconTableView beginUpdates];
-    if (deletedSections)
-        [self.beaconTableView deleteSections:deletedSections withRowAnimation:UITableViewRowAnimationFade];
-    [self.beaconTableView endUpdates];
-
-    NSLog(@"Turned off ranging.");
-}
-
 #pragma mark - Index path management
 - (NSArray *)indexPathsOfRemovedBeacons:(NSArray *)beacons
 {
@@ -234,6 +163,205 @@ typedef NS_ENUM(NSUInteger, NTOperationsRow) {
     }
     
     return [mutableBeacons copy];
+}
+
+#pragma mark - Table view functionality
+- (NSString *)detailsStringForBeacon:(CLBeacon *)beacon
+{
+    NSString *proximity;
+    switch (beacon.proximity) {
+        case CLProximityNear:
+            proximity = @"Near";
+            break;
+        case CLProximityImmediate:
+            proximity = @"Immediate";
+            break;
+        case CLProximityFar:
+            proximity = @"Far";
+            break;
+        case CLProximityUnknown:
+        default:
+            proximity = @"Unknown";
+            break;
+    }
+    
+    NSString *format = @"%@, %@ • %@ • %f • %li";
+    return [NSString stringWithFormat:format, beacon.major, beacon.minor, proximity, beacon.accuracy, beacon.rssi];
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    UITableViewCell *cell = nil;
+    switch (indexPath.section) {
+        case NTOperationsSection: {
+            cell = [tableView dequeueReusableCellWithIdentifier:kOperationCellIdentifier];
+            switch (indexPath.row) {
+                case NTAdvertisingRow:
+                    cell.textLabel.text = kAdvertisingOperationTitle;
+                    self.advertisingSwitch = (UISwitch *)cell.accessoryView;
+                    [self.advertisingSwitch addTarget:self
+                                               action:@selector(changeAdvertisingState:)
+                                     forControlEvents:UIControlEventValueChanged];
+                    break;
+                case NTRangingRow:
+                default:
+                    cell.textLabel.text = kRangingOperationTitle;
+                    self.rangingSwitch = (UISwitch *)cell.accessoryView;
+                    [self.rangingSwitch addTarget:self
+                                           action:@selector(changeRangingState:)
+                                 forControlEvents:UIControlEventValueChanged];
+                    break;
+            }
+        }
+            break;
+        case NTDetectedBeaconsSection:
+        default: {
+            CLBeacon *beacon = self.detectedBeacons[indexPath.row];
+            
+            cell = [tableView dequeueReusableCellWithIdentifier:kBeaconCellIdentifier];
+            
+            if (!cell)
+                cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle
+                                              reuseIdentifier:kBeaconCellIdentifier];
+            
+            cell.textLabel.text = beacon.proximityUUID.UUIDString;
+            cell.detailTextLabel.text = [self detailsStringForBeacon:beacon];
+            cell.detailTextLabel.textColor = [UIColor grayColor];
+        }
+            break;
+    }
+    
+    return cell;
+}
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+    if (self.rangingSwitch.on) {
+        return kNumberOfSections;       // All sections visible
+    } else {
+        return kNumberOfSections - 1;   // Beacons section not visible
+    }
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    switch (section) {
+        case NTOperationsSection:
+            return kNumberOfAvailableOperations;
+        case NTDetectedBeaconsSection:
+        default:
+            return self.detectedBeacons.count;
+    }
+}
+
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
+{
+    switch (section) {
+        case NTOperationsSection:
+            return nil;
+        case NTDetectedBeaconsSection:
+        default:
+            return kBeaconSectionTitle;
+    }
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    switch (indexPath.section) {
+        case NTOperationsSection:
+            return kOperationCellHeight;
+        case NTDetectedBeaconsSection:
+        default:
+            return kBeaconCellHeight;
+    }
+}
+
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+{
+    UITableViewHeaderFooterView *headerView =
+    [[UITableViewHeaderFooterView alloc] initWithReuseIdentifier:kBeaconsHeaderViewIdentifier];
+    
+    // Adds an activity indicator view to the section header
+    UIActivityIndicatorView *indicatorView =
+    [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+    [headerView addSubview:indicatorView];
+    
+    indicatorView.frame = (CGRect){kActivityIndicatorPosition, indicatorView.frame.size};
+    
+    [indicatorView startAnimating];
+    
+    return headerView;
+}
+
+#pragma mark - Beacon ranging
+- (void)createBeaconRegion
+{
+    if (self.beaconRegion)
+        return;
+    
+    NSUUID *proximityUUID = [[NSUUID alloc] initWithUUIDString:kUUID];
+    self.beaconRegion = [[CLBeaconRegion alloc] initWithProximityUUID:proximityUUID identifier:kIdentifier];
+}
+
+- (void)turnOnRanging
+{
+    NSLog(@"Turning on ranging...");
+    
+    if (![CLLocationManager isRangingAvailable]) {
+        NSLog(@"Couldn't turn on ranging: Ranging is not available.");
+        self.rangingSwitch.on = NO;
+        return;
+    }
+    
+    if (self.locationManager.rangedRegions.count > 0) {
+        NSLog(@"Didn't turn on ranging: Ranging already on.");
+        return;
+    }
+    
+    [self createBeaconRegion];
+    [self.locationManager startRangingBeaconsInRegion:self.beaconRegion];
+    
+    NSLog(@"Ranging turned on for region: %@.", self.beaconRegion);
+}
+
+- (void)changeRangingState:sender
+{
+    UISwitch *theSwitch = (UISwitch *)sender;
+    if (theSwitch.on) {
+        [self startRangingForBeacons];
+    } else {
+        [self stopRangingForBeacons];
+    }
+}
+
+- (void)startRangingForBeacons
+{
+    self.locationManager = [[CLLocationManager alloc] init];
+    self.locationManager.delegate = self;
+    
+    self.detectedBeacons = [NSArray array];
+    
+    [self turnOnRanging];
+}
+
+- (void)stopRangingForBeacons
+{
+    if (self.locationManager.rangedRegions.count == 0) {
+        NSLog(@"Didn't turn off ranging: Ranging already off.");
+        return;
+    }
+    
+    [self.locationManager stopRangingBeaconsInRegion:self.beaconRegion];
+    
+    NSIndexSet *deletedSections = [self deletedSections];
+    self.detectedBeacons = [NSArray array];
+    
+    [self.beaconTableView beginUpdates];
+    if (deletedSections)
+        [self.beaconTableView deleteSections:deletedSections withRowAnimation:UITableViewRowAnimationFade];
+    [self.beaconTableView endUpdates];
+    
+    NSLog(@"Turned off ranging.");
 }
 
 #pragma mark - Beacon ranging delegate methods
@@ -365,134 +493,6 @@ typedef NS_ENUM(NSUInteger, NTOperationsRow) {
 
     NSLog(@"Peripheral manager is on.");
     [self turnOnAdvertising];
-}
-
-#pragma mark - Table view functionality
-- (NSString *)detailsStringForBeacon:(CLBeacon *)beacon
-{
-    NSString *proximity;
-    switch (beacon.proximity) {
-        case CLProximityNear:
-            proximity = @"Near";
-            break;
-        case CLProximityImmediate:
-            proximity = @"Immediate";
-            break;
-        case CLProximityFar:
-            proximity = @"Far";
-            break;
-        case CLProximityUnknown:
-        default:
-            proximity = @"Unknown";
-            break;
-    }
-    
-    NSString *format = @"%@, %@ • %@ • %f • %li";
-    return [NSString stringWithFormat:format, beacon.major, beacon.minor, proximity, beacon.accuracy, beacon.rssi];
-}
-
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    UITableViewCell *cell = nil;
-    switch (indexPath.section) {
-        case NTOperationsSection: {
-            cell = [tableView dequeueReusableCellWithIdentifier:kOperationCellIdentifier];
-            switch (indexPath.row) {
-                case NTAdvertisingRow:
-                    cell.textLabel.text = kAdvertisingOperationTitle;
-                    self.advertisingSwitch = (UISwitch *)cell.accessoryView;
-                    [self.advertisingSwitch addTarget:self
-                                               action:@selector(changeAdvertisingState:)
-                                     forControlEvents:UIControlEventValueChanged];
-                    break;
-                case NTRangingRow:
-                default:
-                    cell.textLabel.text = kRangingOperationTitle;
-                    self.rangingSwitch = (UISwitch *)cell.accessoryView;
-                    [self.rangingSwitch addTarget:self
-                                           action:@selector(changeRangingState:)
-                                 forControlEvents:UIControlEventValueChanged];
-                    break;
-            }
-        }
-            break;
-        case NTDetectedBeaconsSection:
-        default: {
-            CLBeacon *beacon = self.detectedBeacons[indexPath.row];
-
-            cell = [tableView dequeueReusableCellWithIdentifier:kBeaconCellIdentifier];
-            
-            if (!cell)
-                cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle
-                                              reuseIdentifier:kBeaconCellIdentifier];
-            
-            cell.textLabel.text = beacon.proximityUUID.UUIDString;
-            cell.detailTextLabel.text = [self detailsStringForBeacon:beacon];
-            cell.detailTextLabel.textColor = [UIColor grayColor];
-        }
-            break;
-    }
-    
-    return cell;
-}
-
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
-{
-    if (self.rangingSwitch.on) {
-        return kNumberOfSections;       // All sections visible
-    } else {
-        return kNumberOfSections - 1;   // Beacons section not visible
-    }
-}
-
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
-{
-    switch (section) {
-        case NTOperationsSection:
-            return kNumberOfAvailableOperations;
-        case NTDetectedBeaconsSection:
-        default:
-            return self.detectedBeacons.count;
-    }
-}
-
-- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
-{
-    switch (section) {
-        case NTOperationsSection:
-            return nil;
-        case NTDetectedBeaconsSection:
-        default:
-            return kBeaconSectionTitle;
-    }
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    switch (indexPath.section) {
-        case NTOperationsSection:
-            return kOperationCellHeight;
-        case NTDetectedBeaconsSection:
-        default:
-            return kBeaconCellHeight;
-    }
-}
-
-- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
-{
-    UITableViewHeaderFooterView *headerView =
-        [[UITableViewHeaderFooterView alloc] initWithReuseIdentifier:kBeaconsHeaderViewIdentifier];
-    
-    // Adds an activity indicator view to the section header
-    UIActivityIndicatorView *indicatorView =
-        [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
-    [headerView addSubview:indicatorView];
-
-    indicatorView.frame = (CGRect){kActivityIndicatorPosition, indicatorView.frame.size};
-    
-    [indicatorView startAnimating];
-    
-    return headerView;
 }
 
 @end
