@@ -297,7 +297,7 @@ typedef NS_ENUM(NSUInteger, NTOperationsRow) {
     
     // Adds an activity indicator view to the section header
     UIActivityIndicatorView *indicatorView =
-    [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+        [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
     [headerView addSubview:indicatorView];
     
     indicatorView.frame = (CGRect){kActivityIndicatorPosition, indicatorView.frame.size};
@@ -315,6 +315,7 @@ typedef NS_ENUM(NSUInteger, NTOperationsRow) {
     
     NSUUID *proximityUUID = [[NSUUID alloc] initWithUUIDString:kUUID];
     self.beaconRegion = [[CLBeaconRegion alloc] initWithProximityUUID:proximityUUID identifier:kIdentifier];
+    self.beaconRegion.notifyEntryStateOnDisplay = YES;
 }
 
 - (void)createLocationManager
@@ -503,6 +504,8 @@ typedef NS_ENUM(NSUInteger, NTOperationsRow) {
 - (void)locationManager:(CLLocationManager *)manager didEnterRegion:(CLRegion *)region
 {
     NSLog(@"Entered region: %@", region);
+    
+    [self sendLocalNotificationForBeaconRegion:(CLBeaconRegion *)region];
 }
 
 - (void)locationManager:(CLLocationManager *)manager didExitRegion:(CLRegion *)region
@@ -525,6 +528,20 @@ typedef NS_ENUM(NSUInteger, NTOperationsRow) {
             break;
     }
     NSLog(@"State changed to %@ for region %@.", stateString, region);
+}
+
+#pragma mark - Local notifications
+- (void)sendLocalNotificationForBeaconRegion:(CLBeaconRegion *)region
+{
+    UILocalNotification *notification = [UILocalNotification new];
+    
+    // Notification details
+    notification.alertBody = [NSString stringWithFormat:@"Entered beacon region for UUID: %@",
+        region.proximityUUID.UUIDString];   // Major and minor are not available at the monitoring stage
+    notification.alertAction = NSLocalizedString(@"View Details", nil);
+    notification.soundName = UILocalNotificationDefaultSoundName;
+    
+    [[UIApplication sharedApplication] presentLocalNotificationNow:notification];
 }
 
 #pragma mark - Beacon advertising
