@@ -24,11 +24,11 @@
 //  THE SOFTWARE.
 //
 
-#import "NTHiBeaconsDelegate.h"
+#import "NATHiBeaconsDelegate.h"
 
 int main(int argc, char * argv[])
 {
     @autoreleasepool {
-        return UIApplicationMain(argc, argv, nil, NSStringFromClass([NTHiBeaconsDelegate class]));
+        return UIApplicationMain(argc, argv, nil, NSStringFromClass([NATHiBeaconsDelegate class]));
     }
 }

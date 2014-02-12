@@ -1,5 +1,5 @@
 //
-//  NTViewController.m
+//  NATViewController.m
 //  HiBeacons
 //
 //  Created by Nick Toumpelis on 2013-10-06.
@@ -24,7 +24,7 @@
 //  THE SOFTWARE.
 //
 
-#import "NTViewController.h"
+#import "NATViewController.h"
 
 static NSString * const kUUID = @"00000000-0000-0000-0000-000000000000";
 static NSString * const kIdentifier = @"SomeIdentifier";
@@ -57,7 +57,7 @@ typedef NS_ENUM(NSUInteger, NTOperationsRow) {
     NTRangingRow
 };
 
-@interface NTViewController ()
+@interface NATViewController ()
 
 @property (nonatomic, strong) CLLocationManager *locationManager;
 @property (nonatomic, strong) CLBeaconRegion *beaconRegion;
@@ -70,7 +70,7 @@ typedef NS_ENUM(NSUInteger, NTOperationsRow) {
 
 @end
 
-@implementation NTViewController
+@implementation NATViewController
 
 #pragma mark - Index path management
 - (NSArray *)indexPathsOfRemovedBeacons:(NSArray *)beacons

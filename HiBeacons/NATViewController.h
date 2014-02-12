@@ -1,5 +1,5 @@
 //
-//  NTAppDelegate.m
+//  NATViewController.h
 //  HiBeacons
 //
 //  Created by Nick Toumpelis on 2013-10-06.
@@ -24,33 +24,12 @@
 //  THE SOFTWARE.
 //
 
-#import "NTHiBeaconsDelegate.h"
+@import CoreLocation;
+@import CoreBluetooth;
 
-@implementation NTHiBeaconsDelegate
+@interface NATViewController : UIViewController <CLLocationManagerDelegate, CBPeripheralManagerDelegate,
+    UITableViewDataSource, UITableViewDelegate>
 
-- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
-{
-    return YES;
-}
-
-- (void)applicationWillResignActive:(UIApplication *)application
-{
-}
-
-- (void)applicationDidEnterBackground:(UIApplication *)application
-{
-}
-
-- (void)applicationWillEnterForeground:(UIApplication *)application
-{
-}
-
-- (void)applicationDidBecomeActive:(UIApplication *)application
-{
-}
-
-- (void)applicationWillTerminate:(UIApplication *)application
-{
-}
+@property (nonatomic, weak) IBOutlet UITableView *beaconTableView;
 
 @end
