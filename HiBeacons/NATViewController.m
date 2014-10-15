@@ -342,6 +342,8 @@ typedef NS_ENUM(NSUInteger, NTOperationsRow) {
     self.operationContext = kRangingOperationContext;
     
     [self createLocationManager];
+
+    [self checkLocationAccessForRanging];
     
     self.detectedBeacons = [NSArray array];
     [self turnOnRanging];
@@ -404,6 +406,8 @@ typedef NS_ENUM(NSUInteger, NTOperationsRow) {
     self.operationContext = kMonitoringOperationContext;
     
     [self createLocationManager];
+
+    [self checkLocationAccessForMonitoring];
     
     [self turnOnMonitoring];
 }
@@ -446,22 +450,36 @@ typedef NS_ENUM(NSUInteger, NTOperationsRow) {
         }
     }
     
-    if ([CLLocationManager authorizationStatus] != kCLAuthorizationStatusAuthorized) {
-        if (self.operationContext == kMonitoringOperationContext) {
-            NSLog(@"Couldn't turn on monitoring: Location services not authorised.");
-            self.monitoringSwitch.on = NO;
+    CLAuthorizationStatus authorizationStatus = [CLLocationManager authorizationStatus];
+    switch (authorizationStatus) {
+        case kCLAuthorizationStatusAuthorizedAlways:
+            if (self.operationContext == kMonitoringOperationContext) {
+                self.monitoringSwitch.on = YES;
+            } else {
+                self.rangingSwitch.on = YES;
+            }
             return;
-        } else {
-            NSLog(@"Couldn't turn on ranging: Location services not authorised.");
-            self.rangingSwitch.on = NO;
+
+        case kCLAuthorizationStatusAuthorizedWhenInUse:
+            if (self.operationContext == kMonitoringOperationContext) {
+                NSLog(@"Couldn't turn on monitoring: Required Location Access(Always) missing.");
+                self.monitoringSwitch.on = NO;
+            } else {
+                self.rangingSwitch.on = YES;
+            }
             return;
-        }
-    }
-    
-    if (self.operationContext == kMonitoringOperationContext) {
-        self.monitoringSwitch.on = YES;
-    } else {
-        self.rangingSwitch.on = YES;
+
+        default:
+            if (self.operationContext == kMonitoringOperationContext) {
+                NSLog(@"Couldn't turn on monitoring: Required Location Access(Always) missing.");
+                self.monitoringSwitch.on = NO;
+                return;
+            } else {
+                NSLog(@"Couldn't turn on monitoring: Required Location Access(WhenInUse) missing.");
+                self.rangingSwitch.on = NO;
+                return;
+            }
+            break;
     }
 }
 
@@ -619,6 +637,38 @@ typedef NS_ENUM(NSUInteger, NTOperationsRow) {
 
     NSLog(@"Peripheral manager is on.");
     [self turnOnAdvertising];
+}
+
+#pragma mark - Location access methods (iOS8/Xcode6)
+- (void)checkLocationAccessForRanging {
+    if ([self.locationManager respondsToSelector:@selector(requestWhenInUseAuthorization)]) {
+        [self.locationManager requestWhenInUseAuthorization];
+    }
+}
+
+- (void)checkLocationAccessForMonitoring {
+    if ([self.locationManager respondsToSelector:@selector(requestAlwaysAuthorization)]) {
+        CLAuthorizationStatus authorizationStatus = [CLLocationManager authorizationStatus];
+        if (authorizationStatus == kCLAuthorizationStatusDenied ||
+            authorizationStatus == kCLAuthorizationStatusAuthorizedWhenInUse) {
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Location Access Missing"
+                                                            message:@"Required Location Access(Always) missing. Click Settings to update Location Access."
+                                                           delegate:self
+                                                  cancelButtonTitle:@"Settings"
+                                                  otherButtonTitles:@"Cancel", nil];
+            [alert show];
+            self.monitoringSwitch.on = NO;
+            return;
+        }
+        [self.locationManager requestAlwaysAuthorization];
+    }
+}
+
+#pragma mark - Alert view delegate methods
+- (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex {
+    if (buttonIndex == 0) {
+        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:UIApplicationOpenSettingsURLString]];
+    }
 }
 
 @end

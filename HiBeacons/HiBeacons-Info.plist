@@ -31,6 +31,12 @@
 	</array>
 	<key>UIMainStoryboardFile</key>
 	<string>Main</string>
+	<key>NSLocationUsageDescription</key>
+	<string>Required for Monitoring and Ranging.</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>Required for Monitoring.</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Required for Ranging.</string>
 	<key>UIRequiredDeviceCapabilities</key>
 	<array>
 		<string>armv7</string>
