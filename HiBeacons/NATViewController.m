@@ -67,6 +67,8 @@ typedef NS_ENUM(NSUInteger, NTOperationsRow) {
 {
     self.contentView.translatesAutoresizingMaskIntoConstraints = NO;
 
+    // The constraints seem to be cleared upon dequeueing, so we don't really need to remove them again here.
+
     NSLayoutConstraint *rightMarginConstraint = [NSLayoutConstraint constraintWithItem:self.accessoryView
                                                                              attribute:NSLayoutAttributeRight
                                                                              relatedBy:NSLayoutRelationEqual

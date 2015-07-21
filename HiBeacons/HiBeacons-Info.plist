@@ -25,11 +25,11 @@
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSLocationAlwaysUsageDescription</key>
-	<string>Required for Monitoring.</string>
+	<string>This is required for monitoring.</string>
 	<key>NSLocationUsageDescription</key>
-	<string>Required for Monitoring and Ranging.</string>
+	<string>This is required for monitoring and ranging.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>Required for Ranging.</string>
+	<string>This is required for ranging.</string>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>bluetooth-peripheral</string>
