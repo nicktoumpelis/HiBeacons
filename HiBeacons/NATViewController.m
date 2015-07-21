@@ -57,6 +57,38 @@ typedef NS_ENUM(NSUInteger, NTOperationsRow) {
     NTRangingRow
 };
 
+@interface NATOperationCell : UITableViewCell
+
+@end
+
+@implementation NATOperationCell
+
+- (void)updateConstraints
+{
+    [self.accessoryView removeConstraints:[self.accessoryView constraints]];
+
+    NSLayoutConstraint *rightMarginConstraint = [NSLayoutConstraint constraintWithItem:self.accessoryView
+                                                                             attribute:NSLayoutAttributeLeft
+                                                                             relatedBy:NSLayoutRelationEqual
+                                                                                toItem:self.contentView
+                                                                             attribute:NSLayoutAttributeRight
+                                                                            multiplier:1.0
+                                                                              constant:0];
+    
+    NSLayoutConstraint *topMarginConstraint = [NSLayoutConstraint constraintWithItem:self.accessoryView
+                                                                           attribute:NSLayoutAttributeTop
+                                                                           relatedBy:NSLayoutRelationEqual
+                                                                              toItem:self
+                                                                           attribute:NSLayoutAttributeTop
+                                                                          multiplier:1.0
+                                                                            constant:7];
+    [self addConstraints:@[rightMarginConstraint, topMarginConstraint]];
+    
+    [super updateConstraints];
+}
+
+@end
+
 @interface NATViewController ()
 
 @property (nonatomic, strong) CLLocationManager *locationManager;
@@ -244,6 +276,8 @@ typedef NS_ENUM(NSUInteger, NTOperationsRow) {
         }
             break;
     }
+
+    [cell updateConstraintsIfNeeded];
     
     return cell;
 }
