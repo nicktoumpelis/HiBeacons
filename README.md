@@ -1,8 +1,10 @@
 HiBeacons
 =========
-**A demo app for the iBeacons API in iOS 7**
+***Swift conversion: In progress***
 
-HiBeacons is a fully functional demo app for the new iBeacons API in iOS 7. The app can be used to demonstrate beacon monitoring, advertising and ranging, by toggling on/off three switches. After changing the proximity UUID in the source you can easily see any beacons in the vicinity, with all their info, under the 'Detected Beacons' section.
+**A demo app for the iBeacons API in iOS 8**
+
+HiBeacons is a fully functional demo app for the new iBeacons API in iOS 8. The app can be used to demonstrate beacon monitoring, advertising and ranging, by toggling on/off three switches. After changing the proximity UUID in the source you can easily see any beacons in the vicinity, with all their info, under the 'Detected Beacons' section.
 
 ## Screenshot
 ![Screenshot](https://raw.github.com/nicktoumpelis/HiBeacons/master/screenshot.png)
