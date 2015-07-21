@@ -25,3 +25,16 @@
 //
 
 import Foundation
+import UIKit
+
+class NATHiBeaconsDelegate: UIResponder, UIApplicationDelegate {
+
+    var window: UIWindow?
+    
+    override init() { }
+
+    func application(application: UIApplication, willFinishLaunchingWithOptions launchOptions: [NSObject : AnyObject]?) -> Bool
+    {
+        return true
+    }
+}
