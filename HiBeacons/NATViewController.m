@@ -67,15 +67,13 @@ typedef NS_ENUM(NSUInteger, NTOperationsRow) {
 {
     self.contentView.translatesAutoresizingMaskIntoConstraints = NO;
 
-    [self.accessoryView removeConstraints:[self.accessoryView constraints]];
-
     NSLayoutConstraint *rightMarginConstraint = [NSLayoutConstraint constraintWithItem:self.accessoryView
                                                                              attribute:NSLayoutAttributeRight
                                                                              relatedBy:NSLayoutRelationEqual
                                                                                 toItem:self
                                                                              attribute:NSLayoutAttributeRight
                                                                             multiplier:1.0
-                                                                              constant:-60];
+                                                                              constant:-14];
     
     NSLayoutConstraint *topMarginConstraint = [NSLayoutConstraint constraintWithItem:self.accessoryView
                                                                            attribute:NSLayoutAttributeTop
