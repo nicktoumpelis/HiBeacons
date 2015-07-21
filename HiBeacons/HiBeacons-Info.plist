@@ -24,19 +24,21 @@
 	<string>1.0</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>Required for Monitoring.</string>
+	<key>NSLocationUsageDescription</key>
+	<string>Required for Monitoring and Ranging.</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Required for Ranging.</string>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>bluetooth-peripheral</string>
 		<string>location</string>
 	</array>
+	<key>UILaunchStoryboardName</key>
+	<string>Launch Screen</string>
 	<key>UIMainStoryboardFile</key>
 	<string>Main</string>
-	<key>NSLocationUsageDescription</key>
-	<string>Required for Monitoring and Ranging.</string>
-	<key>NSLocationAlwaysUsageDescription</key>
-	<string>Required for Monitoring.</string>
-	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>Required for Ranging.</string>
 	<key>UIRequiredDeviceCapabilities</key>
 	<array>
 		<string>armv7</string>
