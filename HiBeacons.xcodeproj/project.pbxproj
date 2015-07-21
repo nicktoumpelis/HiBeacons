@@ -11,8 +11,6 @@
 		CF2BC92518019D6100C66D15 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF2BC92418019D6100C66D15 /* CoreGraphics.framework */; };
 		CF2BC92718019D6100C66D15 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF2BC92618019D6100C66D15 /* UIKit.framework */; };
 		CF2BC92D18019D6100C66D15 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = CF2BC92B18019D6100C66D15 /* InfoPlist.strings */; };
-		CF2BC92F18019D6100C66D15 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = CF2BC92E18019D6100C66D15 /* main.m */; };
-		CF2BC93318019D6100C66D15 /* NATHiBeaconsDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = CF2BC93218019D6100C66D15 /* NATHiBeaconsDelegate.m */; };
 		CF2BC93518019D6100C66D15 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CF2BC93418019D6100C66D15 /* Images.xcassets */; };
 		CF2BC93C18019D6100C66D15 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF2BC93B18019D6100C66D15 /* XCTest.framework */; };
 		CF2BC93D18019D6100C66D15 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF2BC92218019D6100C66D15 /* Foundation.framework */; };
@@ -44,10 +42,7 @@
 		CF2BC92618019D6100C66D15 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		CF2BC92A18019D6100C66D15 /* HiBeacons-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "HiBeacons-Info.plist"; sourceTree = "<group>"; };
 		CF2BC92C18019D6100C66D15 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		CF2BC92E18019D6100C66D15 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		CF2BC93018019D6100C66D15 /* HiBeacons-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "HiBeacons-Prefix.pch"; sourceTree = "<group>"; };
-		CF2BC93118019D6100C66D15 /* NATHiBeaconsDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NATHiBeaconsDelegate.h; sourceTree = "<group>"; };
-		CF2BC93218019D6100C66D15 /* NATHiBeaconsDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NATHiBeaconsDelegate.m; sourceTree = "<group>"; };
 		CF2BC93418019D6100C66D15 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		CF2BC93A18019D6100C66D15 /* HiBeaconsTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = HiBeaconsTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		CF2BC93B18019D6100C66D15 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
@@ -125,8 +120,6 @@
 		CF2BC92818019D6100C66D15 /* HiBeacons */ = {
 			isa = PBXGroup;
 			children = (
-				CF2BC93118019D6100C66D15 /* NATHiBeaconsDelegate.h */,
-				CF2BC93218019D6100C66D15 /* NATHiBeaconsDelegate.m */,
 				CF96E4C61B5ED80E00285986 /* NATHiBeaconsDelegate.swift */,
 				CF2BC9511801A09D00C66D15 /* Main.storyboard */,
 				CF2BC9531801A0C700C66D15 /* NATViewController.h */,
@@ -143,7 +136,6 @@
 			children = (
 				CF2BC92A18019D6100C66D15 /* HiBeacons-Info.plist */,
 				CF2BC92B18019D6100C66D15 /* InfoPlist.strings */,
-				CF2BC92E18019D6100C66D15 /* main.m */,
 				CF2BC93018019D6100C66D15 /* HiBeacons-Prefix.pch */,
 				CF96E4C81B5EDA2700285986 /* HiBeacons-Bridging-Header.h */,
 			);
@@ -286,8 +278,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CF2BC93318019D6100C66D15 /* NATHiBeaconsDelegate.m in Sources */,
-				CF2BC92F18019D6100C66D15 /* main.m in Sources */,
 				CF2BC9551801A0C700C66D15 /* NATViewController.m in Sources */,
 				CF96E4C71B5ED80E00285986 /* NATHiBeaconsDelegate.swift in Sources */,
 			);

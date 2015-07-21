@@ -27,7 +27,7 @@
 import Foundation
 import UIKit
 
-class NATHiBeaconsDelegate: UIResponder, UIApplicationDelegate {
+@UIApplicationMain class NATHiBeaconsDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
     
