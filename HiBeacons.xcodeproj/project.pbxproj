@@ -21,8 +21,9 @@
 		CF2BC9551801A0C700C66D15 /* NATViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CF2BC9541801A0C700C66D15 /* NATViewController.m */; };
 		CF2BC9571801A34900C66D15 /* CoreBluetooth.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF2BC9561801A34900C66D15 /* CoreBluetooth.framework */; };
 		CF2BC9591801A35E00C66D15 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF2BC9581801A35E00C66D15 /* CoreLocation.framework */; };
-		CF96E4CB1B5EE7F800285986 /* Launch Screen.xib in Resources */ = {isa = PBXBuildFile; fileRef = CF96E4CA1B5EE7F800285986 /* Launch Screen.xib */; };
 		CF96E4C71B5ED80E00285986 /* NATHiBeaconsDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF96E4C61B5ED80E00285986 /* NATHiBeaconsDelegate.swift */; };
+		CF96E4CB1B5EE7F800285986 /* Launch Screen.xib in Resources */ = {isa = PBXBuildFile; fileRef = CF96E4CA1B5EE7F800285986 /* Launch Screen.xib */; };
+		CF96E4CD1B5F152700285986 /* NATViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF96E4CC1B5F152700285986 /* NATViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -54,9 +55,10 @@
 		CF2BC9541801A0C700C66D15 /* NATViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NATViewController.m; sourceTree = "<group>"; };
 		CF2BC9561801A34900C66D15 /* CoreBluetooth.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreBluetooth.framework; path = System/Library/Frameworks/CoreBluetooth.framework; sourceTree = SDKROOT; };
 		CF2BC9581801A35E00C66D15 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
-		CF96E4CA1B5EE7F800285986 /* Launch Screen.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "Launch Screen.xib"; sourceTree = "<group>"; };
 		CF96E4C61B5ED80E00285986 /* NATHiBeaconsDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NATHiBeaconsDelegate.swift; sourceTree = "<group>"; };
 		CF96E4C81B5EDA2700285986 /* HiBeacons-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "HiBeacons-Bridging-Header.h"; sourceTree = "<group>"; };
+		CF96E4CA1B5EE7F800285986 /* Launch Screen.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "Launch Screen.xib"; sourceTree = "<group>"; };
+		CF96E4CC1B5F152700285986 /* NATViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NATViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -124,6 +126,7 @@
 				CF2BC9511801A09D00C66D15 /* Main.storyboard */,
 				CF2BC9531801A0C700C66D15 /* NATViewController.h */,
 				CF2BC9541801A0C700C66D15 /* NATViewController.m */,
+				CF96E4CC1B5F152700285986 /* NATViewController.swift */,
 				CF2BC93418019D6100C66D15 /* Images.xcassets */,
 				CF96E4C91B5EE7DB00285986 /* Resources */,
 				CF2BC92918019D6100C66D15 /* Supporting Files */,
@@ -163,7 +166,6 @@
 		CF96E4C91B5EE7DB00285986 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				CF2BC9511801A09D00C66D15 /* Main.storyboard */,
 				CF96E4CA1B5EE7F800285986 /* Launch Screen.xib */,
 			);
 			name = Resources;
@@ -279,6 +281,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				CF2BC9551801A0C700C66D15 /* NATViewController.m in Sources */,
+				CF96E4CD1B5F152700285986 /* NATViewController.swift in Sources */,
 				CF96E4C71B5ED80E00285986 /* NATHiBeaconsDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
