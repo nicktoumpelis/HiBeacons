@@ -18,7 +18,6 @@
 		CF2BC94618019D6100C66D15 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = CF2BC94418019D6100C66D15 /* InfoPlist.strings */; };
 		CF2BC94818019D6100C66D15 /* NATHiBeaconsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = CF2BC94718019D6100C66D15 /* NATHiBeaconsTests.m */; };
 		CF2BC9521801A09D00C66D15 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CF2BC9511801A09D00C66D15 /* Main.storyboard */; };
-		CF2BC9551801A0C700C66D15 /* NATViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CF2BC9541801A0C700C66D15 /* NATViewController.m */; };
 		CF2BC9571801A34900C66D15 /* CoreBluetooth.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF2BC9561801A34900C66D15 /* CoreBluetooth.framework */; };
 		CF2BC9591801A35E00C66D15 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF2BC9581801A35E00C66D15 /* CoreLocation.framework */; };
 		CF96E4C71B5ED80E00285986 /* NATHiBeaconsDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF96E4C61B5ED80E00285986 /* NATHiBeaconsDelegate.swift */; };
@@ -51,8 +50,6 @@
 		CF2BC94518019D6100C66D15 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		CF2BC94718019D6100C66D15 /* NATHiBeaconsTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NATHiBeaconsTests.m; sourceTree = "<group>"; };
 		CF2BC9511801A09D00C66D15 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
-		CF2BC9531801A0C700C66D15 /* NATViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NATViewController.h; sourceTree = "<group>"; };
-		CF2BC9541801A0C700C66D15 /* NATViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NATViewController.m; sourceTree = "<group>"; };
 		CF2BC9561801A34900C66D15 /* CoreBluetooth.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreBluetooth.framework; path = System/Library/Frameworks/CoreBluetooth.framework; sourceTree = SDKROOT; };
 		CF2BC9581801A35E00C66D15 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		CF96E4C61B5ED80E00285986 /* NATHiBeaconsDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NATHiBeaconsDelegate.swift; sourceTree = "<group>"; };
@@ -124,8 +121,6 @@
 			children = (
 				CF96E4C61B5ED80E00285986 /* NATHiBeaconsDelegate.swift */,
 				CF2BC9511801A09D00C66D15 /* Main.storyboard */,
-				CF2BC9531801A0C700C66D15 /* NATViewController.h */,
-				CF2BC9541801A0C700C66D15 /* NATViewController.m */,
 				CF96E4CC1B5F152700285986 /* NATViewController.swift */,
 				CF2BC93418019D6100C66D15 /* Images.xcassets */,
 				CF96E4C91B5EE7DB00285986 /* Resources */,
@@ -280,7 +275,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CF2BC9551801A0C700C66D15 /* NATViewController.m in Sources */,
 				CF96E4CD1B5F152700285986 /* NATViewController.swift in Sources */,
 				CF96E4C71B5ED80E00285986 /* NATHiBeaconsDelegate.swift in Sources */,
 			);
