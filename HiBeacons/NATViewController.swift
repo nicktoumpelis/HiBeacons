@@ -29,7 +29,7 @@ import UIKit
 import CoreLocation
 import CoreBluetooth
 
-class NATViewController: UIViewController
+class NATViewController: UIViewController, CLLocationManagerDelegate
 {
     // Outlets
     @IBOutlet weak var beaconTableView: UITableView?
@@ -49,7 +49,6 @@ class NATViewController: UIViewController
     let kBeaconSectionTitle = "Looking for beacons..."
     let kActivityIndicatorPosition = CGPoint(x: 205, y: 12)
     let kBeaconsHeaderViewIdentifier = "BeaconsHeader"
-
     let kMonitoringOperationContext = "MonitoringOperationContext"
     let kRangingOperationContext = "RangingOperationContext"
 
@@ -64,21 +63,20 @@ class NATViewController: UIViewController
         case Ranging
     }
 
-    lazy var locationManager: CLLocationManager = CLLocationManager()
+    var monitoringOperation: NATMonitoring = NATMonitoring()
+    var rangingOperation: NATRanging = NATRanging()
+    var advertisingOperation: NATAdvertising = NATAdvertising()
 
-    let beaconRegion: CLBeaconRegion = {
-        let region = CLBeaconRegion(proximityUUID: NSUUID(UUIDString: "416C0120-5960-4280-A67C-A2A9BB166D0F"), identifier: "Identifier")
-        region.notifyEntryStateOnDisplay = true
-        return region
-    }()
-
-    var peripheralManager: CBPeripheralManager?
     var detectedBeacons: Array<CLBeacon> = []
+    
     var monitoringSwitch, advertisingSwitch, rangingSwitch: UISwitch?
-    var operationContext: String = ""
 
-    func activateLocationManagerNotifications() {
-        locationManager.delegate = self
+    required init(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+
+        monitoringOperation.delegate = self
+        rangingOperation.delegate = self
+        advertisingOperation.delegate = self
     }
 }
 
@@ -290,54 +288,104 @@ extension NATViewController: UITableViewDataSource, UITableViewDelegate
     }
 }
 
-// MARK: - Beacon ranging
+// MARK: - Operation methods
 extension NATViewController
 {
     func changeRangingState(theSwitch: UISwitch) {
         if theSwitch.on {
-            startRangingForBeacons()
+            rangingOperation.startRangingForBeacons()
         } else {
-            stopRangingForBeacons()
+            rangingOperation.stopRangingForBeacons()
+        }
+    }
+    
+    func changeMonitoringState(theSwitch: UISwitch) {
+        if theSwitch.on {
+            monitoringOperation.startMonitoringForBeacons()
+        } else {
+            monitoringOperation.stopMonitoringForBeacons()
         }
     }
 
-    func startRangingForBeacons() {
-        operationContext = kRangingOperationContext
+    func changeAdvertisingState(theSwitch: UISwitch) {
+        if theSwitch.on {
+            advertisingOperation.startAdvertisingBeacon()
+        } else {
+            advertisingOperation.stopAdvertisingBeacon()
+        }
+    }
+}
 
-        activateLocationManagerNotifications()
-        checkLocationAccessForRanging()
+// MARK: - Monitoring delegate methods and helpers
+extension NATViewController: NATMonitoringDelegate, UIAlertViewDelegate
+{
+    func monitoringOperationDidStartSuccessfully() {
+        monitoringSwitch?.on = true
+    }
+    
+    func monitoringOperationDidFailToStart() {
+        monitoringSwitch?.on = false
+    }
 
+    func monitoringOperationDidFailToStartDueToAuthorization() {
+        let title = "Missing Location Access"
+        let message = "Location Access (Always) is required. Click Settings to update the location access settings."
+        let cancelButtonTitle = "Cancel"
+        let settingsButtonTitle = "Settings"
+        let alert = UIAlertView(title: title, message: message, delegate: self, cancelButtonTitle: cancelButtonTitle, otherButtonTitles: settingsButtonTitle)
+        alert.show()
+        monitoringSwitch?.on = false
+    }
+
+    func monitoringOperationDidStopSuccessfully() {
+
+    }
+
+    func monitoringOperationDidDetectEnteringRegion(region: CLBeaconRegion) {
+        sendLocalNotificationForBeaconRegion(region)
+    }
+
+    func sendLocalNotificationForBeaconRegion(region: CLBeaconRegion) {
+        let notification: UILocalNotification = UILocalNotification()
+
+        // Major and minor are not available at the monitoring stage
+        notification.alertBody = "Entered beacon region for UUID: " + region.proximityUUID.UUIDString
+        notification.alertAction = "View Details"
+        notification.soundName = UILocalNotificationDefaultSoundName
+
+        UIApplication.sharedApplication().presentLocalNotificationNow(notification)
+    }
+
+    func alertView(alertView: UIAlertView, didDismissWithButtonIndex buttonIndex: Int) {
+        if buttonIndex == 1 {
+            UIApplication.sharedApplication().openURL(NSURL(string: UIApplicationOpenSettingsURLString)!)
+        }
+    }
+}
+
+// MARK: - Ranging delegate methods
+extension NATViewController: NATRangingDelegate
+{
+    func rangingOperationDidStartSuccessfully() {
         detectedBeacons = []
-        turnOnRanging()
+        rangingSwitch?.on = true
     }
 
-    func turnOnRanging() {
-        NSLog("Turing on ranging...")
-
-        if !CLLocationManager.isRangingAvailable() {
-            NSLog("Couldn't turn on ranging: Ranging is not available.")
-            rangingSwitch?.on = false
-            return
-        }
-
-        if locationManager.rangedRegions.count > 0 {
-            NSLog("Didn't turn on ranging: Ranging already on.")
-            return
-        }
-
-        locationManager.startRangingBeaconsInRegion(beaconRegion)
-
-        NSLog("Ranging turned on for region: \(beaconRegion)")
+    func rangingOperationDidFailToStart() {
+        rangingSwitch?.on = false
     }
 
-    func stopRangingForBeacons() {
-        if locationManager.rangedRegions.count == 0 {
-            NSLog("Didn't turn off ranging: Ranging already off.")
-            return
-        }
+    func rangingOperationDidFailToStartDueToAuthorization() {
+        let title = "Missing Location Access"
+        let message = "Location Access (When In Use) is required. Click Settings to update the location access settings."
+        let cancelButtonTitle = "Cancel"
+        let settingsButtonTitle = "Settings"
+        let alert = UIAlertView(title: title, message: message, delegate: self, cancelButtonTitle: cancelButtonTitle, otherButtonTitles: settingsButtonTitle)
+        alert.show()
+        rangingSwitch?.on = false
+    }
 
-        locationManager.stopRangingBeaconsInRegion(beaconRegion)
-
+    func rangingOperationDidStopSuccessfully() {
         var deletedSections = self.deletedSections()
         detectedBeacons = []
 
@@ -346,96 +394,9 @@ extension NATViewController
             beaconTableView?.deleteSections(deletedSections!, withRowAnimation: UITableViewRowAnimation.Fade)
         }
         beaconTableView?.endUpdates()
-
-        NSLog("Turned off ranging.")
-    }
-}
-
-// MARK: - Beacon region monitoring
-extension NATViewController
-{
-    func changeMonitoringState(theSwitch: UISwitch) {
-        if theSwitch.on {
-            startMonitoringForBeacons()
-        } else {
-            stopMonitoringForBeacons()
-        }
     }
 
-    func startMonitoringForBeacons() {
-        operationContext = kMonitoringOperationContext
-
-        activateLocationManagerNotifications()
-        checkLocationAccessForMonitoring()
-
-        turnOnMonitoring()
-    }
-
-    func turnOnMonitoring() {
-        NSLog("Turning on monitoring...")
-
-        if CLLocationManager.isMonitoringAvailableForClass(CLBeaconRegion.Type) {
-            NSLog("Couldn't turn on region monitoring: Region monitoring is not available for CLBeaconRegion class.")
-            monitoringSwitch?.on = false
-            return
-        }
-
-        locationManager.startMonitoringForRegion(beaconRegion)
-
-        NSLog("Monitoring turned on for region: \(beaconRegion)")
-    }
-
-    func stopMonitoringForBeacons() {
-        locationManager.stopMonitoringForRegion(beaconRegion)
-        NSLog("Turned off monitoring")
-    }
-}
-
-// MARK: - CLLocationManagerDelegate methods
-extension NATViewController: CLLocationManagerDelegate
-{
-    func locationManager(manager: CLLocationManager!, didChangeAuthorizationStatus status: CLAuthorizationStatus) {
-        if !CLLocationManager.locationServicesEnabled() {
-            if operationContext == kMonitoringOperationContext {
-                NSLog("Couldn't turn on monitoring: Location services are not enabled.")
-                monitoringSwitch?.on = false
-            } else {
-                NSLog("Couldn't turn on ranging: Location services are not enabled.")
-                rangingSwitch?.on = false
-            }
-            return
-        }
-
-        switch CLLocationManager.authorizationStatus() {
-        case CLAuthorizationStatus.AuthorizedAlways:
-            NSLog("Location Access (Always) granted!")
-            if operationContext == kMonitoringOperationContext {
-                monitoringSwitch?.on = true
-            } else {
-                rangingSwitch?.on = true
-            }
-
-        case CLAuthorizationStatus.AuthorizedWhenInUse:
-            if operationContext == kMonitoringOperationContext {
-                NSLog("Couldn't turn on monitoring: Required Location Access (Always) missing.")
-                monitoringSwitch?.on = false
-            } else {
-                NSLog("Location Access (When In Use) granted!")
-                rangingSwitch?.on = true
-            }
-
-        case CLAuthorizationStatus.Denied, CLAuthorizationStatus.Restricted, CLAuthorizationStatus.NotDetermined:
-            if operationContext == kMonitoringOperationContext {
-                NSLog("Couldn't turn on monitoring: Required Location Access (Always) missing.")
-                monitoringSwitch?.on = false
-            } else {
-                NSLog("Couldn't turn on monitoring: Required Location Access (When In Use) missing.")
-                rangingSwitch?.on = false
-            }
-        }
-    }
-
-    func locationManager(manager: CLLocationManager!, didRangeBeacons beacons: [AnyObject]!, inRegion region: CLBeaconRegion!) {
+    func rangingOperationDidRangeBeacons(beacons: [AnyObject]!, inRegion region: CLBeaconRegion!) {
         let filteredBeacons: Array<CLBeacon> = self.filteredBeacons(beacons as! Array<CLBeacon>)
 
         if filteredBeacons.count == 0 {
@@ -478,149 +439,20 @@ extension NATViewController: CLLocationManagerDelegate
         }
         beaconTableView?.endUpdates()
     }
-
-    func locationManager(manager: CLLocationManager!, didEnterRegion region: CLRegion!) {
-        NSLog("Entered region: \(region)")
-
-        sendLocalNotificationForBeaconRegion(region as! CLBeaconRegion)
-    }
-
-    func locationManager(manager: CLLocationManager!, didExitRegion region: CLRegion!) {
-        NSLog("Exited region: \(region)")
-    }
-
-    func locationManager(manager: CLLocationManager!, didDetermineState state: CLRegionState, forRegion region: CLRegion!) {
-        var stateString: String
-
-        switch state {
-        case .Inside:
-            stateString = "inside"
-        case .Outside:
-            stateString = "outside"
-        case .Unknown:
-            stateString = "unknown"
-        }
-
-        NSLog("State changed to " + stateString + " for region \(region).")
-    }
 }
 
-// MARK: - Local notifications
-extension NATViewController
+// MARK: - Advertising delegate methods
+extension NATViewController: NATAdvertisingDelegate
 {
-    func sendLocalNotificationForBeaconRegion(region: CLBeaconRegion) {
-        let notification: UILocalNotification = UILocalNotification()
-
-        // Major and minor are not available at the monitoring stage
-        notification.alertBody = "Entered beacon region for UUID: " + region.proximityUUID.UUIDString
-        notification.alertAction = "View Details"
-        notification.soundName = UILocalNotificationDefaultSoundName
-
-        UIApplication.sharedApplication().presentLocalNotificationNow(notification)
-    }
-}
-
-// MARK: - Beacon advertising and CBPeripheralManagerDelegate methods
-extension NATViewController: CBPeripheralManagerDelegate
-{
-    func changeAdvertisingState(theSwitch: UISwitch) {
-        if theSwitch.on {
-            startAdvertisingBeacon()
-        } else {
-            stopAdvertisingBeacon()
-        }
+    func advertisingOperationDidStartSuccessfully() {
+        advertisingSwitch?.on = true
     }
 
-    func startAdvertisingBeacon() {
-        NSLog("Turning on advertising...")
-
-        if peripheralManager == nil {
-            peripheralManager = CBPeripheralManager(delegate: self, queue: nil, options: nil)
-        }
-
-        turnOnAdvertising()
+    func advertisingOperationDidFailToStart() {
+        advertisingSwitch?.on = false
     }
 
-    func turnOnAdvertising() {
-        if peripheralManager?.state != CBPeripheralManagerState.PoweredOn {
-            NSLog("Peripheral manager is off.")
-            advertisingSwitch?.on = false
-            return
-        }
-
-        let major: CLBeaconMajorValue = CLBeaconMajorValue(arc4random_uniform(5000))
-        let minor: CLBeaconMinorValue = CLBeaconMajorValue(arc4random_uniform(5000))
-        var region: CLBeaconRegion = CLBeaconRegion(proximityUUID: beaconRegion.proximityUUID, major: major, minor: minor, identifier: beaconRegion.identifier)
-        var beaconPeripheralData: NSMutableDictionary = region.peripheralDataWithMeasuredPower(nil)
-
-        peripheralManager?.startAdvertising(beaconPeripheralData as [NSObject : AnyObject])
-
-        NSLog("Turning on advertising for region: \(region).")
-    }
-
-    func stopAdvertisingBeacon() {
-        peripheralManager?.stopAdvertising()
-
-        NSLog("Turned off advertising.")
-    }
-
-    func peripheralManagerDidStartAdvertising(peripheral: CBPeripheralManager!, error: NSError!) {
-        if error != nil {
-            NSLog("Couldn't turn on advertising: \(error)")
-            advertisingSwitch?.on = false
-        }
-
-        if peripheralManager!.isAdvertising {
-            NSLog("Turned on advertising.")
-            advertisingSwitch?.on = true
-        }
-    }
-
-    func peripheralManagerDidUpdateState(peripheral: CBPeripheralManager!) {
-        if peripheralManager?.state != CBPeripheralManagerState.PoweredOn {
-            NSLog("Peripheral manager is off.")
-            advertisingSwitch?.on = false
-            return
-        }
-
-        NSLog("Peripheral manager is on.")
-        turnOnAdvertising()
-    }
-}
-
-// MARK: - Location access methods (iOS 8 / Xcode 6)
-extension NATViewController
-{
-    func checkLocationAccessForRanging() {
-        if locationManager.respondsToSelector("requestWhenInUseAuthorization") == true {
-            locationManager.requestWhenInUseAuthorization()
-        }
-    }
-
-    func checkLocationAccessForMonitoring() {
-        if locationManager.respondsToSelector("requestAlwaysAuthorization") == true {
-            let authorizationStatus = CLLocationManager.authorizationStatus()
-            if authorizationStatus == .Denied || authorizationStatus == .AuthorizedWhenInUse {
-                let title = "Missing Location Access"
-                let message = "Location Access (Always) is required. Click Settings to update the location access settings."
-                let cancelButtonTitle = "Cancel"
-                let settingsButtonTitle = "Settings"
-                let alert = UIAlertView(title: title, message: message, delegate: self, cancelButtonTitle: cancelButtonTitle, otherButtonTitles: settingsButtonTitle)
-                alert.show()
-                monitoringSwitch?.on = false
-                return
-            }
-
-            locationManager.requestAlwaysAuthorization()
-        }
-    }
-}
-
-extension NATViewController: UIAlertViewDelegate
-{
-    func alertView(alertView: UIAlertView, didDismissWithButtonIndex buttonIndex: Int) {
-        if buttonIndex == 1 {
-            UIApplication.sharedApplication().openURL(NSURL(string: UIApplicationOpenSettingsURLString)!)
-        }
+    func advertisingOperationDidStopSuccessfully() {
+        
     }
 }

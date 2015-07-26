@@ -14,6 +14,10 @@
 		CF96E4CB1B5EE7F800285986 /* Launch Screen.xib in Resources */ = {isa = PBXBuildFile; fileRef = CF96E4CA1B5EE7F800285986 /* Launch Screen.xib */; };
 		CF96E4CD1B5F152700285986 /* NATViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF96E4CC1B5F152700285986 /* NATViewController.swift */; };
 		CFE8B47E1B6538EC008CB9A4 /* NATOperationCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFE8B47D1B6538EC008CB9A4 /* NATOperationCell.swift */; };
+		CFE8B4801B655D6B008CB9A4 /* NATOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFE8B47F1B655D6B008CB9A4 /* NATOperation.swift */; };
+		CFE8B4821B655DB6008CB9A4 /* NATMonitoring.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFE8B4811B655DB6008CB9A4 /* NATMonitoring.swift */; };
+		CFE8B4841B655E1A008CB9A4 /* NATRanging.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFE8B4831B655E1A008CB9A4 /* NATRanging.swift */; };
+		CFE8B4861B655E4E008CB9A4 /* NATAdvertising.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFE8B4851B655E4E008CB9A4 /* NATAdvertising.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -26,6 +30,10 @@
 		CF96E4CA1B5EE7F800285986 /* Launch Screen.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "Launch Screen.xib"; sourceTree = "<group>"; };
 		CF96E4CC1B5F152700285986 /* NATViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NATViewController.swift; sourceTree = "<group>"; };
 		CFE8B47D1B6538EC008CB9A4 /* NATOperationCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NATOperationCell.swift; sourceTree = "<group>"; };
+		CFE8B47F1B655D6B008CB9A4 /* NATOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NATOperation.swift; sourceTree = "<group>"; };
+		CFE8B4811B655DB6008CB9A4 /* NATMonitoring.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NATMonitoring.swift; sourceTree = "<group>"; };
+		CFE8B4831B655E1A008CB9A4 /* NATRanging.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NATRanging.swift; sourceTree = "<group>"; };
+		CFE8B4851B655E4E008CB9A4 /* NATAdvertising.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NATAdvertising.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -69,6 +77,7 @@
 				CF96E4C61B5ED80E00285986 /* NATHiBeaconsDelegate.swift */,
 				CF96E4CC1B5F152700285986 /* NATViewController.swift */,
 				CFE8B47D1B6538EC008CB9A4 /* NATOperationCell.swift */,
+				CFE8B4871B65AD35008CB9A4 /* NATOperation Hierarchy */,
 				CF96E4C91B5EE7DB00285986 /* Resources */,
 				CF2BC92918019D6100C66D15 /* Supporting Files */,
 			);
@@ -92,6 +101,17 @@
 				CF96E4CA1B5EE7F800285986 /* Launch Screen.xib */,
 			);
 			name = Resources;
+			sourceTree = "<group>";
+		};
+		CFE8B4871B65AD35008CB9A4 /* NATOperation Hierarchy */ = {
+			isa = PBXGroup;
+			children = (
+				CFE8B47F1B655D6B008CB9A4 /* NATOperation.swift */,
+				CFE8B4811B655DB6008CB9A4 /* NATMonitoring.swift */,
+				CFE8B4831B655E1A008CB9A4 /* NATRanging.swift */,
+				CFE8B4851B655E4E008CB9A4 /* NATAdvertising.swift */,
+			);
+			name = "NATOperation Hierarchy";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -174,6 +194,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				CF96E4CD1B5F152700285986 /* NATViewController.swift in Sources */,
+				CFE8B4801B655D6B008CB9A4 /* NATOperation.swift in Sources */,
+				CFE8B4861B655E4E008CB9A4 /* NATAdvertising.swift in Sources */,
+				CFE8B4841B655E1A008CB9A4 /* NATRanging.swift in Sources */,
+				CFE8B4821B655DB6008CB9A4 /* NATMonitoring.swift in Sources */,
 				CFE8B47E1B6538EC008CB9A4 /* NATOperationCell.swift in Sources */,
 				CF96E4C71B5ED80E00285986 /* NATHiBeaconsDelegate.swift in Sources */,
 			);
