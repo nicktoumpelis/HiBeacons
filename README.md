@@ -7,7 +7,7 @@ HiBeacons is a fully functional demo app for the iBeacons API in iOS 8 and is no
 The main branch of the project is the *swift* branch, but you can still find the old Objective-C code at the *obj-c* branch. Note that the old branch has some bugs, that I have fixed in the new one.
 
 **Current state:**
-The current state of the app is that it has been roughly converted to Swift, but there is a lot that needs to be done to truly take advantage of the freedom, safety and power of Swift.
+The current state of the app is that it has been converted to Swift, but there is a lot that needs to be done to truly take advantage of the freedom, safety and power of Swift.
 
 *The app should compile with Xcode 6.4 and work correctly on iOS 8.*
 
