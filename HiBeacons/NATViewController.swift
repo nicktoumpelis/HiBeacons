@@ -3,7 +3,7 @@
 //  HiBeacons
 //
 //  Created by Nick Toumpelis on 2015-07-22.
-//  Copyright (c) 2015 Nick Toumpelis. All rights reserved.
+//  Copyright (c) 2015 Nick Toumpelis.
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -28,20 +28,6 @@ import Foundation
 import UIKit
 import CoreLocation
 import CoreBluetooth
-
-class NATOperationCell : UITableViewCell
-{
-    override func updateConstraints() {
-        contentView.setTranslatesAutoresizingMaskIntoConstraints(false)
-
-        let rightMarginConstraint = NSLayoutConstraint(item: accessoryView!, attribute: .Right, relatedBy: .Equal, toItem: self, attribute: .Right, multiplier: 1.0, constant: -14.0)
-        let topMarginConstraint = NSLayoutConstraint(item: accessoryView!, attribute: .Top, relatedBy: .Equal, toItem: self, attribute: .Top, multiplier: 1.0, constant: 7.0)
-
-        addConstraints([rightMarginConstraint, topMarginConstraint])
-
-        super.updateConstraints()
-    }
-}
 
 class NATViewController: UIViewController
 {
