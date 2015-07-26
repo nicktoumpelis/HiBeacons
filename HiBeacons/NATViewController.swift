@@ -35,9 +35,6 @@ class NATViewController: UIViewController
     @IBOutlet weak var beaconTableView: UITableView?
 
     // Constants
-    let kUUID = "416C0120-5960-4280-A67C-A2A9BB166D0F"
-    let kIdentifier = "SomeIdentifier"
-
     let kOperationCellIdentifier = "OperationCell"
     let kBeaconCellIdentifier = "BeaconCell"
 
@@ -68,7 +65,13 @@ class NATViewController: UIViewController
     }
 
     var locationManager: CLLocationManager?
-    var beaconRegion: CLBeaconRegion?
+
+    let beaconRegion: CLBeaconRegion = {
+        let region = CLBeaconRegion(proximityUUID: NSUUID(UUIDString: "416C0120-5960-4280-A67C-A2A9BB166D0F"), identifier: "Identifier")
+        region.notifyEntryStateOnDisplay = true
+        return region
+    }()
+
     var peripheralManager: CBPeripheralManager?
     var detectedBeacons: Array<CLBeacon> = []
     var monitoringSwitch, advertisingSwitch, rangingSwitch: UISwitch?
@@ -286,16 +289,6 @@ extension NATViewController: UITableViewDataSource, UITableViewDelegate
 // MARK: - Common
 extension NATViewController
 {
-    func createBeaconRegion() {
-        if beaconRegion != nil {
-            return
-        }
-
-        let proximityUUID = NSUUID(UUIDString: kUUID)
-        beaconRegion = CLBeaconRegion(proximityUUID: proximityUUID, identifier: kIdentifier)
-        beaconRegion?.notifyEntryStateOnDisplay = true
-    }
-
     func createLocationManager() {
         if locationManager == nil {
             locationManager = CLLocationManager()
@@ -339,7 +332,6 @@ extension NATViewController
             return
         }
 
-        createBeaconRegion()
         locationManager?.startRangingBeaconsInRegion(beaconRegion)
 
         NSLog("Ranging turned on for region: \(beaconRegion)")
@@ -395,7 +387,6 @@ extension NATViewController
             return
         }
 
-        createBeaconRegion()
         locationManager?.startMonitoringForRegion(beaconRegion)
 
         NSLog("Monitoring turned on for region: \(beaconRegion)")
@@ -550,8 +541,6 @@ extension NATViewController: CBPeripheralManagerDelegate
     func startAdvertisingBeacon() {
         NSLog("Turning on advertising...")
 
-        createBeaconRegion()
-
         if peripheralManager == nil {
             peripheralManager = CBPeripheralManager(delegate: self, queue: nil, options: nil)
         }
@@ -568,7 +557,7 @@ extension NATViewController: CBPeripheralManagerDelegate
 
         let major: CLBeaconMajorValue = CLBeaconMajorValue(arc4random_uniform(5000))
         let minor: CLBeaconMinorValue = CLBeaconMajorValue(arc4random_uniform(5000))
-        var region: CLBeaconRegion = CLBeaconRegion(proximityUUID: beaconRegion!.proximityUUID, major: major, minor: minor, identifier: beaconRegion!.identifier)
+        var region: CLBeaconRegion = CLBeaconRegion(proximityUUID: beaconRegion.proximityUUID, major: major, minor: minor, identifier: beaconRegion.identifier)
         var beaconPeripheralData: NSMutableDictionary = region.peripheralDataWithMeasuredPower(nil)
 
         peripheralManager?.startAdvertising(beaconPeripheralData as [NSObject : AnyObject])
