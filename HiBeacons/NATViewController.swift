@@ -64,7 +64,7 @@ class NATViewController: UIViewController
         case Ranging
     }
 
-    var locationManager: CLLocationManager?
+    lazy var locationManager: CLLocationManager = CLLocationManager()
 
     let beaconRegion: CLBeaconRegion = {
         let region = CLBeaconRegion(proximityUUID: NSUUID(UUIDString: "416C0120-5960-4280-A67C-A2A9BB166D0F"), identifier: "Identifier")
@@ -76,6 +76,10 @@ class NATViewController: UIViewController
     var detectedBeacons: Array<CLBeacon> = []
     var monitoringSwitch, advertisingSwitch, rangingSwitch: UISwitch?
     var operationContext: String = ""
+
+    func activateLocationManagerNotifications() {
+        locationManager.delegate = self
+    }
 }
 
 // MARK: - Index path management
@@ -286,17 +290,6 @@ extension NATViewController: UITableViewDataSource, UITableViewDelegate
     }
 }
 
-// MARK: - Common
-extension NATViewController
-{
-    func createLocationManager() {
-        if locationManager == nil {
-            locationManager = CLLocationManager()
-            locationManager?.delegate = self
-        }
-    }
-}
-
 // MARK: - Beacon ranging
 extension NATViewController
 {
@@ -311,7 +304,7 @@ extension NATViewController
     func startRangingForBeacons() {
         operationContext = kRangingOperationContext
 
-        createLocationManager()
+        activateLocationManagerNotifications()
         checkLocationAccessForRanging()
 
         detectedBeacons = []
@@ -327,23 +320,23 @@ extension NATViewController
             return
         }
 
-        if locationManager?.rangedRegions.count > 0 {
+        if locationManager.rangedRegions.count > 0 {
             NSLog("Didn't turn on ranging: Ranging already on.")
             return
         }
 
-        locationManager?.startRangingBeaconsInRegion(beaconRegion)
+        locationManager.startRangingBeaconsInRegion(beaconRegion)
 
         NSLog("Ranging turned on for region: \(beaconRegion)")
     }
 
     func stopRangingForBeacons() {
-        if locationManager?.rangedRegions.count == 0 {
+        if locationManager.rangedRegions.count == 0 {
             NSLog("Didn't turn off ranging: Ranging already off.")
             return
         }
 
-        locationManager?.stopRangingBeaconsInRegion(beaconRegion)
+        locationManager.stopRangingBeaconsInRegion(beaconRegion)
 
         var deletedSections = self.deletedSections()
         detectedBeacons = []
@@ -372,7 +365,7 @@ extension NATViewController
     func startMonitoringForBeacons() {
         operationContext = kMonitoringOperationContext
 
-        createLocationManager()
+        activateLocationManagerNotifications()
         checkLocationAccessForMonitoring()
 
         turnOnMonitoring()
@@ -387,13 +380,13 @@ extension NATViewController
             return
         }
 
-        locationManager?.startMonitoringForRegion(beaconRegion)
+        locationManager.startMonitoringForRegion(beaconRegion)
 
         NSLog("Monitoring turned on for region: \(beaconRegion)")
     }
 
     func stopMonitoringForBeacons() {
-        locationManager?.stopMonitoringForRegion(beaconRegion)
+        locationManager.stopMonitoringForRegion(beaconRegion)
         NSLog("Turned off monitoring")
     }
 }
@@ -599,13 +592,13 @@ extension NATViewController: CBPeripheralManagerDelegate
 extension NATViewController
 {
     func checkLocationAccessForRanging() {
-        if locationManager?.respondsToSelector("requestWhenInUseAuthorization") == true {
-            locationManager?.requestWhenInUseAuthorization()
+        if locationManager.respondsToSelector("requestWhenInUseAuthorization") == true {
+            locationManager.requestWhenInUseAuthorization()
         }
     }
 
     func checkLocationAccessForMonitoring() {
-        if locationManager?.respondsToSelector("requestAlwaysAuthorization") == true {
+        if locationManager.respondsToSelector("requestAlwaysAuthorization") == true {
             let authorizationStatus = CLLocationManager.authorizationStatus()
             if authorizationStatus == .Denied || authorizationStatus == .AuthorizedWhenInUse {
                 let title = "Missing Location Access"
@@ -618,7 +611,7 @@ extension NATViewController
                 return
             }
 
-            locationManager?.requestAlwaysAuthorization()
+            locationManager.requestAlwaysAuthorization()
         }
     }
 }
