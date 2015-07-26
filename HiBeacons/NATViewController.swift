@@ -438,6 +438,7 @@ extension NATViewController: CLLocationManagerDelegate
 
         switch CLLocationManager.authorizationStatus() {
         case CLAuthorizationStatus.AuthorizedAlways:
+            NSLog("Location Access (Always) granted!")
             if operationContext == kMonitoringOperationContext {
                 monitoringSwitch?.on = true
             } else {
@@ -449,6 +450,7 @@ extension NATViewController: CLLocationManagerDelegate
                 NSLog("Couldn't turn on monitoring: Required Location Access (Always) missing.")
                 monitoringSwitch?.on = false
             } else {
+                NSLog("Location Access (When In Use) granted!")
                 rangingSwitch?.on = true
             }
 
@@ -457,7 +459,7 @@ extension NATViewController: CLLocationManagerDelegate
                 NSLog("Couldn't turn on monitoring: Required Location Access (Always) missing.")
                 monitoringSwitch?.on = false
             } else {
-                NSLog("Couldn't turn on monitoring: Required Location Access (WhenInUse) missing.")
+                NSLog("Couldn't turn on monitoring: Required Location Access (When In Use) missing.")
                 rangingSwitch?.on = false
             }
         }
