@@ -7,53 +7,21 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		CF2BC92318019D6100C66D15 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF2BC92218019D6100C66D15 /* Foundation.framework */; };
-		CF2BC92518019D6100C66D15 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF2BC92418019D6100C66D15 /* CoreGraphics.framework */; };
-		CF2BC92718019D6100C66D15 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF2BC92618019D6100C66D15 /* UIKit.framework */; };
 		CF2BC92D18019D6100C66D15 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = CF2BC92B18019D6100C66D15 /* InfoPlist.strings */; };
 		CF2BC93518019D6100C66D15 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CF2BC93418019D6100C66D15 /* Images.xcassets */; };
-		CF2BC93C18019D6100C66D15 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF2BC93B18019D6100C66D15 /* XCTest.framework */; };
-		CF2BC93D18019D6100C66D15 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF2BC92218019D6100C66D15 /* Foundation.framework */; };
-		CF2BC93E18019D6100C66D15 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF2BC92618019D6100C66D15 /* UIKit.framework */; };
-		CF2BC94618019D6100C66D15 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = CF2BC94418019D6100C66D15 /* InfoPlist.strings */; };
-		CF2BC94818019D6100C66D15 /* NATHiBeaconsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = CF2BC94718019D6100C66D15 /* NATHiBeaconsTests.m */; };
 		CF2BC9521801A09D00C66D15 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CF2BC9511801A09D00C66D15 /* Main.storyboard */; };
-		CF2BC9571801A34900C66D15 /* CoreBluetooth.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF2BC9561801A34900C66D15 /* CoreBluetooth.framework */; };
-		CF2BC9591801A35E00C66D15 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF2BC9581801A35E00C66D15 /* CoreLocation.framework */; };
 		CF96E4C71B5ED80E00285986 /* NATHiBeaconsDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF96E4C61B5ED80E00285986 /* NATHiBeaconsDelegate.swift */; };
 		CF96E4CB1B5EE7F800285986 /* Launch Screen.xib in Resources */ = {isa = PBXBuildFile; fileRef = CF96E4CA1B5EE7F800285986 /* Launch Screen.xib */; };
 		CF96E4CD1B5F152700285986 /* NATViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF96E4CC1B5F152700285986 /* NATViewController.swift */; };
 /* End PBXBuildFile section */
 
-/* Begin PBXContainerItemProxy section */
-		CF2BC93F18019D6100C66D15 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = CF2BC91718019D6100C66D15 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = CF2BC91E18019D6100C66D15;
-			remoteInfo = HiBeacons;
-		};
-/* End PBXContainerItemProxy section */
-
 /* Begin PBXFileReference section */
 		CF2BC91F18019D6100C66D15 /* HiBeacons.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HiBeacons.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		CF2BC92218019D6100C66D15 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
-		CF2BC92418019D6100C66D15 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
-		CF2BC92618019D6100C66D15 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		CF2BC92A18019D6100C66D15 /* HiBeacons-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "HiBeacons-Info.plist"; sourceTree = "<group>"; };
 		CF2BC92C18019D6100C66D15 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		CF2BC93018019D6100C66D15 /* HiBeacons-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "HiBeacons-Prefix.pch"; sourceTree = "<group>"; };
 		CF2BC93418019D6100C66D15 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
-		CF2BC93A18019D6100C66D15 /* HiBeaconsTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = HiBeaconsTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		CF2BC93B18019D6100C66D15 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
-		CF2BC94318019D6100C66D15 /* HiBeaconsTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "HiBeaconsTests-Info.plist"; sourceTree = "<group>"; };
-		CF2BC94518019D6100C66D15 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		CF2BC94718019D6100C66D15 /* NATHiBeaconsTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NATHiBeaconsTests.m; sourceTree = "<group>"; };
 		CF2BC9511801A09D00C66D15 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
-		CF2BC9561801A34900C66D15 /* CoreBluetooth.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreBluetooth.framework; path = System/Library/Frameworks/CoreBluetooth.framework; sourceTree = SDKROOT; };
-		CF2BC9581801A35E00C66D15 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		CF96E4C61B5ED80E00285986 /* NATHiBeaconsDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NATHiBeaconsDelegate.swift; sourceTree = "<group>"; };
-		CF96E4C81B5EDA2700285986 /* HiBeacons-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "HiBeacons-Bridging-Header.h"; sourceTree = "<group>"; };
 		CF96E4CA1B5EE7F800285986 /* Launch Screen.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "Launch Screen.xib"; sourceTree = "<group>"; };
 		CF96E4CC1B5F152700285986 /* NATViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NATViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -63,21 +31,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CF2BC9591801A35E00C66D15 /* CoreLocation.framework in Frameworks */,
-				CF2BC9571801A34900C66D15 /* CoreBluetooth.framework in Frameworks */,
-				CF2BC92518019D6100C66D15 /* CoreGraphics.framework in Frameworks */,
-				CF2BC92718019D6100C66D15 /* UIKit.framework in Frameworks */,
-				CF2BC92318019D6100C66D15 /* Foundation.framework in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		CF2BC93718019D6100C66D15 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				CF2BC93C18019D6100C66D15 /* XCTest.framework in Frameworks */,
-				CF2BC93E18019D6100C66D15 /* UIKit.framework in Frameworks */,
-				CF2BC93D18019D6100C66D15 /* Foundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -88,7 +41,6 @@
 			isa = PBXGroup;
 			children = (
 				CF2BC92818019D6100C66D15 /* HiBeacons */,
-				CF2BC94118019D6100C66D15 /* HiBeaconsTests */,
 				CF2BC92118019D6100C66D15 /* Frameworks */,
 				CF2BC92018019D6100C66D15 /* Products */,
 			);
@@ -98,7 +50,6 @@
 			isa = PBXGroup;
 			children = (
 				CF2BC91F18019D6100C66D15 /* HiBeacons.app */,
-				CF2BC93A18019D6100C66D15 /* HiBeaconsTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -106,12 +57,6 @@
 		CF2BC92118019D6100C66D15 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				CF2BC9581801A35E00C66D15 /* CoreLocation.framework */,
-				CF2BC9561801A34900C66D15 /* CoreBluetooth.framework */,
-				CF2BC92218019D6100C66D15 /* Foundation.framework */,
-				CF2BC92418019D6100C66D15 /* CoreGraphics.framework */,
-				CF2BC92618019D6100C66D15 /* UIKit.framework */,
-				CF2BC93B18019D6100C66D15 /* XCTest.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -132,26 +77,6 @@
 			children = (
 				CF2BC92A18019D6100C66D15 /* HiBeacons-Info.plist */,
 				CF2BC92B18019D6100C66D15 /* InfoPlist.strings */,
-				CF2BC93018019D6100C66D15 /* HiBeacons-Prefix.pch */,
-				CF96E4C81B5EDA2700285986 /* HiBeacons-Bridging-Header.h */,
-			);
-			name = "Supporting Files";
-			sourceTree = "<group>";
-		};
-		CF2BC94118019D6100C66D15 /* HiBeaconsTests */ = {
-			isa = PBXGroup;
-			children = (
-				CF2BC94718019D6100C66D15 /* NATHiBeaconsTests.m */,
-				CF2BC94218019D6100C66D15 /* Supporting Files */,
-			);
-			path = HiBeaconsTests;
-			sourceTree = "<group>";
-		};
-		CF2BC94218019D6100C66D15 /* Supporting Files */ = {
-			isa = PBXGroup;
-			children = (
-				CF2BC94318019D6100C66D15 /* HiBeaconsTests-Info.plist */,
-				CF2BC94418019D6100C66D15 /* InfoPlist.strings */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -186,24 +111,6 @@
 			productReference = CF2BC91F18019D6100C66D15 /* HiBeacons.app */;
 			productType = "com.apple.product-type.application";
 		};
-		CF2BC93918019D6100C66D15 /* HiBeaconsTests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = CF2BC94E18019D6100C66D15 /* Build configuration list for PBXNativeTarget "HiBeaconsTests" */;
-			buildPhases = (
-				CF2BC93618019D6100C66D15 /* Sources */,
-				CF2BC93718019D6100C66D15 /* Frameworks */,
-				CF2BC93818019D6100C66D15 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				CF2BC94018019D6100C66D15 /* PBXTargetDependency */,
-			);
-			name = HiBeaconsTests;
-			productName = HiBeaconsTests;
-			productReference = CF2BC93A18019D6100C66D15 /* HiBeaconsTests.xctest */;
-			productType = "com.apple.product-type.bundle.unit-test";
-		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -225,9 +132,6 @@
 							};
 						};
 					};
-					CF2BC93918019D6100C66D15 = {
-						TestTargetID = CF2BC91E18019D6100C66D15;
-					};
 				};
 			};
 			buildConfigurationList = CF2BC91A18019D6100C66D15 /* Build configuration list for PBXProject "HiBeacons" */;
@@ -243,7 +147,6 @@
 			projectRoot = "";
 			targets = (
 				CF2BC91E18019D6100C66D15 /* HiBeacons */,
-				CF2BC93918019D6100C66D15 /* HiBeaconsTests */,
 			);
 		};
 /* End PBXProject section */
@@ -260,14 +163,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		CF2BC93818019D6100C66D15 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				CF2BC94618019D6100C66D15 /* InfoPlist.strings in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -280,37 +175,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		CF2BC93618019D6100C66D15 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				CF2BC94818019D6100C66D15 /* NATHiBeaconsTests.m in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXSourcesBuildPhase section */
-
-/* Begin PBXTargetDependency section */
-		CF2BC94018019D6100C66D15 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = CF2BC91E18019D6100C66D15 /* HiBeacons */;
-			targetProxy = CF2BC93F18019D6100C66D15 /* PBXContainerItemProxy */;
-		};
-/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		CF2BC92B18019D6100C66D15 /* InfoPlist.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
 				CF2BC92C18019D6100C66D15 /* en */,
-			);
-			name = InfoPlist.strings;
-			sourceTree = "<group>";
-		};
-		CF2BC94418019D6100C66D15 /* InfoPlist.strings */ = {
-			isa = PBXVariantGroup;
-			children = (
-				CF2BC94518019D6100C66D15 /* en */,
 			);
 			name = InfoPlist.strings;
 			sourceTree = "<group>";
@@ -402,8 +273,10 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
-				SWIFT_OBJC_BRIDGING_HEADER = "HiBeacons/HiBeacons-Bridging-Header.h";
+				SWIFT_INSTALL_OBJC_HEADER = NO;
+				SWIFT_OBJC_BRIDGING_HEADER = "";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_WHOLE_MODULE_OPTIMIZATION = YES;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -422,48 +295,10 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
-				SWIFT_OBJC_BRIDGING_HEADER = "HiBeacons/HiBeacons-Bridging-Header.h";
+				SWIFT_INSTALL_OBJC_HEADER = NO;
+				SWIFT_OBJC_BRIDGING_HEADER = "";
+				SWIFT_WHOLE_MODULE_OPTIMIZATION = YES;
 				WRAPPER_EXTENSION = app;
-			};
-			name = Release;
-		};
-		CF2BC94F18019D6100C66D15 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/HiBeacons.app/HiBeacons";
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(SDKROOT)/Developer/Library/Frameworks",
-					"$(inherited)",
-					"$(DEVELOPER_FRAMEWORKS_DIR)",
-				);
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "HiBeacons/HiBeacons-Prefix.pch";
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"DEBUG=1",
-					"$(inherited)",
-				);
-				INFOPLIST_FILE = "HiBeaconsTests/HiBeaconsTests-Info.plist";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUNDLE_LOADER)";
-				WRAPPER_EXTENSION = xctest;
-			};
-			name = Debug;
-		};
-		CF2BC95018019D6100C66D15 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/HiBeacons.app/HiBeacons";
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(SDKROOT)/Developer/Library/Frameworks",
-					"$(inherited)",
-					"$(DEVELOPER_FRAMEWORKS_DIR)",
-				);
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "HiBeacons/HiBeacons-Prefix.pch";
-				INFOPLIST_FILE = "HiBeaconsTests/HiBeaconsTests-Info.plist";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUNDLE_LOADER)";
-				WRAPPER_EXTENSION = xctest;
 			};
 			name = Release;
 		};
@@ -484,15 +319,6 @@
 			buildConfigurations = (
 				CF2BC94C18019D6100C66D15 /* Debug */,
 				CF2BC94D18019D6100C66D15 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		CF2BC94E18019D6100C66D15 /* Build configuration list for PBXNativeTarget "HiBeaconsTests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				CF2BC94F18019D6100C66D15 /* Debug */,
-				CF2BC95018019D6100C66D15 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
