@@ -196,12 +196,14 @@ extension NATViewController: UITableViewDataSource, UITableViewDelegate
                 cell?.textLabel?.text = kAdvertisingOperationTitle
                 advertisingSwitch = cell?.accessoryView as? UISwitch
                 advertisingSwitch?.addTarget(self, action: "changeAdvertisingState:", forControlEvents: UIControlEvents.ValueChanged)
-            default:                            // NTOperationsRow.Ranging.rawValue
+            case NTOperationsRow.Ranging.rawValue:
                 cell?.textLabel?.text = kRangingOperationTitle
                 rangingSwitch = cell?.accessoryView as? UISwitch
                 rangingSwitch?.addTarget(self, action: "changeRangingState:", forControlEvents: UIControlEvents.ValueChanged)
+            default:
+                break
             }
-        default:                                // NTSectionType.DetectedBeacons.rawValue
+        case NTSectionType.DetectedBeacons.rawValue:
             var beacon = detectedBeacons[indexPath.row]
 
             cell = tableView.dequeueReusableCellWithIdentifier(kBeaconCellIdentifier) as? UITableViewCell
@@ -211,6 +213,8 @@ extension NATViewController: UITableViewDataSource, UITableViewDelegate
             cell?.textLabel?.text = beacon.proximityUUID.UUIDString
             cell?.detailTextLabel?.text = beacon.fullDetails()
             cell?.detailTextLabel?.textColor = UIColor.grayColor()
+        default:
+            break
         }
 
         cell?.updateConstraintsIfNeeded()
@@ -230,8 +234,10 @@ extension NATViewController: UITableViewDataSource, UITableViewDelegate
         switch section {
         case NTSectionType.Operations.rawValue:
             return kNumberOfAvailableOperations
-        default:                // NTSectionType.DetectedBeacons.rawValue
+        case NTSectionType.DetectedBeacons.rawValue:
             return self.detectedBeacons.count
+        default:
+            return 0
         }
     }
 
@@ -239,8 +245,10 @@ extension NATViewController: UITableViewDataSource, UITableViewDelegate
         switch (section) {
         case NTSectionType.Operations.rawValue:
             return nil
-        default:                // NTSectionType.DetectedBeacons.rawValue
+        case NTSectionType.DetectedBeacons.rawValue:
             return kBeaconSectionTitle
+        default:
+            return nil
         }
     }
 
@@ -248,8 +256,10 @@ extension NATViewController: UITableViewDataSource, UITableViewDelegate
         switch (indexPath.section) {
         case NTSectionType.Operations.rawValue:
             return kOperationCellHeight
-        default:                // NTSectionType.DetectedBeacons.rawValue
+        case NTSectionType.DetectedBeacons.rawValue:
             return kBeaconCellHeight
+        default:
+            return 0.0
         }
     }
 
