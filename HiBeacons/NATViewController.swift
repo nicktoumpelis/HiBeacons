@@ -27,9 +27,8 @@
 import Foundation
 import UIKit
 import CoreLocation
-import CoreBluetooth
 
-class NATViewController: UIViewController, CLLocationManagerDelegate
+class NATViewController: UIViewController
 {
     // Outlets
     @IBOutlet weak var beaconTableView: UITableView?
@@ -49,8 +48,6 @@ class NATViewController: UIViewController, CLLocationManagerDelegate
     let kBeaconSectionTitle = "Looking for beacons..."
     let kActivityIndicatorPosition = CGPoint(x: 205, y: 12)
     let kBeaconsHeaderViewIdentifier = "BeaconsHeader"
-    let kMonitoringOperationContext = "MonitoringOperationContext"
-    let kRangingOperationContext = "RangingOperationContext"
 
     enum NTSectionType: Int {
         case Operations = 0
@@ -216,12 +213,12 @@ extension NATViewController: UITableViewDataSource, UITableViewDelegate
                 cell?.textLabel?.text = kAdvertisingOperationTitle
                 advertisingSwitch = cell?.accessoryView as? UISwitch
                 advertisingSwitch?.addTarget(self, action: "changeAdvertisingState:", forControlEvents: UIControlEvents.ValueChanged)
-            default:    // NTOperationsRow.Ranging.rawValue
+            default:                            // NTOperationsRow.Ranging.rawValue
                 cell?.textLabel?.text = kRangingOperationTitle
                 rangingSwitch = cell?.accessoryView as? UISwitch
                 rangingSwitch?.addTarget(self, action: "changeRangingState:", forControlEvents: UIControlEvents.ValueChanged)
             }
-        default:        // NTSectionType.DetectedBeacons.rawValue
+        default:                                // NTSectionType.DetectedBeacons.rawValue
             var beacon = detectedBeacons[indexPath.row]
 
             cell = tableView.dequeueReusableCellWithIdentifier(kBeaconCellIdentifier) as? UITableViewCell
@@ -240,9 +237,9 @@ extension NATViewController: UITableViewDataSource, UITableViewDelegate
 
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         if rangingSwitch?.on == true {
-            return kNumberOfSections  // All sections visible
+            return kNumberOfSections            // All sections visible
         } else {
-            return kNumberOfSections - 1  // Beacons section not visible
+            return kNumberOfSections - 1        // Beacons section not visible
         }
     }
 
@@ -250,7 +247,7 @@ extension NATViewController: UITableViewDataSource, UITableViewDelegate
         switch section {
         case NTSectionType.Operations.rawValue:
             return kNumberOfAvailableOperations
-        default:        // NTSectionType.DetectedBeacons.rawValue
+        default:                // NTSectionType.DetectedBeacons.rawValue
             return self.detectedBeacons.count
         }
     }
@@ -259,7 +256,7 @@ extension NATViewController: UITableViewDataSource, UITableViewDelegate
         switch (section) {
         case NTSectionType.Operations.rawValue:
             return nil
-        default:        // NTSectionType.DetectedBeacons.rawValue
+        default:                // NTSectionType.DetectedBeacons.rawValue
             return kBeaconSectionTitle
         }
     }
@@ -268,7 +265,7 @@ extension NATViewController: UITableViewDataSource, UITableViewDelegate
         switch (indexPath.section) {
         case NTSectionType.Operations.rawValue:
             return kOperationCellHeight
-        default:        // NTSectionType.DetectedBeacons.rawValue
+        default:                // NTSectionType.DetectedBeacons.rawValue
             return kBeaconCellHeight
         }
     }
@@ -317,7 +314,7 @@ extension NATViewController
 }
 
 // MARK: - Monitoring delegate methods and helpers
-extension NATViewController: NATMonitoringDelegate, UIAlertViewDelegate
+extension NATViewController: NATMonitoringDelegate
 {
     func monitoringOperationDidStartSuccessfully() {
         monitoringSwitch?.on = true
@@ -354,12 +351,6 @@ extension NATViewController: NATMonitoringDelegate, UIAlertViewDelegate
         notification.soundName = UILocalNotificationDefaultSoundName
 
         UIApplication.sharedApplication().presentLocalNotificationNow(notification)
-    }
-
-    func alertView(alertView: UIAlertView, didDismissWithButtonIndex buttonIndex: Int) {
-        if buttonIndex == 1 {
-            UIApplication.sharedApplication().openURL(NSURL(string: UIApplicationOpenSettingsURLString)!)
-        }
     }
 }
 
@@ -454,5 +445,15 @@ extension NATViewController: NATAdvertisingDelegate
 
     func advertisingOperationDidStopSuccessfully() {
         
+    }
+}
+
+// MARK: - Alert view delegate methods
+extension NATViewController: UIAlertViewDelegate
+{
+    func alertView(alertView: UIAlertView, didDismissWithButtonIndex buttonIndex: Int) {
+        if buttonIndex == 1 {
+            UIApplication.sharedApplication().openURL(NSURL(string: UIApplicationOpenSettingsURLString)!)
+        }
     }
 }

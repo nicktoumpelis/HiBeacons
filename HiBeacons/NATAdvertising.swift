@@ -50,7 +50,7 @@ class NATAdvertising: NATOperation, CBPeripheralManagerDelegate
     }
 
     func turnOnAdvertising() {
-        if peripheralManager?.state != CBPeripheralManagerState.PoweredOn {
+        if peripheralManager?.state != .PoweredOn {
             NSLog("Peripheral manager is off.")
             if delegate != nil {
                 delegate!.advertisingOperationDidFailToStart()
@@ -95,7 +95,7 @@ class NATAdvertising: NATOperation, CBPeripheralManagerDelegate
     }
 
     func peripheralManagerDidUpdateState(peripheral: CBPeripheralManager!) {
-        if peripheralManager?.state != CBPeripheralManagerState.PoweredOn {
+        if peripheralManager?.state != .PoweredOn {
             NSLog("Peripheral manager is off.")
             if delegate != nil {
                 delegate!.advertisingOperationDidFailToStart()
