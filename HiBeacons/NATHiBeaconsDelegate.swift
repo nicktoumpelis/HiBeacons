@@ -27,7 +27,9 @@
 import Foundation
 import UIKit
 
-@UIApplicationMain class NATHiBeaconsDelegate: UIResponder, UIApplicationDelegate {
+///  The app delegate
+@UIApplicationMain class NATHiBeaconsDelegate: UIResponder, UIApplicationDelegate
+{
     var window: UIWindow?
 
     func application(application: UIApplication, willFinishLaunchingWithOptions launchOptions: [NSObject : AnyObject]?) -> Bool {

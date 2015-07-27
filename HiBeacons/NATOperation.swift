@@ -27,16 +27,23 @@
 import Foundation
 import CoreLocation
 
+/// Provides a base class for all the operations that the app can perform.
 class NATOperation: NSObject, CLLocationManagerDelegate
 {
+    /// An instance of CLLocationManager to provide monitoring and ranging facilities.
     lazy var locationManager: CLLocationManager = CLLocationManager()
 
+    /// The beacon region that will be used as the reference for monitoring and ranging.
     let beaconRegion: CLBeaconRegion = {
         let region = CLBeaconRegion(proximityUUID: NSUUID(UUIDString: "416C0120-5960-4280-A67C-A2A9BB166D0F"), identifier: "Identifier")
         region.notifyEntryStateOnDisplay = true
         return region
     }()
 
+    /**
+        Sets the location manager delegate to self. It is called when an instance is ready to process location
+        manager delegate calls.
+     */
     func activateLocationManagerNotifications() {
         locationManager.delegate = self
     }

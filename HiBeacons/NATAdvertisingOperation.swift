@@ -28,17 +28,34 @@ import Foundation
 import CoreLocation
 import CoreBluetooth
 
-protocol NATAdvertisingDelegate {
+/// Lists the methods that an advertising delegate should implement to be notified for all advertising operation events.
+protocol NATAdvertisingOperationDelegate
+{
+    /** 
+        Triggered when the advertising operation has started successfully.
+     */
     func advertisingOperationDidStartSuccessfully()
+
+    /** 
+        Triggered when the advertising operation has failed to start.
+     */
     func advertisingOperationDidFailToStart()
-    func advertisingOperationDidStopSuccessfully()
 }
 
-class NATAdvertising: NATOperation, CBPeripheralManagerDelegate
+/// NATAdvertisingOperation contains all the process logic required to successfully advertising the presence of a
+/// a specific beacon (and region) to nearby devices.
+class NATAdvertisingOperation: NATOperation
 {
-    var delegate: NATAdvertisingDelegate?
+
+    /// The delegate for an advertising operation.
+    var delegate: NATAdvertisingOperationDelegate?
+
+    /// An instance of a CBPeripheralManager, which is used for advertising a beacon to nearby devices.
     var peripheralManager: CBPeripheralManager?
-    
+
+    /**
+        Starts the beacon advertising process.
+     */
     func startAdvertisingBeacon() {
         NSLog("Turning on advertising...")
 
@@ -46,10 +63,6 @@ class NATAdvertising: NATOperation, CBPeripheralManagerDelegate
             peripheralManager = CBPeripheralManager(delegate: self, queue: nil, options: nil)
         }
 
-        turnOnAdvertising()
-    }
-
-    func turnOnAdvertising() {
         if peripheralManager?.state != .PoweredOn {
             NSLog("Peripheral manager is off.")
             if delegate != nil {
@@ -58,6 +71,13 @@ class NATAdvertising: NATOperation, CBPeripheralManagerDelegate
             return
         }
 
+        turnOnAdvertising()
+    }
+
+    /**
+        Turns on advertising (after all the checks have been passed).
+     */
+    func turnOnAdvertising() {
         let major: CLBeaconMajorValue = CLBeaconMajorValue(arc4random_uniform(5000))
         let minor: CLBeaconMinorValue = CLBeaconMajorValue(arc4random_uniform(5000))
         var region: CLBeaconRegion = CLBeaconRegion(proximityUUID: beaconRegion.proximityUUID, major: major, minor: minor, identifier: beaconRegion.identifier)
@@ -68,16 +88,19 @@ class NATAdvertising: NATOperation, CBPeripheralManagerDelegate
         NSLog("Turning on advertising for region: \(region).")
     }
 
+    /**
+        Stops the monitoring process.
+     */
     func stopAdvertisingBeacon() {
         peripheralManager?.stopAdvertising()
 
-        if delegate != nil {
-            delegate!.advertisingOperationDidStopSuccessfully()
-        }
-
         NSLog("Turned off advertising.")
     }
+}
 
+// MARK: - CBPeripheralManagerDelegate methods
+extension NATAdvertisingOperation: CBPeripheralManagerDelegate
+{
     func peripheralManagerDidStartAdvertising(peripheral: CBPeripheralManager!, error: NSError!) {
         if error != nil {
             NSLog("Couldn't turn on advertising: \(error)")

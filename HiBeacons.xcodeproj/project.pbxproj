@@ -15,9 +15,9 @@
 		CF96E4CD1B5F152700285986 /* NATViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF96E4CC1B5F152700285986 /* NATViewController.swift */; };
 		CFE8B47E1B6538EC008CB9A4 /* NATOperationCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFE8B47D1B6538EC008CB9A4 /* NATOperationCell.swift */; };
 		CFE8B4801B655D6B008CB9A4 /* NATOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFE8B47F1B655D6B008CB9A4 /* NATOperation.swift */; };
-		CFE8B4821B655DB6008CB9A4 /* NATMonitoring.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFE8B4811B655DB6008CB9A4 /* NATMonitoring.swift */; };
-		CFE8B4841B655E1A008CB9A4 /* NATRanging.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFE8B4831B655E1A008CB9A4 /* NATRanging.swift */; };
-		CFE8B4861B655E4E008CB9A4 /* NATAdvertising.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFE8B4851B655E4E008CB9A4 /* NATAdvertising.swift */; };
+		CFE8B4821B655DB6008CB9A4 /* NATMonitoringOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFE8B4811B655DB6008CB9A4 /* NATMonitoringOperation.swift */; };
+		CFE8B4841B655E1A008CB9A4 /* NATRangingOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFE8B4831B655E1A008CB9A4 /* NATRangingOperation.swift */; };
+		CFE8B4861B655E4E008CB9A4 /* NATAdvertisingOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFE8B4851B655E4E008CB9A4 /* NATAdvertisingOperation.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -31,9 +31,9 @@
 		CF96E4CC1B5F152700285986 /* NATViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NATViewController.swift; sourceTree = "<group>"; };
 		CFE8B47D1B6538EC008CB9A4 /* NATOperationCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NATOperationCell.swift; sourceTree = "<group>"; };
 		CFE8B47F1B655D6B008CB9A4 /* NATOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NATOperation.swift; sourceTree = "<group>"; };
-		CFE8B4811B655DB6008CB9A4 /* NATMonitoring.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NATMonitoring.swift; sourceTree = "<group>"; };
-		CFE8B4831B655E1A008CB9A4 /* NATRanging.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NATRanging.swift; sourceTree = "<group>"; };
-		CFE8B4851B655E4E008CB9A4 /* NATAdvertising.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NATAdvertising.swift; sourceTree = "<group>"; };
+		CFE8B4811B655DB6008CB9A4 /* NATMonitoringOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NATMonitoringOperation.swift; sourceTree = "<group>"; };
+		CFE8B4831B655E1A008CB9A4 /* NATRangingOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NATRangingOperation.swift; sourceTree = "<group>"; };
+		CFE8B4851B655E4E008CB9A4 /* NATAdvertisingOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NATAdvertisingOperation.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -107,9 +107,9 @@
 			isa = PBXGroup;
 			children = (
 				CFE8B47F1B655D6B008CB9A4 /* NATOperation.swift */,
-				CFE8B4811B655DB6008CB9A4 /* NATMonitoring.swift */,
-				CFE8B4831B655E1A008CB9A4 /* NATRanging.swift */,
-				CFE8B4851B655E4E008CB9A4 /* NATAdvertising.swift */,
+				CFE8B4811B655DB6008CB9A4 /* NATMonitoringOperation.swift */,
+				CFE8B4851B655E4E008CB9A4 /* NATAdvertisingOperation.swift */,
+				CFE8B4831B655E1A008CB9A4 /* NATRangingOperation.swift */,
 			);
 			name = "NATOperation Hierarchy";
 			sourceTree = "<group>";
@@ -195,9 +195,9 @@
 			files = (
 				CF96E4CD1B5F152700285986 /* NATViewController.swift in Sources */,
 				CFE8B4801B655D6B008CB9A4 /* NATOperation.swift in Sources */,
-				CFE8B4861B655E4E008CB9A4 /* NATAdvertising.swift in Sources */,
-				CFE8B4841B655E1A008CB9A4 /* NATRanging.swift in Sources */,
-				CFE8B4821B655DB6008CB9A4 /* NATMonitoring.swift in Sources */,
+				CFE8B4861B655E4E008CB9A4 /* NATAdvertisingOperation.swift in Sources */,
+				CFE8B4841B655E1A008CB9A4 /* NATRangingOperation.swift in Sources */,
+				CFE8B4821B655DB6008CB9A4 /* NATMonitoringOperation.swift in Sources */,
 				CFE8B47E1B6538EC008CB9A4 /* NATOperationCell.swift in Sources */,
 				CF96E4C71B5ED80E00285986 /* NATHiBeaconsDelegate.swift in Sources */,
 			);

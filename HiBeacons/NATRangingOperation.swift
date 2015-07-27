@@ -27,18 +27,48 @@
 import Foundation
 import CoreLocation
 
-protocol NATRangingDelegate {
+/// Lists the methods that a ranging delegate should implement to be notified for all ranging operation events.
+protocol NATRangingOperationDelegate
+{
+    /**
+        Triggered when the ranging operation has started successfully.
+     */
     func rangingOperationDidStartSuccessfully()
+
+    /**
+        Triggered when the ranging operation has failed to start.
+     */
     func rangingOperationDidFailToStart()
+
+    /**
+        Triggered when the ranging operation has failed to start due to the last authorization denial.
+     */
     func rangingOperationDidFailToStartDueToAuthorization()
+
+    /**
+        Triggered when the ranging operation has stopped successfully.
+     */
     func rangingOperationDidStopSuccessfully()
+
+    /**
+        Triggered when the ranging operation has detected beacons belonging to a specific given beacon region.
+        
+        :param: beacons An array of provided beacons that the ranging operation detected.
+        :param: region A provided region whose beacons the operation is trying to range.
+     */
     func rangingOperationDidRangeBeacons(beacons: [AnyObject]!, inRegion region: CLBeaconRegion!)
 }
 
-class NATRanging: NATOperation
+/// NATRangingOperation contains all the process logic required to successfully monitor for events related to
+/// ranging beacons belonging to a specific beacon region.
+class NATRangingOperation: NATOperation
 {
-    var delegate: NATRangingDelegate?
-    
+    /// The delegate for a ranging operation.
+    var delegate: NATRangingOperationDelegate?
+
+    /**
+        Starts the beacon ranging process.
+     */
     func startRangingForBeacons() {
         activateLocationManagerNotifications()
 
@@ -78,16 +108,22 @@ class NATRanging: NATOperation
         }
     }
 
+    /**
+        Turns on ranging (after all the checks have been passed).
+     */
     func turnOnRanging() {
         locationManager.startRangingBeaconsInRegion(beaconRegion)
 
-        NSLog("Ranging turned on for region: \(beaconRegion)")
+        NSLog("Ranging turned on for beacons in region: \(beaconRegion)")
 
         if delegate != nil {
             delegate!.rangingOperationDidStartSuccessfully()
         }
     }
 
+    /**
+        Stops the ranging process.
+     */
     func stopRangingForBeacons() {
         if locationManager.rangedRegions.count == 0 {
             NSLog("Didn't turn off ranging: Ranging already off.")
@@ -105,22 +141,22 @@ class NATRanging: NATOperation
 }
 
 // MARK: Location manager delegate methods
-extension NATRanging
+extension NATRangingOperation
 {
     func locationManager(manager: CLLocationManager!, didChangeAuthorizationStatus status: CLAuthorizationStatus) {
-        if CLLocationManager.authorizationStatus() == .AuthorizedAlways {
+        if status == .AuthorizedAlways {
             NSLog("Location Access (Always) granted!")
             if delegate != nil {
                 delegate!.rangingOperationDidStartSuccessfully()
             }
             turnOnRanging()
-        } else if CLLocationManager.authorizationStatus() == .AuthorizedWhenInUse {
+        } else if status == .AuthorizedWhenInUse {
             NSLog("Location Access (When In Use) granted!")
             if delegate != nil {
                 delegate!.rangingOperationDidStartSuccessfully()
             }
             turnOnRanging()
-        } else if CLLocationManager.authorizationStatus() == .Denied || CLLocationManager.authorizationStatus() == .Restricted {
+        } else if status == .Denied || status == .Restricted {
             NSLog("Location Access (When In Use) denied!")
             if delegate != nil {
                 delegate!.rangingOperationDidFailToStart()

@@ -27,9 +27,13 @@
 import Foundation
 import UIKit
 
+/// The custom cell that is used for presenting the user with the three possible app operations.
 class NATOperationCell : UITableViewCell
 {
     override func updateConstraints() {
+        // We wouldn't normally need this, since constraints can be set in Interface Builder. However, there seems
+        // to be a bug that removes all constraints from our cells upon dequeueing, so we need to re-add them here.
+        
         contentView.setTranslatesAutoresizingMaskIntoConstraints(false)
 
         let rightMarginConstraint = NSLayoutConstraint(item: accessoryView!, attribute: .Right, relatedBy: .Equal, toItem: self, attribute: .Right, multiplier: 1.0, constant: -14.0)

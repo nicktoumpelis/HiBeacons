@@ -28,18 +28,42 @@ import Foundation
 import UIKit
 import CoreLocation
 
-protocol NATMonitoringDelegate {
+/// Lists the methods that a monitoring delegate should implement to be notified for all monitoring operation events.
+protocol NATMonitoringOperationDelegate
+{
+    /** 
+        Triggered when the monitoring operation has started successfully.
+     */
     func monitoringOperationDidStartSuccessfully()
+
+    /** 
+        Triggered when the monitoring operation has failed to start.
+     */
     func monitoringOperationDidFailToStart()
+
+    /**
+        Triggered when the monitoring operation has failed to start due to the last authorization denial.
+     */
     func monitoringOperationDidFailToStartDueToAuthorization()
-    func monitoringOperationDidStopSuccessfully()
+
+    /**
+        Triggered when the monitoring operation has detected entering the given region.
+
+        :param: region The region that the monitoring operation detected.
+     */
     func monitoringOperationDidDetectEnteringRegion(region: CLBeaconRegion)
 }
 
-class NATMonitoring: NATOperation
+/// NATMonitoringOperation contains all the process logic required to successfully monitor for events related to
+/// detecting a specific beacon region.
+class NATMonitoringOperation: NATOperation
 {
-    var delegate: NATMonitoringDelegate?
+    /// The delegate for a monitoring operation.
+    var delegate: NATMonitoringOperationDelegate?
 
+    /**
+        Starts the beacon region monitoring process.
+     */
     func startMonitoringForBeacons() {
         activateLocationManagerNotifications()
 
@@ -74,6 +98,9 @@ class NATMonitoring: NATOperation
         }
     }
 
+    /**
+        Turns on monitoring (after all the checks have been passed).
+     */
     func turnOnMonitoring() {
         locationManager.startMonitoringForRegion(beaconRegion)
 
@@ -84,28 +111,27 @@ class NATMonitoring: NATOperation
         }
     }
 
+    /**
+        Stops the monitoring process.
+     */
     func stopMonitoringForBeacons() {
         locationManager.stopMonitoringForRegion(beaconRegion)
-
-        if delegate != nil {
-            delegate!.monitoringOperationDidStopSuccessfully()
-        }
         
         NSLog("Turned off monitoring")
     }
 }
 
 // MARK: - Location manager delegate methods
-extension NATMonitoring
+extension NATMonitoringOperation
 {
     func locationManager(manager: CLLocationManager!, didChangeAuthorizationStatus status: CLAuthorizationStatus) {
-        if CLLocationManager.authorizationStatus() == .AuthorizedAlways {
+        if status == .AuthorizedAlways {
             NSLog("Location Access (Always) granted!")
             if delegate != nil {
                 delegate!.monitoringOperationDidStartSuccessfully()
             }
             turnOnMonitoring()
-        } else if CLLocationManager.authorizationStatus() == .AuthorizedWhenInUse || CLLocationManager.authorizationStatus() == .Denied || CLLocationManager.authorizationStatus() == .Restricted {
+        } else if status == .AuthorizedWhenInUse || status == .Denied || status == .Restricted {
             NSLog("Location Access (Always) denied!")
             if delegate != nil {
                 delegate!.monitoringOperationDidFailToStart()
