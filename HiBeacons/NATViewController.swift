@@ -181,23 +181,6 @@ extension NATViewController
 // MARK: - Table view functionality
 extension NATViewController: UITableViewDataSource, UITableViewDelegate
 {
-    func detailsStringForBeacon(beacon: CLBeacon) -> String {
-        var proximity: String
-
-        switch beacon.proximity {
-        case .Near:
-            proximity = "Near"
-        case .Immediate:
-            proximity = "Immediate"
-        case .Far:
-            proximity = "Far"
-        case .Unknown:
-            proximity = "Unknown"
-        }
-
-        return "\(beacon.major), \(beacon.minor) • \(proximity) • \(beacon.accuracy) • \(beacon.rssi)"
-    }
-
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         var cell: UITableViewCell?
 
@@ -226,7 +209,7 @@ extension NATViewController: UITableViewDataSource, UITableViewDelegate
                 cell = UITableViewCell(style: UITableViewCellStyle.Subtitle, reuseIdentifier: kBeaconCellIdentifier)
             }
             cell?.textLabel?.text = beacon.proximityUUID.UUIDString
-            cell?.detailTextLabel?.text = detailsStringForBeacon(beacon)
+            cell?.detailTextLabel?.text = beacon.fullDetails()
             cell?.detailTextLabel?.textColor = UIColor.grayColor()
         }
 
@@ -455,5 +438,26 @@ extension NATViewController: UIAlertViewDelegate
         if buttonIndex == 1 {
             UIApplication.sharedApplication().openURL(NSURL(string: UIApplicationOpenSettingsURLString)!)
         }
+    }
+}
+
+// MARK: - CLBeacon extension
+extension CLBeacon
+{
+    func fullDetails() -> String {
+        let proximityText: String
+
+        switch proximity {
+        case .Near:
+            proximityText = "Near"
+        case .Immediate:
+            proximityText = "Immediate"
+        case .Far:
+            proximityText = "Far"
+        case .Unknown:
+            proximityText = "Unknown"
+        }
+
+        return "\(major), \(minor) •  \(proximityText) • \(accuracy) • \(rssi)"
     }
 }
