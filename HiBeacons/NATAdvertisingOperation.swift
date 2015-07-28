@@ -51,18 +51,14 @@ class NATAdvertisingOperation: NATOperation
     var delegate: NATAdvertisingOperationDelegate?
 
     /// An instance of a CBPeripheralManager, which is used for advertising a beacon to nearby devices.
-    var peripheralManager: CBPeripheralManager?
+    var peripheralManager = CBPeripheralManager(delegate: nil, queue: nil, options: nil)
 
     /**
         Starts the beacon advertising process.
      */
     func startAdvertisingBeacon() {
         NSLog("Turning on advertising...")
-
-        if peripheralManager == nil {
-            peripheralManager = CBPeripheralManager(delegate: self, queue: nil, options: nil)
-        }
-
+        
         if peripheralManager?.state != .PoweredOn {
             NSLog("Peripheral manager is off.")
             if delegate != nil {
@@ -70,6 +66,8 @@ class NATAdvertisingOperation: NATOperation
             }
             return
         }
+
+        activatePeripheralManagerNotifications();
 
         turnOnAdvertising()
     }
@@ -94,7 +92,25 @@ class NATAdvertisingOperation: NATOperation
     func stopAdvertisingBeacon() {
         peripheralManager?.stopAdvertising()
 
+        deactivatePeripheralManagerNotifications();
+
         NSLog("Turned off advertising.")
+    }
+
+    /**
+        Sets the peripheral manager delegate to self. It is called when an instance is ready to process peripheral
+        manager delegate calls.
+    */
+    func activatePeripheralManagerNotifications() {
+        peripheralManager.delegate = self;
+    }
+
+    /**
+        Sets the peripheral manager delegate to nil. It is called when an instance is ready to stop processing 
+        peripheral manager delegate calls.
+    */
+    func deactivatePeripheralManagerNotifications() {
+        peripheralManager.delegate = nil;
     }
 }
 
@@ -118,15 +134,14 @@ extension NATAdvertisingOperation: CBPeripheralManagerDelegate
     }
 
     func peripheralManagerDidUpdateState(peripheral: CBPeripheralManager!) {
-        if peripheralManager?.state != .PoweredOn {
+        if peripheralManager?.state == .PoweredOff {
             NSLog("Peripheral manager is off.")
             if delegate != nil {
                 delegate!.advertisingOperationDidFailToStart()
             }
-            return
+        } else if peripheralManager.state == .PoweredOn {
+            NSLog("Peripheral manager is on.")
+            turnOnAdvertising()
         }
-
-        NSLog("Peripheral manager is on.")
-        turnOnAdvertising()
     }
 }

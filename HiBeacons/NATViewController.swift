@@ -491,6 +491,13 @@ extension NATViewController: NATAdvertisingOperationDelegate
         Triggered by the advertising operation when ithas failed to start and turns the advertising switch off.
      */
     func advertisingOperationDidFailToStart() {
+        let title = "Bluetooth is off"
+        let message = "It seems that Bluetooth is off. For advertising to work, please turn Bluetooth on."
+        let cancelButtonTitle = "OK"
+
+        let alert = UIAlertView(title: title, message: message, delegate: self, cancelButtonTitle: cancelButtonTitle)
+        alert.show()
+
         advertisingSwitch?.on = false
     }
 }
