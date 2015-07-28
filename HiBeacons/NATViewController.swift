@@ -566,7 +566,7 @@ extension NATViewController: NATRangingOperationDelegate
         let filteredBeacons: Array<CLBeacon> = self.filteredBeacons(beacons as! Array<CLBeacon>)
 
         if filteredBeacons.count == 0 {
-            NSLog("No beacons found nearby.")
+            println("No beacons found nearby.")
         } else {
             var beaconsString: String
 
@@ -575,7 +575,7 @@ extension NATViewController: NATRangingOperationDelegate
             } else {
                 beaconsString = "beacon"
             }
-            NSLog("Found \(filteredBeacons.count) " + beaconsString + ".")
+            println("Found \(filteredBeacons.count) " + beaconsString + ".")
         }
 
         var insertedRows: Array<NSIndexPath>? = indexPathsOfInsertedBeacons(filteredBeacons)
