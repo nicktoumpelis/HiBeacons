@@ -544,12 +544,11 @@ extension NATViewController: NATRangingOperationDelegate
         that the ranging has stopped.
      */
     func rangingOperationDidStopSuccessfully() {
-        var deletedSections = self.deletedSections()
         detectedBeacons = []
 
         beaconTableView?.beginUpdates()
-        if deletedSections != nil {
-            beaconTableView?.deleteSections(deletedSections!, withRowAnimation: UITableViewRowAnimation.Fade)
+        if let deletedSections = self.deletedSections() {
+            beaconTableView?.deleteSections(deletedSections, withRowAnimation: UITableViewRowAnimation.Fade)
         }
         beaconTableView?.endUpdates()
     }
@@ -563,24 +562,24 @@ extension NATViewController: NATRangingOperationDelegate
         :param: region A provided region whose beacons the operation is trying to range.
      */
     func rangingOperationDidRangeBeacons(beacons: [AnyObject]!, inRegion region: CLBeaconRegion!) {
-        let filteredBeacons: Array<CLBeacon> = self.filteredBeacons(beacons as! Array<CLBeacon>)
+        let filteredBeacons = self.filteredBeacons(beacons as! [CLBeacon])
 
         if filteredBeacons.count == 0 {
             println("No beacons found nearby.")
         } else {
-            var beaconsString: String
+            let beaconsString: String
 
             if filteredBeacons.count > 1 {
                 beaconsString = "beacons"
             } else {
                 beaconsString = "beacon"
             }
-            println("Found \(filteredBeacons.count) " + beaconsString + ".")
+            println("Found \(filteredBeacons.count) \(beaconsString).")
         }
 
-        var insertedRows: Array<NSIndexPath>? = indexPathsOfInsertedBeacons(filteredBeacons)
-        var deletedRows: Array<NSIndexPath>? = indexPathsOfRemovedBeacons(filteredBeacons)
-        var reloadedRows: Array<NSIndexPath>?
+        var insertedRows = indexPathsOfInsertedBeacons(filteredBeacons)
+        var deletedRows = indexPathsOfRemovedBeacons(filteredBeacons)
+        var reloadedRows: [NSIndexPath]?
         if deletedRows == nil && insertedRows == nil {
             reloadedRows = indexPathsForBeacons(filteredBeacons)
         }
