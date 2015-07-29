@@ -39,26 +39,10 @@ class NATViewController: UIViewController
 
     // Constants
 
-    /// The operation table view cell identifier.
-    private let kOperationCellIdentifier = "OperationCell"
-    /// The beacon table view cell identifier.
-    private let kBeaconCellIdentifier = "BeaconCell"
-
-    /// The monitoring table view cell title.
-    private let kMonitoringCellTitle = "Monitoring"
-    /// The advertising table view cell title.
-    private let kAdvertisingCellTitle = "Advertising"
-    /// The ranging table view cell title.
-    private let kRangingCellTitle = "Ranging"
-
     /// The maximum number of table view sections (when ranged beacons are included).
     private let kMaxNumberOfSections = 2
     /// The number of possible operations.
     private let kNumberOfAvailableOperations = 3
-    /// The standard height of the operation table view cell.
-    private let kOperationCellHeight: CGFloat = 44.0
-    /// The standard height of the beacon table view cell.
-    private let kBeaconCellHeight: CGFloat = 52.0
 
     /// The title for the beacon ranging table view section.
     private let kBeaconSectionTitle = "Looking for beacons..."
@@ -79,6 +63,34 @@ class NATViewController: UIViewController
     private enum NTSectionType: Int {
         case Operations = 0
         case DetectedBeacons
+
+        /**
+            Returns the table view cell identifier that corresponds to the section type.
+        
+            :returns: The table view cell identifier.
+         */
+        func cellIdentifier() -> String {
+            switch self {
+            case .Operations:
+                return "OperationCell"
+            case .DetectedBeacons:
+                return "BeaconCell"
+            }
+        }
+
+        /**
+            Returns the table view cell height that corresponds to the section type.
+        
+            :returns: The table view cell height.
+         */
+        func tableViewCellHeight() -> CGFloat {
+            switch self {
+            case .Operations:
+                return 44.0
+            case .DetectedBeacons:
+                return 52.0
+            }
+        }
     }
 
     /**
@@ -92,6 +104,22 @@ class NATViewController: UIViewController
         case Monitoring = 0
         case Advertising
         case Ranging
+
+        /**
+            Returns the table view cell title that corresponds to the specific operations row.
+            
+            :returns: A title for the table view cell label.
+         */
+        func tableViewCellTitle() -> String {
+            switch self {
+            case .Monitoring:
+                return "Monitoring"
+            case .Advertising:
+                return "Advertising"
+            case .Ranging:
+                return "Ranging"
+            }
+        }
     }
 
 
@@ -272,22 +300,21 @@ extension NATViewController
 extension NATViewController: UITableViewDataSource, UITableViewDelegate
 {
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        var cell: UITableViewCell?
+        let cellIdentifier = NTSectionType(rawValue: indexPath.section)?.cellIdentifier()
+        var cell: UITableViewCell? = tableView.dequeueReusableCellWithIdentifier(cellIdentifier!) as? UITableViewCell
 
         switch indexPath.section {
         case NTSectionType.Operations.rawValue:
-            cell = tableView.dequeueReusableCellWithIdentifier(kOperationCellIdentifier) as? UITableViewCell
+            cell?.textLabel?.text = NTOperationsRow(rawValue: indexPath.row)?.tableViewCellTitle()
+
             switch indexPath.row {
             case NTOperationsRow.Monitoring.rawValue:
-                cell?.textLabel?.text = kMonitoringCellTitle
                 monitoringSwitch = cell?.accessoryView as? UISwitch
                 monitoringSwitch?.addTarget(self, action: "changeMonitoringState:", forControlEvents: UIControlEvents.ValueChanged)
             case NTOperationsRow.Advertising.rawValue:
-                cell?.textLabel?.text = kAdvertisingCellTitle
                 advertisingSwitch = cell?.accessoryView as? UISwitch
                 advertisingSwitch?.addTarget(self, action: "changeAdvertisingState:", forControlEvents: UIControlEvents.ValueChanged)
             case NTOperationsRow.Ranging.rawValue:
-                cell?.textLabel?.text = kRangingCellTitle
                 rangingSwitch = cell?.accessoryView as? UISwitch
                 rangingSwitch?.addTarget(self, action: "changeRangingState:", forControlEvents: UIControlEvents.ValueChanged)
             default:
@@ -296,9 +323,8 @@ extension NATViewController: UITableViewDataSource, UITableViewDelegate
         case NTSectionType.DetectedBeacons.rawValue:
             var beacon = detectedBeacons[indexPath.row]
 
-            cell = tableView.dequeueReusableCellWithIdentifier(kBeaconCellIdentifier) as? UITableViewCell
             if cell == nil {
-                cell = UITableViewCell(style: UITableViewCellStyle.Subtitle, reuseIdentifier: kBeaconCellIdentifier)
+                cell = UITableViewCell(style: UITableViewCellStyle.Subtitle, reuseIdentifier: cellIdentifier)
             }
             cell?.textLabel?.text = beacon.proximityUUID.UUIDString
             cell?.detailTextLabel?.text = beacon.fullDetails()
@@ -346,14 +372,7 @@ extension NATViewController: UITableViewDataSource, UITableViewDelegate
     }
 
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        switch (indexPath.section) {
-        case NTSectionType.Operations.rawValue:
-            return kOperationCellHeight
-        case NTSectionType.DetectedBeacons.rawValue:
-            return kBeaconCellHeight
-        default:
-            return 0.0
-        }
+        return NTSectionType(rawValue: indexPath.section)!.tableViewCellHeight()
     }
 
     func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
