@@ -61,9 +61,7 @@ class NATAdvertisingOperation: NATOperation
         
         if peripheralManager?.state != .PoweredOn {
             println("Peripheral manager is off.")
-            if delegate != nil {
-                delegate!.advertisingOperationDidFailToStart()
-            }
+            delegate?.advertisingOperationDidFailToStart()
             return
         }
 
@@ -120,25 +118,19 @@ extension NATAdvertisingOperation: CBPeripheralManagerDelegate
     func peripheralManagerDidStartAdvertising(peripheral: CBPeripheralManager!, error: NSError!) {
         if error != nil {
             println("Couldn't turn on advertising: \(error)")
-            if delegate != nil {
-                delegate!.advertisingOperationDidFailToStart()
-            }
+            delegate?.advertisingOperationDidFailToStart()
         }
 
         if peripheralManager!.isAdvertising {
             println("Turned on advertising.")
-            if delegate != nil {
-                delegate!.advertisingOperationDidStartSuccessfully()
-            }
+            delegate?.advertisingOperationDidStartSuccessfully()
         }
     }
 
     func peripheralManagerDidUpdateState(peripheral: CBPeripheralManager!) {
         if peripheralManager?.state == .PoweredOff {
             println("Peripheral manager is off.")
-            if delegate != nil {
-                delegate!.advertisingOperationDidFailToStart()
-            }
+            delegate?.advertisingOperationDidFailToStart()
         } else if peripheralManager.state == .PoweredOn {
             println("Peripheral manager is on.")
             turnOnAdvertising()

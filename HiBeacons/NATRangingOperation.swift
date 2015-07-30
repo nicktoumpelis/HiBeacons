@@ -76,17 +76,13 @@ class NATRangingOperation: NATOperation
 
         if !CLLocationManager.locationServicesEnabled() {
             println("Couldn't turn on ranging: Location services are not enabled.")
-            if delegate != nil {
-                delegate!.rangingOperationDidFailToStart()
-            }
+            delegate?.rangingOperationDidFailToStart()
             return
         }
 
         if !CLLocationManager.isRangingAvailable() {
             println("Couldn't turn on ranging: Ranging is not available.")
-            if delegate != nil {
-                delegate!.rangingOperationDidFailToStart()
-            }
+            delegate?.rangingOperationDidFailToStart()
             return
         }
 
@@ -100,9 +96,7 @@ class NATRangingOperation: NATOperation
             turnOnRanging()
         case .Denied, .Restricted:
             println("Couldn't turn on ranging: Required Location Access (When In Use) missing.")
-            if delegate != nil {
-                delegate!.rangingOperationDidFailToStartDueToAuthorization()
-            }
+            delegate?.rangingOperationDidFailToStartDueToAuthorization()
         case .NotDetermined:
             locationManager.requestWhenInUseAuthorization()
         }
@@ -113,12 +107,8 @@ class NATRangingOperation: NATOperation
      */
     func turnOnRanging() {
         locationManager.startRangingBeaconsInRegion(beaconRegion)
-
         println("Ranging turned on for beacons in region: \(beaconRegion)")
-
-        if delegate != nil {
-            delegate!.rangingOperationDidStartSuccessfully()
-        }
+        delegate?.rangingOperationDidStartSuccessfully()
     }
 
     /**
@@ -132,9 +122,7 @@ class NATRangingOperation: NATOperation
 
         locationManager.stopRangingBeaconsInRegion(beaconRegion)
 
-        if delegate != nil {
-            delegate!.rangingOperationDidStopSuccessfully()
-        }
+        delegate?.rangingOperationDidStopSuccessfully()
         
         println("Turned off ranging.")
     }
@@ -146,27 +134,19 @@ extension NATRangingOperation
     func locationManager(manager: CLLocationManager!, didChangeAuthorizationStatus status: CLAuthorizationStatus) {
         if status == .AuthorizedAlways {
             println("Location Access (Always) granted!")
-            if delegate != nil {
-                delegate!.rangingOperationDidStartSuccessfully()
-            }
+            delegate?.rangingOperationDidStartSuccessfully()
             turnOnRanging()
         } else if status == .AuthorizedWhenInUse {
             println("Location Access (When In Use) granted!")
-            if delegate != nil {
-                delegate!.rangingOperationDidStartSuccessfully()
-            }
+            delegate?.rangingOperationDidStartSuccessfully()
             turnOnRanging()
         } else if status == .Denied || status == .Restricted {
             println("Location Access (When In Use) denied!")
-            if delegate != nil {
-                delegate!.rangingOperationDidFailToStart()
-            }
+            delegate?.rangingOperationDidFailToStart()
         }
     }
     
     func locationManager(manager: CLLocationManager!, didRangeBeacons beacons: [AnyObject]!, inRegion region: CLBeaconRegion!) {
-        if delegate != nil {
-            delegate!.rangingOperationDidRangeBeacons(beacons, inRegion: region)
-        }
+        delegate?.rangingOperationDidRangeBeacons(beacons, inRegion: region)
     }
 }

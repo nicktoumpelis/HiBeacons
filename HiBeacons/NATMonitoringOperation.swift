@@ -71,17 +71,13 @@ class NATMonitoringOperation: NATOperation
 
         if !CLLocationManager.locationServicesEnabled() {
             println("Couldn't turn on monitoring: Location services are not enabled.")
-            if delegate != nil {
-                delegate!.monitoringOperationDidFailToStart()
-            }
+            delegate?.monitoringOperationDidFailToStart()
             return
         }
 
         if CLLocationManager.isMonitoringAvailableForClass(CLBeaconRegion.Type) {
             println("Couldn't turn on region monitoring: Region monitoring is not available for CLBeaconRegion class.")
-            if delegate != nil {
-                delegate!.monitoringOperationDidFailToStart()
-            }
+            delegate?.monitoringOperationDidFailToStart()
             return
         }
 
@@ -90,9 +86,7 @@ class NATMonitoringOperation: NATOperation
             turnOnMonitoring()
         case .AuthorizedWhenInUse, .Denied, .Restricted:
             println("Couldn't turn on monitoring: Required Location Access (Always) missing.")
-            if delegate != nil {
-                delegate!.monitoringOperationDidFailToStartDueToAuthorization()
-            }
+            delegate?.monitoringOperationDidFailToStartDueToAuthorization()
         case .NotDetermined:
             locationManager.requestAlwaysAuthorization()
         }
@@ -103,12 +97,8 @@ class NATMonitoringOperation: NATOperation
      */
     func turnOnMonitoring() {
         locationManager.startMonitoringForRegion(beaconRegion)
-
         println("Monitoring turned on for region: \(beaconRegion)")
-
-        if delegate != nil {
-            delegate!.monitoringOperationDidStartSuccessfully()
-        }
+        delegate?.monitoringOperationDidStartSuccessfully()
     }
 
     /**
@@ -127,24 +117,17 @@ extension NATMonitoringOperation
     func locationManager(manager: CLLocationManager!, didChangeAuthorizationStatus status: CLAuthorizationStatus) {
         if status == .AuthorizedAlways {
             println("Location Access (Always) granted!")
-            if delegate != nil {
-                delegate!.monitoringOperationDidStartSuccessfully()
-            }
+            delegate?.monitoringOperationDidStartSuccessfully()
             turnOnMonitoring()
         } else if status == .AuthorizedWhenInUse || status == .Denied || status == .Restricted {
             println("Location Access (Always) denied!")
-            if delegate != nil {
-                delegate!.monitoringOperationDidFailToStart()
-            }
+            delegate?.monitoringOperationDidFailToStart()
         }
     }
 
     func locationManager(manager: CLLocationManager!, didEnterRegion region: CLRegion!) {
         println("Entered region: \(region)")
-
-        if delegate != nil {
-            delegate!.monitoringOperationDidDetectEnteringRegion(region as! CLBeaconRegion)
-        }
+        delegate?.monitoringOperationDidDetectEnteringRegion(region as! CLBeaconRegion)
     }
 
     func locationManager(manager: CLLocationManager!, didExitRegion region: CLRegion!) {
