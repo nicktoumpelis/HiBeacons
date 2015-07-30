@@ -184,7 +184,7 @@ extension NATViewController
                 if indexPaths == nil {
                     indexPaths = []
                 }
-                indexPaths?.append(NSIndexPath(forRow: row, inSection: NTSectionType.DetectedBeacons.rawValue))
+                indexPaths!.append(NSIndexPath(forRow: row, inSection: NTSectionType.DetectedBeacons.rawValue))
             }
             row++
         }
@@ -326,9 +326,9 @@ extension NATViewController: UITableViewDataSource, UITableViewDelegate
             if cell == nil {
                 cell = UITableViewCell(style: UITableViewCellStyle.Subtitle, reuseIdentifier: cellIdentifier)
             }
-            cell?.textLabel?.text = beacon.proximityUUID.UUIDString
-            cell?.detailTextLabel?.text = beacon.fullDetails()
-            cell?.detailTextLabel?.textColor = UIColor.grayColor()
+            cell!.textLabel?.text = beacon.proximityUUID.UUIDString
+            cell!.detailTextLabel?.text = beacon.fullDetails()
+            cell!.detailTextLabel?.textColor = UIColor.grayColor()
         default:
             break
         }
