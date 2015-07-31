@@ -26,8 +26,6 @@
 	<true/>
 	<key>NSLocationAlwaysUsageDescription</key>
 	<string>This is required for monitoring.</string>
-	<key>NSLocationUsageDescription</key>
-	<string>This is required for monitoring and ranging.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>This is required for ranging.</string>
 	<key>UIBackgroundModes</key>
