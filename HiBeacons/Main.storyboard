@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7706" systemVersion="14E46" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="vXZ-lx-hvc">
     <dependencies>
-        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
         <!--View Controller-->
@@ -19,7 +19,7 @@
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" translatesAutoresizingMaskIntoConstraints="NO" id="CS9-7M-geh">
                                 <rect key="frame" x="0.0" y="64" width="320" height="504"/>
-                                <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                                <color key="backgroundColor" red="0.93725490196078431" green="0.93725490196078431" blue="0.95686274509803926" alpha="1" colorSpace="calibratedRGB"/>
                                 <prototypes>
                                     <tableViewCell autoresizesSubviews="NO" contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="OperationCell" id="ed8-eW-a13" customClass="NATOperationCell" customModule="HiBeacons" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="55" width="320" height="44"/>
@@ -28,13 +28,27 @@
                                             <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <switch autoresizesSubviews="NO" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="8Ua-PS-yVS">
+                                                <switch autoresizesSubviews="NO" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="8Ua-PS-yVS">
                                                     <rect key="frame" x="251" y="7" width="51" height="31"/>
                                                 </switch>
+                                                <activityIndicatorView hidden="YES" autoresizesSubviews="NO" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="PUx-Gi-ZfD">
+                                                    <rect key="frame" x="223" y="12" width="20" height="20"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="20" placeholder="YES" id="B3f-So-FPG"/>
+                                                        <constraint firstAttribute="width" constant="20" placeholder="YES" id="Huk-41-Lxy"/>
+                                                    </constraints>
+                                                </activityIndicatorView>
                                             </subviews>
+                                            <constraints>
+                                                <constraint firstAttribute="trailingMargin" secondItem="8Ua-PS-yVS" secondAttribute="trailing" constant="12" placeholder="YES" id="1tk-VO-4iB"/>
+                                                <constraint firstAttribute="trailingMargin" secondItem="PUx-Gi-ZfD" secondAttribute="trailing" constant="69" placeholder="YES" id="8Oc-yc-usy"/>
+                                                <constraint firstItem="8Ua-PS-yVS" firstAttribute="top" secondItem="8Lt-Vb-O3A" secondAttribute="topMargin" constant="-1" placeholder="YES" id="LSa-kk-qAr"/>
+                                                <constraint firstItem="PUx-Gi-ZfD" firstAttribute="top" secondItem="8Lt-Vb-O3A" secondAttribute="topMargin" constant="4" placeholder="YES" id="ZmG-mV-lgK"/>
+                                            </constraints>
                                         </tableViewCellContentView>
                                         <connections>
                                             <outlet property="accessoryView" destination="8Ua-PS-yVS" id="NLf-S0-v40"/>
+                                            <outlet property="activityIndicator" destination="PUx-Gi-ZfD" id="nW0-Zn-vwR"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>

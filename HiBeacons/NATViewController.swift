@@ -145,6 +145,11 @@ class NATViewController: UIViewController
     /// The UISwitch instance associated with the ranging cell.
     private var rangingSwitch: UISwitch?
 
+    /// The UIActivityIndicatorView that shows whether monitoring is active.
+    private var monitoringActivityIndicator: UIActivityIndicatorView?
+    /// The UIActivityIndicatorView that shows whether advertising is active.
+    private var advertisingActivityIndicator: UIActivityIndicatorView?
+
     required init(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
 
@@ -301,15 +306,26 @@ extension NATViewController: UITableViewDataSource, UITableViewDelegate
 
         switch indexPath.section {
         case NTSectionType.Operations.rawValue:
+            var operationCell = cell as! NATOperationCell
             cell?.textLabel?.text = NTOperationsRow(rawValue: indexPath.row)?.tableViewCellTitle()
 
             switch indexPath.row {
             case NTOperationsRow.Monitoring.rawValue:
-                monitoringSwitch = cell?.accessoryView as? UISwitch
+                monitoringSwitch = operationCell.accessoryView as? UISwitch
+                monitoringActivityIndicator = operationCell.activityIndicator
                 monitoringSwitch?.addTarget(self, action: "changeMonitoringState:", forControlEvents: UIControlEvents.ValueChanged)
+
+                if (monitoringSwitch!.on) {
+                    monitoringActivityIndicator?.startAnimating()
+                }
             case NTOperationsRow.Advertising.rawValue:
-                advertisingSwitch = cell?.accessoryView as? UISwitch
+                advertisingSwitch = operationCell.accessoryView as? UISwitch
+                advertisingActivityIndicator = operationCell.activityIndicator
                 advertisingSwitch?.addTarget(self, action: "changeAdvertisingState:", forControlEvents: UIControlEvents.ValueChanged)
+
+                if (advertisingSwitch!.on) {
+                    advertisingActivityIndicator?.startAnimating()
+                }
             case NTOperationsRow.Ranging.rawValue:
                 rangingSwitch = cell?.accessoryView as? UISwitch
                 rangingSwitch?.addTarget(self, action: "changeRangingState:", forControlEvents: UIControlEvents.ValueChanged)
@@ -432,10 +448,19 @@ extension NATViewController
 extension NATViewController: NATMonitoringOperationDelegate
 {
     /**
-        Triggered by the monitoring operation when it has started successfully and turns the monitoring switch on.
+        Triggered by the monitoring operation when it has started successfully and turns the monitoring switch and
+        activity indicator on.
      */
     func monitoringOperationDidStartSuccessfully() {
         monitoringSwitch?.on = true
+        monitoringActivityIndicator?.startAnimating()
+    }
+
+    /**
+        Triggered by the monitoring operation when it has stopped successfully and turns the activity indicator off.
+     */
+    func monitoringOperationDidStopSuccessfully() {
+        monitoringActivityIndicator?.stopAnimating()
     }
 
     /**
@@ -495,10 +520,19 @@ extension NATViewController: NATMonitoringOperationDelegate
 extension NATViewController: NATAdvertisingOperationDelegate
 {
     /**
-        Triggered by the advertising operation when it has started successfully and turns the advertising switch on.
+        Triggered by the advertising operation when it has started successfully and turns the advertising switch and the
+        activity indicator on.
      */
     func advertisingOperationDidStartSuccessfully() {
         advertisingSwitch?.on = true
+        advertisingActivityIndicator?.startAnimating()
+    }
+
+    /**
+        Triggered by the advertising operation when it has stopped successfully and turns the activity indicator off.
+     */
+    func advertisingOperationDidStopSuccessfully() {
+        advertisingActivityIndicator?.stopAnimating()
     }
 
     /**

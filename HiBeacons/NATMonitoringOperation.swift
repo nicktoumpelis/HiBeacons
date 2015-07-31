@@ -36,6 +36,11 @@ protocol NATMonitoringOperationDelegate
      */
     func monitoringOperationDidStartSuccessfully()
 
+    /**
+        Triggered by the monitoring operation when it has stopped successfully.
+     */
+    func monitoringOperationDidStopSuccessfully()
+
     /** 
         Triggered when the monitoring operation has failed to start.
      */
@@ -106,8 +111,8 @@ class NATMonitoringOperation: NATOperation
      */
     func stopMonitoringForBeacons() {
         locationManager.stopMonitoringForRegion(beaconRegion)
-        
         println("Turned off monitoring")
+        delegate?.monitoringOperationDidStopSuccessfully()
     }
 }
 

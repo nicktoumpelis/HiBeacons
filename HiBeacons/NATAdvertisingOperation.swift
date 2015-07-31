@@ -36,6 +36,11 @@ protocol NATAdvertisingOperationDelegate
      */
     func advertisingOperationDidStartSuccessfully()
 
+    /**
+        Triggered by the advertising operation when it has stopped successfully.
+     */
+    func advertisingOperationDidStopSuccessfully()
+
     /** 
         Triggered when the advertising operation has failed to start.
      */
@@ -89,10 +94,9 @@ class NATAdvertisingOperation: NATOperation
      */
     func stopAdvertisingBeacon() {
         peripheralManager?.stopAdvertising()
-
         deactivatePeripheralManagerNotifications();
-
         println("Turned off advertising.")
+        delegate?.advertisingOperationDidStopSuccessfully()
     }
 
     /**
