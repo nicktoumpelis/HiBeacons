@@ -86,7 +86,7 @@ class NATRangingOperation: NATOperation
             return
         }
 
-        if locationManager.rangedRegions.count > 0 {
+        if !locationManager.rangedRegions.isEmpty {
             println("Didn't turn on ranging: Ranging already on.")
             return
         }
@@ -115,7 +115,7 @@ class NATRangingOperation: NATOperation
         Stops the ranging process.
      */
     func stopRangingForBeacons() {
-        if locationManager.rangedRegions.count == 0 {
+        if locationManager.rangedRegions.isEmpty {
             println("Didn't turn off ranging: Ranging already off.")
             return
         }

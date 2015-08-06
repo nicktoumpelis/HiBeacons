@@ -612,7 +612,7 @@ extension NATViewController: NATRangingOperationDelegate
     func rangingOperationDidRangeBeacons(beacons: [AnyObject]!, inRegion region: CLBeaconRegion!) {
         let filteredBeacons = self.filteredBeacons(beacons as! [CLBeacon])
 
-        if filteredBeacons.count == 0 {
+        if filteredBeacons.isEmpty {
             println("No beacons found nearby.")
         } else {
             let beaconsString: String
