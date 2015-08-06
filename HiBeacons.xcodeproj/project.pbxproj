@@ -7,6 +7,14 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		CF2A010A1B732939002110C1 /* InterfaceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF2A01091B732939002110C1 /* InterfaceController.swift */; };
+		CF2A010C1B732939002110C1 /* NotificationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF2A010B1B732939002110C1 /* NotificationController.swift */; };
+		CF2A010E1B732939002110C1 /* GlanceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF2A010D1B732939002110C1 /* GlanceController.swift */; };
+		CF2A01101B732939002110C1 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CF2A010F1B732939002110C1 /* Images.xcassets */; };
+		CF2A01141B732939002110C1 /* HiBeacons WatchKit App.app in Resources */ = {isa = PBXBuildFile; fileRef = CF2A01131B732939002110C1 /* HiBeacons WatchKit App.app */; };
+		CF2A011C1B732939002110C1 /* Interface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CF2A011A1B732939002110C1 /* Interface.storyboard */; };
+		CF2A011E1B732939002110C1 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CF2A011D1B732939002110C1 /* Images.xcassets */; };
+		CF2A01211B732939002110C1 /* HiBeacons WatchKit Extension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = CF2A01041B732939002110C1 /* HiBeacons WatchKit Extension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		CF2BC92D18019D6100C66D15 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = CF2BC92B18019D6100C66D15 /* InfoPlist.strings */; };
 		CF2BC93518019D6100C66D15 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CF2BC93418019D6100C66D15 /* Images.xcassets */; };
 		CF2BC9521801A09D00C66D15 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CF2BC9511801A09D00C66D15 /* Main.storyboard */; };
@@ -20,7 +28,49 @@
 		CFE8B4861B655E4E008CB9A4 /* NATAdvertisingOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFE8B4851B655E4E008CB9A4 /* NATAdvertisingOperation.swift */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		CF2A01151B732939002110C1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = CF2BC91718019D6100C66D15 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = CF2A01121B732939002110C1;
+			remoteInfo = "HiBeacons WatchKit App";
+		};
+		CF2A011F1B732939002110C1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = CF2BC91718019D6100C66D15 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = CF2A01031B732939002110C1;
+			remoteInfo = "HiBeacons WatchKit Extension";
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		CF2A01281B732939002110C1 /* Embed App Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				CF2A01211B732939002110C1 /* HiBeacons WatchKit Extension.appex in Embed App Extensions */,
+			);
+			name = "Embed App Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
+		CF2A01041B732939002110C1 /* HiBeacons WatchKit Extension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "HiBeacons WatchKit Extension.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
+		CF2A01071B732939002110C1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		CF2A01081B732939002110C1 /* PushNotificationPayload.apns */ = {isa = PBXFileReference; lastKnownFileType = text; path = PushNotificationPayload.apns; sourceTree = "<group>"; };
+		CF2A01091B732939002110C1 /* InterfaceController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InterfaceController.swift; sourceTree = "<group>"; };
+		CF2A010B1B732939002110C1 /* NotificationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationController.swift; sourceTree = "<group>"; };
+		CF2A010D1B732939002110C1 /* GlanceController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlanceController.swift; sourceTree = "<group>"; };
+		CF2A010F1B732939002110C1 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		CF2A01131B732939002110C1 /* HiBeacons WatchKit App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "HiBeacons WatchKit App.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		CF2A01191B732939002110C1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		CF2A011B1B732939002110C1 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Interface.storyboard; sourceTree = "<group>"; };
+		CF2A011D1B732939002110C1 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		CF2BC91F18019D6100C66D15 /* HiBeacons.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HiBeacons.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CF2BC92A18019D6100C66D15 /* HiBeacons-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "HiBeacons-Info.plist"; sourceTree = "<group>"; };
 		CF2BC92C18019D6100C66D15 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
@@ -37,6 +87,13 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		CF2A01011B732939002110C1 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		CF2BC91C18019D6100C66D15 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -47,10 +104,51 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		CF2A01051B732939002110C1 /* HiBeacons WatchKit Extension */ = {
+			isa = PBXGroup;
+			children = (
+				CF2A01091B732939002110C1 /* InterfaceController.swift */,
+				CF2A010B1B732939002110C1 /* NotificationController.swift */,
+				CF2A010D1B732939002110C1 /* GlanceController.swift */,
+				CF2A010F1B732939002110C1 /* Images.xcassets */,
+				CF2A01061B732939002110C1 /* Supporting Files */,
+			);
+			path = "HiBeacons WatchKit Extension";
+			sourceTree = "<group>";
+		};
+		CF2A01061B732939002110C1 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				CF2A01071B732939002110C1 /* Info.plist */,
+				CF2A01081B732939002110C1 /* PushNotificationPayload.apns */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		CF2A01171B732939002110C1 /* HiBeacons WatchKit App */ = {
+			isa = PBXGroup;
+			children = (
+				CF2A011A1B732939002110C1 /* Interface.storyboard */,
+				CF2A011D1B732939002110C1 /* Images.xcassets */,
+				CF2A01181B732939002110C1 /* Supporting Files */,
+			);
+			path = "HiBeacons WatchKit App";
+			sourceTree = "<group>";
+		};
+		CF2A01181B732939002110C1 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				CF2A01191B732939002110C1 /* Info.plist */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
 		CF2BC91618019D6100C66D15 = {
 			isa = PBXGroup;
 			children = (
 				CF2BC92818019D6100C66D15 /* HiBeacons */,
+				CF2A01051B732939002110C1 /* HiBeacons WatchKit Extension */,
+				CF2A01171B732939002110C1 /* HiBeacons WatchKit App */,
 				CF2BC92118019D6100C66D15 /* Frameworks */,
 				CF2BC92018019D6100C66D15 /* Products */,
 			);
@@ -60,6 +158,8 @@
 			isa = PBXGroup;
 			children = (
 				CF2BC91F18019D6100C66D15 /* HiBeacons.app */,
+				CF2A01041B732939002110C1 /* HiBeacons WatchKit Extension.appex */,
+				CF2A01131B732939002110C1 /* HiBeacons WatchKit App.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -117,6 +217,39 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		CF2A01031B732939002110C1 /* HiBeacons WatchKit Extension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = CF2A01271B732939002110C1 /* Build configuration list for PBXNativeTarget "HiBeacons WatchKit Extension" */;
+			buildPhases = (
+				CF2A01001B732939002110C1 /* Sources */,
+				CF2A01011B732939002110C1 /* Frameworks */,
+				CF2A01021B732939002110C1 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				CF2A01161B732939002110C1 /* PBXTargetDependency */,
+			);
+			name = "HiBeacons WatchKit Extension";
+			productName = "HiBeacons WatchKit Extension";
+			productReference = CF2A01041B732939002110C1 /* HiBeacons WatchKit Extension.appex */;
+			productType = "com.apple.product-type.watchkit-extension";
+		};
+		CF2A01121B732939002110C1 /* HiBeacons WatchKit App */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = CF2A01261B732939002110C1 /* Build configuration list for PBXNativeTarget "HiBeacons WatchKit App" */;
+			buildPhases = (
+				CF2A01111B732939002110C1 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "HiBeacons WatchKit App";
+			productName = "HiBeacons WatchKit App";
+			productReference = CF2A01131B732939002110C1 /* HiBeacons WatchKit App.app */;
+			productType = "com.apple.product-type.application.watchapp";
+		};
 		CF2BC91E18019D6100C66D15 /* HiBeacons */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = CF2BC94B18019D6100C66D15 /* Build configuration list for PBXNativeTarget "HiBeacons" */;
@@ -124,10 +257,12 @@
 				CF2BC91B18019D6100C66D15 /* Sources */,
 				CF2BC91C18019D6100C66D15 /* Frameworks */,
 				CF2BC91D18019D6100C66D15 /* Resources */,
+				CF2A01281B732939002110C1 /* Embed App Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				CF2A01201B732939002110C1 /* PBXTargetDependency */,
 			);
 			name = HiBeacons;
 			productName = HiBeacons;
@@ -144,6 +279,13 @@
 				LastUpgradeCheck = 0600;
 				ORGANIZATIONNAME = "Nick Toumpelis";
 				TargetAttributes = {
+					CF2A01031B732939002110C1 = {
+						CreatedOnToolsVersion = 6.4;
+						DevelopmentTeam = P5JZPD83BK;
+					};
+					CF2A01121B732939002110C1 = {
+						CreatedOnToolsVersion = 6.4;
+					};
 					CF2BC91E18019D6100C66D15 = {
 						DevelopmentTeam = P5JZPD83BK;
 						SystemCapabilities = {
@@ -163,6 +305,7 @@
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
+				Base,
 			);
 			mainGroup = CF2BC91618019D6100C66D15;
 			productRefGroup = CF2BC92018019D6100C66D15 /* Products */;
@@ -170,11 +313,31 @@
 			projectRoot = "";
 			targets = (
 				CF2BC91E18019D6100C66D15 /* HiBeacons */,
+				CF2A01031B732939002110C1 /* HiBeacons WatchKit Extension */,
+				CF2A01121B732939002110C1 /* HiBeacons WatchKit App */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		CF2A01021B732939002110C1 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CF2A01101B732939002110C1 /* Images.xcassets in Resources */,
+				CF2A01141B732939002110C1 /* HiBeacons WatchKit App.app in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CF2A01111B732939002110C1 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CF2A011C1B732939002110C1 /* Interface.storyboard in Resources */,
+				CF2A011E1B732939002110C1 /* Images.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		CF2BC91D18019D6100C66D15 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -189,6 +352,16 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		CF2A01001B732939002110C1 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CF2A010C1B732939002110C1 /* NotificationController.swift in Sources */,
+				CF2A010A1B732939002110C1 /* InterfaceController.swift in Sources */,
+				CF2A010E1B732939002110C1 /* GlanceController.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		CF2BC91B18019D6100C66D15 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -205,7 +378,28 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		CF2A01161B732939002110C1 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = CF2A01121B732939002110C1 /* HiBeacons WatchKit App */;
+			targetProxy = CF2A01151B732939002110C1 /* PBXContainerItemProxy */;
+		};
+		CF2A01201B732939002110C1 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = CF2A01031B732939002110C1 /* HiBeacons WatchKit Extension */;
+			targetProxy = CF2A011F1B732939002110C1 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin PBXVariantGroup section */
+		CF2A011A1B732939002110C1 /* Interface.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				CF2A011B1B732939002110C1 /* Base */,
+			);
+			name = Interface.storyboard;
+			sourceTree = "<group>";
+		};
 		CF2BC92B18019D6100C66D15 /* InfoPlist.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -217,6 +411,95 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		CF2A01221B732939002110C1 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				INFOPLIST_FILE = "HiBeacons WatchKit Extension/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				MTL_ENABLE_DEBUG_INFO = YES;
+				PRODUCT_NAME = "${TARGET_NAME}";
+				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		CF2A01231B732939002110C1 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				INFOPLIST_FILE = "HiBeacons WatchKit Extension/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				MTL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_NAME = "${TARGET_NAME}";
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
+		CF2A01241B732939002110C1 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				IBSC_MODULE = HiBeacons_WatchKit_Extension;
+				INFOPLIST_FILE = "HiBeacons WatchKit App/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = 4;
+				"TARGETED_DEVICE_FAMILY[sdk=iphonesimulator*]" = "1,4";
+			};
+			name = Debug;
+		};
+		CF2A01251B732939002110C1 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				IBSC_MODULE = HiBeacons_WatchKit_Extension;
+				INFOPLIST_FILE = "HiBeacons WatchKit App/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = 4;
+				"TARGETED_DEVICE_FAMILY[sdk=iphonesimulator*]" = "1,4";
+			};
+			name = Release;
+		};
 		CF2BC94918019D6100C66D15 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -333,6 +616,22 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		CF2A01261B732939002110C1 /* Build configuration list for PBXNativeTarget "HiBeacons WatchKit App" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CF2A01241B732939002110C1 /* Debug */,
+				CF2A01251B732939002110C1 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		CF2A01271B732939002110C1 /* Build configuration list for PBXNativeTarget "HiBeacons WatchKit Extension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CF2A01221B732939002110C1 /* Debug */,
+				CF2A01231B732939002110C1 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
 		CF2BC91A18019D6100C66D15 /* Build configuration list for PBXProject "HiBeacons" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
