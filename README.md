@@ -1,8 +1,10 @@
 HiBeacons
 =========
-**A Swift demo app for the iBeacons API in iOS 8**
+**A Swift demo app for the iBeacons API in iOS 8, with Apple Watch support**
 
 HiBeacons is a fully functional demo app for the iBeacons API in iOS 8, written in Swift. The app can be used to demonstrate beacon region monitoring, advertising and ranging, simply by toggling on/off three switches in the UI. 
+
+The app also supports the Apple Watch, and implements a basic interface for starting all the operations from a WatchKit app. (The watch app acts as a dumb* remote).
 
 The source is easy to understand and modify. The structure of the app is based on a simple hierarchy of operation classes. There are three `NATOperation` subclasses, each responsible of a specific operation: `NATMonitoringOperation`, `NATAdvertisingOperation`, and `NATRangingOperation`. The app is easy to use with any given proximity UUID and identifier, which can be changed in `NATOperation`.
 
@@ -13,7 +15,10 @@ The main branch of the project is the *swift* branch, but you can still find the
 *The app is fully documented, and should compile with Xcode 6.4 and work correctly on iOS 8.*
 
 ## Screenshot
-![Screenshot](https://raw.github.com/nicktoumpelis/HiBeacons/swift/screenshot.png)
+
+![Screenshot](https://github.com/nicktoumpelis/HiBeacons/blob/swift/screenshot.png)
+
+![Watch-Screenshot](https://github.com/nicktoumpelis/HiBeacons/blob/swift/watch-screenshot.png)
 
 ## Notes
 
@@ -23,6 +28,8 @@ The main branch of the project is the *swift* branch, but you can still find the
 - With advertising turned on, the app will show itself as a beacon on other instances of the app, running on other devices. It cannot range or monitor itself. (It's how the API works.)
 - Major and minor integers are generated randomly every time a new advertising session starts.
 - You can find and set the UUID and identifier for the region in `NATOperation.swift`.
+
+\* The Watch app can trigger actions on the device, but cannot reflect the state of the device, yet.
 
 ## Contact
 
