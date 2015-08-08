@@ -675,6 +675,12 @@ extension NATViewController: UIAlertViewDelegate
 // MARK: Notifications
 extension NATViewController
 {
+    /**
+        Triggers any of the three operations in the app. It effectively reflects the actions taken on the watch
+        by updating the action UI and triggering the operations, based on the updated UI.
+    
+        :param: notification The notification object that caused this method to be called.
+     */
     func performWatchAction(notification: NSNotification) {
         var payload = notification.userInfo as! [String : NSNumber]
 

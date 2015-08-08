@@ -38,10 +38,14 @@ class HiBeaconsInterfaceController: WKInterfaceController
     private var rangingActive = false
 
     let activeBackgroundColor = UIColor(red: 0.0, green: 0.5, blue: 1.0, alpha: 1.0)
-    let inactiveBackgroundColor = UIColor(red: 0.1, green: 0.1, blue: 0.1, alpha: 1.0)
+    let inactiveBackgroundColor = UIColor(red: 0.2, green: 0.2, blue: 0.2, alpha: 1.0)
 
     override func awakeWithContext(context: AnyObject?) {
         super.awakeWithContext(context)
+
+        monitoringButton?.setBackgroundColor(inactiveBackgroundColor)
+        advertisingButton?.setBackgroundColor(inactiveBackgroundColor)
+        rangingButton?.setBackgroundColor(inactiveBackgroundColor)
     }
 
     override func willActivate() {
