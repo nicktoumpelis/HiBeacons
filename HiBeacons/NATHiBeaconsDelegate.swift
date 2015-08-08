@@ -30,9 +30,19 @@ import UIKit
 ///  The app delegate
 @UIApplicationMain class NATHiBeaconsDelegate: UIResponder, UIApplicationDelegate
 {
+    static let NATHiBeaconsWatchNotificationName = "NATHiBeaconsWatchNotificationName"
+
     var window: UIWindow?
 
     func application(application: UIApplication, willFinishLaunchingWithOptions launchOptions: [NSObject : AnyObject]?) -> Bool {
         return true
+    }
+
+    func application(application: UIApplication, handleWatchKitExtensionRequest userInfo: [NSObject : AnyObject]?, reply: (([NSObject : AnyObject]!) -> Void)!) {
+
+        var notificationCenter = NSNotificationCenter.defaultCenter()
+        if let payload = userInfo {
+            notificationCenter.postNotificationName(NATHiBeaconsDelegate.NATHiBeaconsWatchNotificationName, object: self, userInfo: payload)
+        }
     }
 }

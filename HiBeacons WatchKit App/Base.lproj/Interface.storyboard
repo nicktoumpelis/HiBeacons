@@ -8,17 +8,34 @@
         <!--HiBeacons-->
         <scene sceneID="aou-V4-d1y">
             <objects>
-                <controller title="HiBeacons" id="AgC-eL-Hgc" customClass="InterfaceController" customModule="HiBeacons_WatchKit_App" customModuleProvider="target">
+                <controller title="HiBeacons" id="AgC-eL-Hgc" customClass="HiBeaconsInterfaceController" customModule="HiBeacons_WatchKit_Extension">
                     <items>
-                        <group width="1" alignment="left" layout="vertical" spacing="6" id="63r-Mh-aBp">
+                        <group width="1" alignment="left" layout="vertical" spacing="8" id="63r-Mh-aBp">
                             <items>
-                                <button width="1" alignment="left" title="Monitoring" id="KG5-eF-VLt"/>
-                                <button width="1" alignment="left" title="Advertising" id="Wx7-dV-xEW"/>
-                                <button width="1" alignment="left" title="Ranging" id="bKI-DS-9Ql"/>
+                                <button width="1" alignment="left" title="Monitoring" id="KG5-eF-VLt">
+                                    <connections>
+                                        <action selector="toggleMonitoring" destination="AgC-eL-Hgc" id="UGq-ru-kXH"/>
+                                    </connections>
+                                </button>
+                                <button width="1" alignment="left" title="Advertising" id="Wx7-dV-xEW">
+                                    <connections>
+                                        <action selector="toggleAdvertising" destination="AgC-eL-Hgc" id="nlq-3D-1H4"/>
+                                    </connections>
+                                </button>
+                                <button width="1" alignment="left" title="Ranging" id="bKI-DS-9Ql">
+                                    <connections>
+                                        <action selector="toggleRanging" destination="AgC-eL-Hgc" id="S4T-eK-WKN"/>
+                                    </connections>
+                                </button>
                             </items>
-                            <edgeInsets key="margins" left="0.0" right="0.0" top="4" bottom="4"/>
+                            <edgeInsets key="margins" left="0.0" right="0.0" top="6" bottom="6"/>
                         </group>
                     </items>
+                    <connections>
+                        <outlet property="advertisingButton" destination="Wx7-dV-xEW" id="L3x-6g-QZN"/>
+                        <outlet property="monitoringButton" destination="KG5-eF-VLt" id="SDT-XT-jHV"/>
+                        <outlet property="rangingButton" destination="bKI-DS-9Ql" id="ia2-UQ-qux"/>
+                    </connections>
                 </controller>
             </objects>
             <point key="canvasLocation" x="235" y="347"/>
@@ -60,5 +77,5 @@
             <point key="canvasLocation" x="553" y="1001"/>
         </scene>
     </scenes>
-    <color key="tintColor" red="0.40000000596046448" green="0.80000001192092896" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+    <color key="tintColor" red="0.0" green="0.50196081399917603" blue="1" alpha="1" colorSpace="calibratedRGB"/>
 </document>

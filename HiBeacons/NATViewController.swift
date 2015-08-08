@@ -153,10 +153,18 @@ class NATViewController: UIViewController
     required init(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
 
+        let notificationCenter = NSNotificationCenter.defaultCenter()
+        notificationCenter.addObserver(self, selector: "performWatchAction:", name: NATHiBeaconsDelegate.NATHiBeaconsWatchNotificationName, object: nil)
+
         // We need to assign self as a delegate here.
         monitoringOperation.delegate = self
         advertisingOperation.delegate = self
         rangingOperation.delegate = self
+    }
+
+    deinit {
+        let notificationCenter = NSNotificationCenter.defaultCenter()
+        notificationCenter.removeObserver(self)
     }
 }
 
@@ -660,6 +668,25 @@ extension NATViewController: UIAlertViewDelegate
     func alertView(alertView: UIAlertView, didDismissWithButtonIndex buttonIndex: Int) {
         if buttonIndex == 1 {
             UIApplication.sharedApplication().openURL(NSURL(string: UIApplicationOpenSettingsURLString)!)
+        }
+    }
+}
+
+// MARK: Notifications
+extension NATViewController
+{
+    func performWatchAction(notification: NSNotification) {
+        var payload = notification.userInfo as! [String : NSNumber]
+
+        if let monitoringState = payload["Monitoring"] {
+            monitoringSwitch?.on = monitoringState.boolValue
+            changeMonitoringState(monitoringSwitch!)
+        } else if let advertisingState = payload["Advertising"] {
+            advertisingSwitch?.on = advertisingState.boolValue
+            changeAdvertisingState(advertisingSwitch!)
+        } else if let rangingState = payload["Ranging"] {
+            rangingSwitch?.on = rangingState.boolValue
+            changeRangingState(rangingSwitch!)
         }
     }
 }

@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		CF2A010A1B732939002110C1 /* InterfaceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF2A01091B732939002110C1 /* InterfaceController.swift */; };
+		CF2A010A1B732939002110C1 /* HiBeaconsInterfaceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF2A01091B732939002110C1 /* HiBeaconsInterfaceController.swift */; };
 		CF2A010C1B732939002110C1 /* NotificationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF2A010B1B732939002110C1 /* NotificationController.swift */; };
 		CF2A010E1B732939002110C1 /* GlanceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF2A010D1B732939002110C1 /* GlanceController.swift */; };
 		CF2A01101B732939002110C1 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CF2A010F1B732939002110C1 /* Images.xcassets */; };
@@ -63,7 +63,7 @@
 		CF2A01041B732939002110C1 /* HiBeacons WatchKit Extension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "HiBeacons WatchKit Extension.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
 		CF2A01071B732939002110C1 /* HiBeacons-WKExtension-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "HiBeacons-WKExtension-Info.plist"; sourceTree = "<group>"; };
 		CF2A01081B732939002110C1 /* PushNotificationPayload.apns */ = {isa = PBXFileReference; lastKnownFileType = text; path = PushNotificationPayload.apns; sourceTree = "<group>"; };
-		CF2A01091B732939002110C1 /* InterfaceController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InterfaceController.swift; sourceTree = "<group>"; };
+		CF2A01091B732939002110C1 /* HiBeaconsInterfaceController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HiBeaconsInterfaceController.swift; sourceTree = "<group>"; };
 		CF2A010B1B732939002110C1 /* NotificationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationController.swift; sourceTree = "<group>"; };
 		CF2A010D1B732939002110C1 /* GlanceController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlanceController.swift; sourceTree = "<group>"; };
 		CF2A010F1B732939002110C1 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
@@ -107,7 +107,7 @@
 		CF2A01051B732939002110C1 /* HiBeacons WatchKit Extension */ = {
 			isa = PBXGroup;
 			children = (
-				CF2A01091B732939002110C1 /* InterfaceController.swift */,
+				CF2A01091B732939002110C1 /* HiBeaconsInterfaceController.swift */,
 				CF2A010B1B732939002110C1 /* NotificationController.swift */,
 				CF2A010D1B732939002110C1 /* GlanceController.swift */,
 				CF2A010F1B732939002110C1 /* Images.xcassets */,
@@ -358,7 +358,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				CF2A010C1B732939002110C1 /* NotificationController.swift in Sources */,
-				CF2A010A1B732939002110C1 /* InterfaceController.swift in Sources */,
+				CF2A010A1B732939002110C1 /* HiBeaconsInterfaceController.swift in Sources */,
 				CF2A010E1B732939002110C1 /* GlanceController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
