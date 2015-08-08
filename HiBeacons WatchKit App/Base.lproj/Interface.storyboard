@@ -1,21 +1,32 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder.WatchKit.Storyboard" version="3.0" toolsVersion="6724" systemVersion="14A389" targetRuntime="watchKit" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="AgC-eL-Hgc">
+<document type="com.apple.InterfaceBuilder.WatchKit.Storyboard" version="3.0" toolsVersion="7706" systemVersion="14E46" targetRuntime="watchKit" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="AgC-eL-Hgc">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6711"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBWatchKitPlugin" version="3735"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBWatchKitPlugin" version="7701"/>
     </dependencies>
     <scenes>
-        <!--Interface Controller-->
+        <!--HiBeacons-->
         <scene sceneID="aou-V4-d1y">
             <objects>
-                <controller id="AgC-eL-Hgc" customClass="InterfaceController" customModuleProvider="target"/>
+                <controller title="HiBeacons" id="AgC-eL-Hgc" customClass="InterfaceController" customModule="HiBeacons_WatchKit_App" customModuleProvider="target">
+                    <items>
+                        <group width="1" alignment="left" layout="vertical" spacing="6" id="63r-Mh-aBp">
+                            <items>
+                                <button width="1" alignment="left" title="Monitoring" id="KG5-eF-VLt"/>
+                                <button width="1" alignment="left" title="Advertising" id="Wx7-dV-xEW"/>
+                                <button width="1" alignment="left" title="Ranging" id="bKI-DS-9Ql"/>
+                            </items>
+                            <edgeInsets key="margins" left="0.0" right="0.0" top="4" bottom="4"/>
+                        </group>
+                    </items>
+                </controller>
             </objects>
             <point key="canvasLocation" x="235" y="347"/>
         </scene>
         <!--Glance Interface Controller-->
         <scene sceneID="BOz-TT-tkC">
             <objects>
-                <glanceController spacing="0.0" id="0uZ-2p-rRc" customClass="GlanceController" customModuleProvider="target">
+                <glanceController spacing="0.0" id="0uZ-2p-rRc" customClass="GlanceController" customModule="HiBeacons_WatchKit_App" customModuleProvider="target">
                     <items>
                         <group alignment="left" id="t8f-Gd-c4y"/>
                         <group alignment="left" id="uCw-4Q-Ouw"/>
@@ -44,9 +55,10 @@
         <!--Notification Controller-->
         <scene sceneID="KIl-fV-djm">
             <objects>
-                <controller id="gdX-wl-uQE" customClass="NotificationController" customModuleProvider="target"/>
+                <controller id="gdX-wl-uQE" customClass="NotificationController" customModule="HiBeacons_WatchKit_App" customModuleProvider="target"/>
             </objects>
             <point key="canvasLocation" x="553" y="1001"/>
         </scene>
     </scenes>
+    <color key="tintColor" red="0.40000000596046448" green="0.80000001192092896" blue="1" alpha="1" colorSpace="calibratedRGB"/>
 </document>
