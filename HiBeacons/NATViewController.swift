@@ -322,18 +322,12 @@ extension NATViewController: UITableViewDataSource, UITableViewDelegate
                 monitoringSwitch = operationCell.accessoryView as? UISwitch
                 monitoringActivityIndicator = operationCell.activityIndicator
                 monitoringSwitch?.addTarget(self, action: "changeMonitoringState:", forControlEvents: UIControlEvents.ValueChanged)
-
-                if (monitoringSwitch!.on) {
-                    monitoringActivityIndicator?.startAnimating()
-                }
+                monitoringSwitch!.on ? monitoringActivityIndicator?.startAnimating() : monitoringActivityIndicator?.stopAnimating()
             case NTOperationsRow.Advertising.rawValue:
                 advertisingSwitch = operationCell.accessoryView as? UISwitch
                 advertisingActivityIndicator = operationCell.activityIndicator
                 advertisingSwitch?.addTarget(self, action: "changeAdvertisingState:", forControlEvents: UIControlEvents.ValueChanged)
-
-                if (advertisingSwitch!.on) {
-                    advertisingActivityIndicator?.startAnimating()
-                }
+                advertisingSwitch!.on ? advertisingActivityIndicator?.startAnimating() : advertisingActivityIndicator?.stopAnimating()
             case NTOperationsRow.Ranging.rawValue:
                 rangingSwitch = cell?.accessoryView as? UISwitch
                 rangingSwitch?.addTarget(self, action: "changeRangingState:", forControlEvents: UIControlEvents.ValueChanged)
@@ -418,11 +412,7 @@ extension NATViewController
         :param: monitoringSwitch The monitoring UISwitch instance.
      */
     func changeMonitoringState(monitoringSwitch: UISwitch) {
-        if monitoringSwitch.on {
-            monitoringOperation.startMonitoringForBeacons()
-        } else {
-            monitoringOperation.stopMonitoringForBeacons()
-        }
+        monitoringSwitch.on ? monitoringOperation.startMonitoringForBeacons() : monitoringOperation.stopMonitoringForBeacons()
     }
 
     /**
@@ -431,11 +421,7 @@ extension NATViewController
         :param: advertisingSwitch The advertising UISwitch instance.
      */
     func changeAdvertisingState(advertisingSwitch: UISwitch) {
-        if advertisingSwitch.on {
-            advertisingOperation.startAdvertisingBeacon()
-        } else {
-            advertisingOperation.stopAdvertisingBeacon()
-        }
+        advertisingSwitch.on ? advertisingOperation.startAdvertisingBeacon() : advertisingOperation.stopAdvertisingBeacon()
     }
 
     /**
@@ -444,11 +430,7 @@ extension NATViewController
         :param: rangingSwitch The ranging UISwitch instance.
      */
     func changeRangingState(rangingSwitch: UISwitch) {
-        if rangingSwitch.on {
-            rangingOperation.startRangingForBeacons()
-        } else {
-            rangingOperation.stopRangingForBeacons()
-        }
+        rangingSwitch.on ? rangingOperation.startRangingForBeacons() : rangingOperation.stopRangingForBeacons()
     }
 }
 
