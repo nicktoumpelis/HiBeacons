@@ -45,7 +45,7 @@ class NATViewController: UIViewController
     private let kNumberOfAvailableOperations = 3
 
     /// The title for the beacon ranging table view section.
-    private let kBeaconSectionTitle = "Looking for beacons..."
+    private let kBeaconSectionTitle = "Ranging for beacons..."
     /// The position of the activity indicator in the ranging table view header.
     private let kActivityIndicatorPosition = CGPoint(x: 205, y: 12)
     /// The identifier for the beacon ranging table view header.
