@@ -30,7 +30,7 @@ import UIKit
 /// The custom cell that is used for presenting the user with the three possible app operations.
 class NATOperationCell : UITableViewCell
 {
-    @IBOutlet weak var activityIndicator: UIActivityIndicatorView?
+    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     
     override func updateConstraints() {
         // We wouldn't normally need this, since constraints can be set in Interface Builder. However, there seems
@@ -40,10 +40,10 @@ class NATOperationCell : UITableViewCell
 
         let rightAccessoryViewMarginConstraint = NSLayoutConstraint(item: accessoryView!, attribute: .Right, relatedBy: .Equal, toItem: self, attribute: .Right, multiplier: 1.0, constant: -14.0)
         let topAccessoryViewMarginConstraint = NSLayoutConstraint(item: accessoryView!, attribute: .Top, relatedBy: .Equal, toItem: self, attribute: .Top, multiplier: 1.0, constant: 7.0)
-        let activityViewWidthConstraint = NSLayoutConstraint(item: activityIndicator!, attribute: .Width, relatedBy: .Equal, toItem: nil, attribute: .NotAnAttribute, multiplier: 1.0, constant: 20.0)
-        let activityViewHeightConstraint = NSLayoutConstraint(item: activityIndicator!, attribute: .Height, relatedBy: .Equal, toItem: nil, attribute: .NotAnAttribute, multiplier: 1.0, constant: 7.0)
-        let rightActivityViewMarginConstraint = NSLayoutConstraint(item: activityIndicator!, attribute: .Right, relatedBy: .Equal, toItem: accessoryView, attribute: .Left, multiplier: 1.0, constant: -8.0)
-        let topActivityViewMarginConstraint = NSLayoutConstraint(item: activityIndicator!, attribute: .Top, relatedBy: .Equal, toItem: self, attribute: .Top, multiplier: 1.0, constant: 20.0)
+        let activityViewWidthConstraint = NSLayoutConstraint(item: activityIndicator, attribute: .Width, relatedBy: .Equal, toItem: nil, attribute: .NotAnAttribute, multiplier: 1.0, constant: 20.0)
+        let activityViewHeightConstraint = NSLayoutConstraint(item: activityIndicator, attribute: .Height, relatedBy: .Equal, toItem: nil, attribute: .NotAnAttribute, multiplier: 1.0, constant: 7.0)
+        let rightActivityViewMarginConstraint = NSLayoutConstraint(item: activityIndicator, attribute: .Right, relatedBy: .Equal, toItem: accessoryView, attribute: .Left, multiplier: 1.0, constant: -8.0)
+        let topActivityViewMarginConstraint = NSLayoutConstraint(item: activityIndicator, attribute: .Top, relatedBy: .Equal, toItem: self, attribute: .Top, multiplier: 1.0, constant: 20.0)
 
         addConstraints([rightAccessoryViewMarginConstraint,
                         topAccessoryViewMarginConstraint,

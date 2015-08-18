@@ -34,7 +34,7 @@ class NATViewController: UIViewController
     // Outlets
 
     /// The main table view containing the operation cells, and optionally the ranged beacons.
-    @IBOutlet weak var beaconTableView: UITableView?
+    @IBOutlet weak var beaconTableView: UITableView!
 
 
     // Constants
@@ -139,16 +139,16 @@ class NATViewController: UIViewController
     private var detectedBeacons = [CLBeacon]()
 
     /// The UISwitch instance associated with the monitoring cell.
-    private var monitoringSwitch: UISwitch?
+    private var monitoringSwitch: UISwitch!
     /// The UISwitch instance associated with the advertising cell.
-    private var advertisingSwitch: UISwitch?
+    private var advertisingSwitch: UISwitch!
     /// The UISwitch instance associated with the ranging cell.
-    private var rangingSwitch: UISwitch?
+    private var rangingSwitch: UISwitch!
 
     /// The UIActivityIndicatorView that shows whether monitoring is active.
-    private var monitoringActivityIndicator: UIActivityIndicatorView?
+    private var monitoringActivityIndicator: UIActivityIndicatorView!
     /// The UIActivityIndicatorView that shows whether advertising is active.
-    private var advertisingActivityIndicator: UIActivityIndicatorView?
+    private var advertisingActivityIndicator: UIActivityIndicatorView!
 
     required init(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
@@ -257,7 +257,7 @@ extension NATViewController
         :returns: An NSIndexSet instance or nil.
      */
     func insertedSections() -> NSIndexSet? {
-        if rangingSwitch?.on == true && beaconTableView?.numberOfSections() == kMaxNumberOfSections - 1 {
+        if rangingSwitch.on == true && beaconTableView.numberOfSections() == kMaxNumberOfSections - 1 {
             return NSIndexSet(index: 1)
         } else {
             return nil
@@ -270,7 +270,7 @@ extension NATViewController
         :returns: An NSIndexSet instance or nil.
      */
     func deletedSections() -> NSIndexSet? {
-        if rangingSwitch?.on == false && beaconTableView?.numberOfSections() == kMaxNumberOfSections {
+        if rangingSwitch.on == false && beaconTableView.numberOfSections() == kMaxNumberOfSections {
             return NSIndexSet(index: 1)
         } else {
             return nil
@@ -321,16 +321,16 @@ extension NATViewController: UITableViewDataSource, UITableViewDelegate
             case NTOperationsRow.Monitoring.rawValue:
                 monitoringSwitch = operationCell.accessoryView as? UISwitch
                 monitoringActivityIndicator = operationCell.activityIndicator
-                monitoringSwitch?.addTarget(self, action: "changeMonitoringState:", forControlEvents: UIControlEvents.ValueChanged)
-                monitoringSwitch!.on ? monitoringActivityIndicator?.startAnimating() : monitoringActivityIndicator?.stopAnimating()
+                monitoringSwitch.addTarget(self, action: "changeMonitoringState:", forControlEvents: UIControlEvents.ValueChanged)
+                monitoringSwitch.on ? monitoringActivityIndicator.startAnimating() : monitoringActivityIndicator.stopAnimating()
             case NTOperationsRow.Advertising.rawValue:
                 advertisingSwitch = operationCell.accessoryView as? UISwitch
                 advertisingActivityIndicator = operationCell.activityIndicator
-                advertisingSwitch?.addTarget(self, action: "changeAdvertisingState:", forControlEvents: UIControlEvents.ValueChanged)
-                advertisingSwitch!.on ? advertisingActivityIndicator?.startAnimating() : advertisingActivityIndicator?.stopAnimating()
+                advertisingSwitch.addTarget(self, action: "changeAdvertisingState:", forControlEvents: UIControlEvents.ValueChanged)
+                advertisingSwitch.on ? advertisingActivityIndicator.startAnimating() : advertisingActivityIndicator.stopAnimating()
             case NTOperationsRow.Ranging.rawValue:
                 rangingSwitch = cell?.accessoryView as? UISwitch
-                rangingSwitch?.addTarget(self, action: "changeRangingState:", forControlEvents: UIControlEvents.ValueChanged)
+                rangingSwitch.addTarget(self, action: "changeRangingState:", forControlEvents: UIControlEvents.ValueChanged)
             default:
                 break
             }
@@ -442,22 +442,22 @@ extension NATViewController: NATMonitoringOperationDelegate
         activity indicator on.
      */
     func monitoringOperationDidStartSuccessfully() {
-        monitoringSwitch?.on = true
-        monitoringActivityIndicator?.startAnimating()
+        monitoringSwitch.on = true
+        monitoringActivityIndicator.startAnimating()
     }
 
     /**
         Triggered by the monitoring operation when it has stopped successfully and turns the activity indicator off.
      */
     func monitoringOperationDidStopSuccessfully() {
-        monitoringActivityIndicator?.stopAnimating()
+        monitoringActivityIndicator.stopAnimating()
     }
 
     /**
         Triggered by the monitoring operation whe it has failed to start and turns the monitoring switch off.
      */
     func monitoringOperationDidFailToStart() {
-        monitoringSwitch?.on = false
+        monitoringSwitch.on = false
     }
 
     /**
@@ -475,7 +475,7 @@ extension NATViewController: NATMonitoringOperationDelegate
         let alert = UIAlertView(title: title, message: message, delegate: self, cancelButtonTitle: cancelButtonTitle, otherButtonTitles: settingsButtonTitle)
         alert.show()
 
-        monitoringSwitch?.on = false
+        monitoringSwitch.on = false
     }
 
     /**
@@ -514,15 +514,15 @@ extension NATViewController: NATAdvertisingOperationDelegate
         activity indicator on.
      */
     func advertisingOperationDidStartSuccessfully() {
-        advertisingSwitch?.on = true
-        advertisingActivityIndicator?.startAnimating()
+        advertisingSwitch.on = true
+        advertisingActivityIndicator.startAnimating()
     }
 
     /**
         Triggered by the advertising operation when it has stopped successfully and turns the activity indicator off.
      */
     func advertisingOperationDidStopSuccessfully() {
-        advertisingActivityIndicator?.stopAnimating()
+        advertisingActivityIndicator.stopAnimating()
     }
 
     /**
@@ -536,7 +536,7 @@ extension NATViewController: NATAdvertisingOperationDelegate
         let alert = UIAlertView(title: title, message: message, delegate: self, cancelButtonTitle: cancelButtonTitle)
         alert.show()
 
-        advertisingSwitch?.on = false
+        advertisingSwitch.on = false
     }
 }
 
@@ -549,14 +549,14 @@ extension NATViewController: NATRangingOperationDelegate
      */
     func rangingOperationDidStartSuccessfully() {
         detectedBeacons = []
-        rangingSwitch?.on = true
+        rangingSwitch.on = true
     }
 
     /**
         Triggered by the ranging operation when it has failed to start and turns the ranging switch off.
      */
     func rangingOperationDidFailToStart() {
-        rangingSwitch?.on = false
+        rangingSwitch.on = false
     }
 
     /**
@@ -574,7 +574,7 @@ extension NATViewController: NATRangingOperationDelegate
         let alert = UIAlertView(title: title, message: message, delegate: self, cancelButtonTitle: cancelButtonTitle, otherButtonTitles: settingsButtonTitle)
         alert.show()
 
-        rangingSwitch?.on = false
+        rangingSwitch.on = false
     }
 
     /**
@@ -584,11 +584,11 @@ extension NATViewController: NATRangingOperationDelegate
     func rangingOperationDidStopSuccessfully() {
         detectedBeacons = []
 
-        beaconTableView?.beginUpdates()
+        beaconTableView.beginUpdates()
         if let deletedSections = self.deletedSections() {
-            beaconTableView?.deleteSections(deletedSections, withRowAnimation: UITableViewRowAnimation.Fade)
+            beaconTableView.deleteSections(deletedSections, withRowAnimation: UITableViewRowAnimation.Fade)
         }
-        beaconTableView?.endUpdates()
+        beaconTableView.endUpdates()
     }
 
     /**
@@ -624,23 +624,23 @@ extension NATViewController: NATRangingOperationDelegate
 
         detectedBeacons = filteredBeacons
 
-        beaconTableView?.beginUpdates()
+        beaconTableView.beginUpdates()
         if insertedSections() != nil {
-            beaconTableView?.insertSections(insertedSections()!, withRowAnimation: UITableViewRowAnimation.Fade)
+            beaconTableView.insertSections(insertedSections()!, withRowAnimation: UITableViewRowAnimation.Fade)
         }
         if deletedSections() != nil {
-            beaconTableView?.deleteSections(deletedSections()!, withRowAnimation: UITableViewRowAnimation.Fade)
+            beaconTableView.deleteSections(deletedSections()!, withRowAnimation: UITableViewRowAnimation.Fade)
         }
         if insertedRows != nil {
-            beaconTableView?.insertRowsAtIndexPaths(insertedRows!, withRowAnimation: UITableViewRowAnimation.Fade)
+            beaconTableView.insertRowsAtIndexPaths(insertedRows!, withRowAnimation: UITableViewRowAnimation.Fade)
         }
         if deletedRows != nil {
-            beaconTableView?.deleteRowsAtIndexPaths(deletedRows!, withRowAnimation: UITableViewRowAnimation.Fade)
+            beaconTableView.deleteRowsAtIndexPaths(deletedRows!, withRowAnimation: UITableViewRowAnimation.Fade)
         }
         if reloadedRows != nil {
-            beaconTableView?.reloadRowsAtIndexPaths(reloadedRows!, withRowAnimation: UITableViewRowAnimation.Fade)
+            beaconTableView.reloadRowsAtIndexPaths(reloadedRows!, withRowAnimation: UITableViewRowAnimation.Fade)
         }
-        beaconTableView?.endUpdates()
+        beaconTableView.endUpdates()
     }
 }
 
@@ -667,14 +667,14 @@ extension NATViewController
         var payload = notification.userInfo as! [String : NSNumber]
 
         if let monitoringState = payload["Monitoring"] {
-            monitoringSwitch?.on = monitoringState.boolValue
-            changeMonitoringState(monitoringSwitch!)
+            monitoringSwitch.on = monitoringState.boolValue
+            changeMonitoringState(monitoringSwitch)
         } else if let advertisingState = payload["Advertising"] {
-            advertisingSwitch?.on = advertisingState.boolValue
-            changeAdvertisingState(advertisingSwitch!)
+            advertisingSwitch.on = advertisingState.boolValue
+            changeAdvertisingState(advertisingSwitch)
         } else if let rangingState = payload["Ranging"] {
-            rangingSwitch?.on = rangingState.boolValue
-            changeRangingState(rangingSwitch!)
+            rangingSwitch.on = rangingState.boolValue
+            changeRangingState(rangingSwitch)
         }
     }
 }
