@@ -72,22 +72,22 @@ class NATRangingOperation: NATOperation
     func startRangingForBeacons() {
         activateLocationManagerNotifications()
 
-        println("Turning on ranging...")
+        print("Turning on ranging...")
 
         if !CLLocationManager.locationServicesEnabled() {
-            println("Couldn't turn on ranging: Location services are not enabled.")
+            print("Couldn't turn on ranging: Location services are not enabled.")
             delegate?.rangingOperationDidFailToStart()
             return
         }
 
         if !CLLocationManager.isRangingAvailable() {
-            println("Couldn't turn on ranging: Ranging is not available.")
+            print("Couldn't turn on ranging: Ranging is not available.")
             delegate?.rangingOperationDidFailToStart()
             return
         }
 
         if !locationManager.rangedRegions.isEmpty {
-            println("Didn't turn on ranging: Ranging already on.")
+            print("Didn't turn on ranging: Ranging already on.")
             return
         }
 
@@ -95,7 +95,7 @@ class NATRangingOperation: NATOperation
         case .AuthorizedAlways, .AuthorizedWhenInUse:
             turnOnRanging()
         case .Denied, .Restricted:
-            println("Couldn't turn on ranging: Required Location Access (When In Use) missing.")
+            print("Couldn't turn on ranging: Required Location Access (When In Use) missing.")
             delegate?.rangingOperationDidFailToStartDueToAuthorization()
         case .NotDetermined:
             locationManager.requestWhenInUseAuthorization()
@@ -107,7 +107,7 @@ class NATRangingOperation: NATOperation
      */
     func turnOnRanging() {
         locationManager.startRangingBeaconsInRegion(beaconRegion)
-        println("Ranging turned on for beacons in region: \(beaconRegion)")
+        print("Ranging turned on for beacons in region: \(beaconRegion)")
         delegate?.rangingOperationDidStartSuccessfully()
     }
 
@@ -116,7 +116,7 @@ class NATRangingOperation: NATOperation
      */
     func stopRangingForBeacons() {
         if locationManager.rangedRegions.isEmpty {
-            println("Didn't turn off ranging: Ranging already off.")
+            print("Didn't turn off ranging: Ranging already off.")
             return
         }
 
@@ -124,7 +124,7 @@ class NATRangingOperation: NATOperation
 
         delegate?.rangingOperationDidStopSuccessfully()
         
-        println("Turned off ranging.")
+        print("Turned off ranging.")
     }
 }
 
@@ -133,15 +133,15 @@ extension NATRangingOperation
 {
     func locationManager(manager: CLLocationManager!, didChangeAuthorizationStatus status: CLAuthorizationStatus) {
         if status == .AuthorizedAlways {
-            println("Location Access (Always) granted!")
+            print("Location Access (Always) granted!")
             delegate?.rangingOperationDidStartSuccessfully()
             turnOnRanging()
         } else if status == .AuthorizedWhenInUse {
-            println("Location Access (When In Use) granted!")
+            print("Location Access (When In Use) granted!")
             delegate?.rangingOperationDidStartSuccessfully()
             turnOnRanging()
         } else if status == .Denied || status == .Restricted {
-            println("Location Access (When In Use) denied!")
+            print("Location Access (When In Use) denied!")
             delegate?.rangingOperationDidFailToStart()
         }
     }

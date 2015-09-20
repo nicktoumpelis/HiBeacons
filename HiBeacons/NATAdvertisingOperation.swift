@@ -62,10 +62,10 @@ class NATAdvertisingOperation: NATOperation
         Starts the beacon advertising process.
      */
     func startAdvertisingBeacon() {
-        println("Turning on advertising...")
+        print("Turning on advertising...")
         
-        if peripheralManager?.state != .PoweredOn {
-            println("Peripheral manager is off.")
+        if peripheralManager.state != .PoweredOn {
+            print("Peripheral manager is off.")
             delegate?.advertisingOperationDidFailToStart()
             return
         }
@@ -81,21 +81,21 @@ class NATAdvertisingOperation: NATOperation
     func turnOnAdvertising() {
         let major: CLBeaconMajorValue = CLBeaconMajorValue(arc4random_uniform(5000))
         let minor: CLBeaconMinorValue = CLBeaconMajorValue(arc4random_uniform(5000))
-        var region: CLBeaconRegion = CLBeaconRegion(proximityUUID: beaconRegion.proximityUUID, major: major, minor: minor, identifier: beaconRegion.identifier)
-        var beaconPeripheralData: NSMutableDictionary = region.peripheralDataWithMeasuredPower(nil)
+        let region: CLBeaconRegion = CLBeaconRegion(proximityUUID: beaconRegion.proximityUUID, major: major, minor: minor, identifier: beaconRegion.identifier)
+        let beaconPeripheralData: NSMutableDictionary = region.peripheralDataWithMeasuredPower(nil)
 
-        peripheralManager?.startAdvertising(beaconPeripheralData as [NSObject : AnyObject])
+        peripheralManager.startAdvertising(beaconPeripheralData as? [String : AnyObject])
 
-        println("Turning on advertising for region: \(region).")
+        print("Turning on advertising for region: \(region).")
     }
 
     /**
         Stops the monitoring process.
      */
     func stopAdvertisingBeacon() {
-        peripheralManager?.stopAdvertising()
+        peripheralManager.stopAdvertising()
         deactivatePeripheralManagerNotifications();
-        println("Turned off advertising.")
+        print("Turned off advertising.")
         delegate?.advertisingOperationDidStopSuccessfully()
     }
 
@@ -119,24 +119,24 @@ class NATAdvertisingOperation: NATOperation
 // MARK: - CBPeripheralManagerDelegate methods
 extension NATAdvertisingOperation: CBPeripheralManagerDelegate
 {
-    func peripheralManagerDidStartAdvertising(peripheral: CBPeripheralManager!, error: NSError!) {
+    func peripheralManagerDidStartAdvertising(peripheral: CBPeripheralManager, error: NSError?) {
         if error != nil {
-            println("Couldn't turn on advertising: \(error)")
+            print("Couldn't turn on advertising: \(error)")
             delegate?.advertisingOperationDidFailToStart()
         }
 
-        if peripheralManager!.isAdvertising {
-            println("Turned on advertising.")
+        if peripheralManager.isAdvertising {
+            print("Turned on advertising.")
             delegate?.advertisingOperationDidStartSuccessfully()
         }
     }
 
-    func peripheralManagerDidUpdateState(peripheral: CBPeripheralManager!) {
-        if peripheralManager?.state == .PoweredOff {
-            println("Peripheral manager is off.")
+    func peripheralManagerDidUpdateState(peripheral: CBPeripheralManager) {
+        if peripheralManager.state == .PoweredOff {
+            print("Peripheral manager is off.")
             delegate?.advertisingOperationDidFailToStart()
         } else if peripheralManager.state == .PoweredOn {
-            println("Peripheral manager is on.")
+            print("Peripheral manager is on.")
             turnOnAdvertising()
         }
     }

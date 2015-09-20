@@ -36,7 +36,7 @@ class NATOperationCell : UITableViewCell
         // We wouldn't normally need this, since constraints can be set in Interface Builder. However, there seems
         // to be a bug that removes all constraints from our cells upon dequeueing, so we need to re-add them here.
 
-        contentView.setTranslatesAutoresizingMaskIntoConstraints(false)
+        contentView.translatesAutoresizingMaskIntoConstraints = false
 
         let rightAccessoryViewMarginConstraint = NSLayoutConstraint(item: accessoryView!, attribute: .Right, relatedBy: .Equal, toItem: self, attribute: .Right, multiplier: 1.0, constant: -14.0)
         let topAccessoryViewMarginConstraint = NSLayoutConstraint(item: accessoryView!, attribute: .Top, relatedBy: .Equal, toItem: self, attribute: .Top, multiplier: 1.0, constant: 7.0)
@@ -50,8 +50,7 @@ class NATOperationCell : UITableViewCell
                         activityViewWidthConstraint,
                         activityViewHeightConstraint,
                         rightActivityViewMarginConstraint,
-                        topActivityViewMarginConstraint
-            ])
+                        topActivityViewMarginConstraint])
 
         super.updateConstraints()
     }
