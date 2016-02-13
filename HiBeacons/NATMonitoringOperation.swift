@@ -80,7 +80,7 @@ class NATMonitoringOperation: NATOperation
             return
         }
 
-        if CLLocationManager.isMonitoringAvailableForClass(CLBeaconRegion) {
+        if !(CLLocationManager.isMonitoringAvailableForClass(CLBeaconRegion)) {
             print("Couldn't turn on region monitoring: Region monitoring is not available for CLBeaconRegion class.")
             delegate?.monitoringOperationDidFailToStart()
             return
