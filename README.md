@@ -2,7 +2,7 @@ HiBeacons
 =========
 **A Swift demo app for the iBeacons API in iOS 8, with Apple Watch support**
 
-HiBeacons is a fully functional demo app for the iBeacons API in iOS 8, written in Swift. The app can be used to demonstrate beacon region monitoring, advertising and ranging, simply by toggling on/off three switches in the UI. 
+HiBeacons is a fully functional demo app for the iBeacons API in iOS 9, updated for Swift 2.1. The app can be used to demonstrate beacon region monitoring, advertising and ranging, simply by toggling on/off three switches in the UI. 
 
 The app also supports the Apple Watch, and implements a basic interface for starting all the operations from a WatchKit app. (The watch app acts as a dumb* remote).
 
@@ -12,7 +12,7 @@ The app is fully documented, using the reStructuredText standard, which SourceKi
 
 The main branch of the project is the *swift* branch, but you can still find the old Objective-C code at the *obj-c* branch. Note that the old branch has some bugs, that I have fixed in the new one.
 
-*The app is fully documented, and should compile with Xcode 6.4 and work correctly on iOS 8.*
+*The app is fully documented, and should work well with Xcode 7.2, iOS 9, and watchOS 2.*
 
 ## Screenshot
 
