@@ -478,8 +478,15 @@ extension NATViewController: NATMonitoringOperationDelegate
         let cancelButtonTitle = "Cancel"
         let settingsButtonTitle = "Settings"
 
-        let alert = UIAlertView(title: title, message: message, delegate: self, cancelButtonTitle: cancelButtonTitle, otherButtonTitles: settingsButtonTitle)
-        alert.show()
+        let alertController = UIAlertController.init(title: title, message: message, preferredStyle: UIAlertControllerStyle.Alert)
+        let cancelAction = UIAlertAction.init(title: cancelButtonTitle, style: UIAlertActionStyle.Cancel, handler: nil)
+        let settingsAction = UIAlertAction.init(title: settingsButtonTitle, style: UIAlertActionStyle.Default) {
+                (action: UIAlertAction) -> Void in
+            UIApplication.sharedApplication().openURL(NSURL(string: UIApplicationOpenSettingsURLString)!)
+        }
+        alertController.addAction(cancelAction);
+        alertController.addAction(settingsAction);
+        self.presentViewController(alertController, animated: true, completion: nil)
 
         dispatch_async(dispatch_get_main_queue()) { () -> Void in
             self.monitoringSwitch.on = false
@@ -545,8 +552,10 @@ extension NATViewController: NATAdvertisingOperationDelegate
         let message = "It seems that Bluetooth is off. For advertising to work, please turn Bluetooth on."
         let cancelButtonTitle = "OK"
 
-        let alert = UIAlertView(title: title, message: message, delegate: self, cancelButtonTitle: cancelButtonTitle)
-        alert.show()
+        let alertController = UIAlertController.init(title: title, message: message, preferredStyle: UIAlertControllerStyle.Alert)
+        let cancelAction = UIAlertAction.init(title: cancelButtonTitle, style: UIAlertActionStyle.Cancel, handler: nil)
+        alertController.addAction(cancelAction);
+        self.presentViewController(alertController, animated: true, completion: nil)
 
         dispatch_async(dispatch_get_main_queue()) { () -> Void in
             self.advertisingSwitch.on = false
@@ -590,8 +599,15 @@ extension NATViewController: NATRangingOperationDelegate
         let cancelButtonTitle = "Cancel"
         let settingsButtonTitle = "Settings"
 
-        let alert = UIAlertView(title: title, message: message, delegate: self, cancelButtonTitle: cancelButtonTitle, otherButtonTitles: settingsButtonTitle)
-        alert.show()
+        let alertController = UIAlertController.init(title: title, message: message, preferredStyle: UIAlertControllerStyle.Alert)
+        let cancelAction = UIAlertAction.init(title: cancelButtonTitle, style: UIAlertActionStyle.Cancel, handler: nil)
+        let settingsAction = UIAlertAction.init(title: settingsButtonTitle, style: UIAlertActionStyle.Default) {
+            (action: UIAlertAction) -> Void in
+            UIApplication.sharedApplication().openURL(NSURL(string: UIApplicationOpenSettingsURLString)!)
+        }
+        alertController.addAction(cancelAction);
+        alertController.addAction(settingsAction);
+        self.presentViewController(alertController, animated: true, completion: nil)
 
         dispatch_async(dispatch_get_main_queue()) { () -> Void in
             self.rangingSwitch.on = false
@@ -665,16 +681,6 @@ extension NATViewController: NATRangingOperationDelegate
                 self.beaconTableView.reloadRowsAtIndexPaths(reloadedRows!, withRowAnimation: UITableViewRowAnimation.Fade)
             }
             self.beaconTableView.endUpdates()
-        }
-    }
-}
-
-// MARK: - Alert view delegate methods
-extension NATViewController: UIAlertViewDelegate
-{
-    func alertView(alertView: UIAlertView, didDismissWithButtonIndex buttonIndex: Int) {
-        if buttonIndex == 1 {
-            UIApplication.sharedApplication().openURL(NSURL(string: UIApplicationOpenSettingsURLString)!)
         }
     }
 }
