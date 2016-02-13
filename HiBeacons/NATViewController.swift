@@ -699,19 +699,19 @@ extension NATViewController
 
         if let monitoringState = payload["Monitoring"] {
             dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                self.monitoringSwitch.on = monitoringState.boolValue
+                self.monitoringSwitch.setOn(monitoringState.boolValue, animated: true)
             })
             changeMonitoringState(monitoringSwitch)
         } else if let advertisingState = payload["Advertising"] {
             dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                self.advertisingSwitch.on = advertisingState.boolValue
+                self.advertisingSwitch.setOn(advertisingState.boolValue, animated: true)
             })
             changeAdvertisingState(advertisingSwitch)
         } else if let rangingState = payload["Ranging"] {
             dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                self.rangingSwitch.on = rangingState.boolValue
+                self.rangingSwitch.setOn(rangingState.boolValue, animated: true)
+                self.changeRangingState(self.rangingSwitch)
             })
-            changeRangingState(rangingSwitch)
         }
     }
 }
