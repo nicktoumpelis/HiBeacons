@@ -1,6 +1,6 @@
 HiBeacons
 =========
-**A Swift demo app for the iBeacons API in iOS 8, with Apple Watch support**
+**A Swift demo app for the iBeacons API in iOS 9, with Apple Watch support**
 
 HiBeacons is a fully functional demo app for the iBeacons API in iOS 9, updated for Swift 2.1. The app can be used to demonstrate beacon region monitoring, advertising and ranging, simply by toggling on/off three switches in the UI. 
 
