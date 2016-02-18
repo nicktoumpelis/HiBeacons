@@ -14,9 +14,9 @@ The main branch of the project is the *swift* branch, but you can still find the
 
 *The app is fully documented, and should work well with Xcode 7.2, iOS 9, and watchOS 2.*
 
-## Screenshot
+## Screenshots
 
-![Screenshot](https://github.com/nicktoumpelis/HiBeacons/blob/swift/screenshot.png)
+![Phone-Screenshot](https://github.com/nicktoumpelis/HiBeacons/blob/swift/screenshot.png)
 
 ![Watch-Screenshot](https://github.com/nicktoumpelis/HiBeacons/blob/swift/watch-screenshot.png)
 
