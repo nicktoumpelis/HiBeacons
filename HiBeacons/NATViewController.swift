@@ -154,7 +154,7 @@ class NATViewController: UIViewController
         super.init(coder: aDecoder)
 
         let notificationCenter = NSNotificationCenter.defaultCenter()
-        notificationCenter.addObserver(self, selector: "performWatchAction:", name: NATHiBeaconsDelegate.NATHiBeaconsWatchNotificationName, object: nil)
+        notificationCenter.addObserver(self, selector: #selector(performWatchAction(_:)), name: NATHiBeaconsDelegate.NATHiBeaconsWatchNotificationName, object: nil)
 
         // We need to assign self as a delegate here.
         monitoringOperation.delegate = self
@@ -197,7 +197,7 @@ extension NATViewController
                 indexPaths = indexPaths ?? []
                 indexPaths!.append(NSIndexPath(forRow: row, inSection: NTSectionType.DetectedBeacons.rawValue))
             }
-            row++
+            row += 1
         }
 
         return indexPaths
@@ -229,7 +229,7 @@ extension NATViewController
                 indexPaths = indexPaths ?? []
                 indexPaths!.append(NSIndexPath(forRow: row, inSection: NTSectionType.DetectedBeacons.rawValue))
             }
-            row++
+            row += 1
         }
 
         return indexPaths
@@ -321,16 +321,16 @@ extension NATViewController: UITableViewDataSource, UITableViewDelegate
             case NTOperationsRow.Monitoring.rawValue:
                 monitoringSwitch = operationCell.accessoryView as? UISwitch
                 monitoringActivityIndicator = operationCell.activityIndicator
-                monitoringSwitch.addTarget(self, action: "changeMonitoringState:", forControlEvents: UIControlEvents.ValueChanged)
+                monitoringSwitch.addTarget(self, action: #selector(changeMonitoringState(_:)), forControlEvents: UIControlEvents.ValueChanged)
                 monitoringSwitch.on ? monitoringActivityIndicator.startAnimating() : monitoringActivityIndicator.stopAnimating()
             case NTOperationsRow.Advertising.rawValue:
                 advertisingSwitch = operationCell.accessoryView as? UISwitch
                 advertisingActivityIndicator = operationCell.activityIndicator
-                advertisingSwitch.addTarget(self, action: "changeAdvertisingState:", forControlEvents: UIControlEvents.ValueChanged)
+                advertisingSwitch.addTarget(self, action: #selector(changeAdvertisingState(_:)), forControlEvents: UIControlEvents.ValueChanged)
                 advertisingSwitch.on ? advertisingActivityIndicator.startAnimating() : advertisingActivityIndicator.stopAnimating()
             case NTOperationsRow.Ranging.rawValue:
                 rangingSwitch = cell?.accessoryView as? UISwitch
-                rangingSwitch.addTarget(self, action: "changeRangingState:", forControlEvents: UIControlEvents.ValueChanged)
+                rangingSwitch.addTarget(self, action: #selector(changeRangingState(_:)), forControlEvents: UIControlEvents.ValueChanged)
             default:
                 break
             }
