@@ -31,19 +31,18 @@ import WatchConnectivity
 ///  The app delegate
 @UIApplicationMain class NATHiBeaconsDelegate: UIResponder, UIApplicationDelegate, WCSessionDelegate
 {
-
     /// The notification name for any watch-originating operation
     static let NATHiBeaconsWatchNotificationName = "NATHiBeaconsWatchNotificationName"
 
     /// The main window
     var window: UIWindow?
-    var mainSession: WCSession?
+    var mainSession: WCSession!
 
     func application(application: UIApplication, willFinishLaunchingWithOptions launchOptions: [NSObject : AnyObject]?) -> Bool {
         if WCSession.isSupported() {
             mainSession = WCSession.defaultSession()
-            mainSession!.delegate = self
-            mainSession!.activateSession()
+            mainSession.delegate = self
+            mainSession.activateSession()
         }
         
         return true
