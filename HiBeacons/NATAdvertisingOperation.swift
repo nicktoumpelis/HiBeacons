@@ -64,7 +64,7 @@ class NATAdvertisingOperation: NATOperation
     func startAdvertisingBeacon() {
         print("Turning on advertising...")
         
-        if peripheralManager.state != .PoweredOn {
+        if peripheralManager.state != .poweredOn {
             print("Peripheral manager is off.")
             delegate?.advertisingOperationDidFailToStart()
             return
@@ -82,7 +82,7 @@ class NATAdvertisingOperation: NATOperation
         let major: CLBeaconMajorValue = CLBeaconMajorValue(arc4random_uniform(5000))
         let minor: CLBeaconMinorValue = CLBeaconMajorValue(arc4random_uniform(5000))
         let region: CLBeaconRegion = CLBeaconRegion(proximityUUID: beaconRegion.proximityUUID, major: major, minor: minor, identifier: beaconRegion.identifier)
-        let beaconPeripheralData: NSDictionary = region.peripheralDataWithMeasuredPower(nil) as NSDictionary
+        let beaconPeripheralData: NSDictionary = region.peripheralData(withMeasuredPower: nil) as NSDictionary
 
         peripheralManager.startAdvertising(beaconPeripheralData as? [String : AnyObject])
 
@@ -119,7 +119,7 @@ class NATAdvertisingOperation: NATOperation
 // MARK: - CBPeripheralManagerDelegate methods
 extension NATAdvertisingOperation: CBPeripheralManagerDelegate
 {
-    func peripheralManagerDidStartAdvertising(peripheral: CBPeripheralManager, error: NSError?) {
+    func peripheralManagerDidStartAdvertising(_ peripheral: CBPeripheralManager, error: Error?) {
         if error != nil {
             print("Couldn't turn on advertising: \(error)")
             delegate?.advertisingOperationDidFailToStart()
@@ -131,11 +131,11 @@ extension NATAdvertisingOperation: CBPeripheralManagerDelegate
         }
     }
 
-    func peripheralManagerDidUpdateState(peripheral: CBPeripheralManager) {
-        if peripheralManager.state == .PoweredOff {
+    func peripheralManagerDidUpdateState(_ peripheral: CBPeripheralManager) {
+        if peripheralManager.state == .poweredOff {
             print("Peripheral manager is off.")
             delegate?.advertisingOperationDidFailToStart()
-        } else if peripheralManager.state == .PoweredOn {
+        } else if peripheralManager.state == .poweredOn {
             print("Peripheral manager is on.")
             turnOnAdvertising()
         }

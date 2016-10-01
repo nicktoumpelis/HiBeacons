@@ -39,12 +39,12 @@ class NATOperationCell : UITableViewCell
         contentView.translatesAutoresizingMaskIntoConstraints = false
 
 
-        let rightAccessoryViewMarginConstraint = NSLayoutConstraint(item: accessoryView!, attribute: .Right, relatedBy: .Equal, toItem: self, attribute: .Right, multiplier: 1.0, constant: -14.0)
-        let topAccessoryViewMarginConstraint = NSLayoutConstraint(item: accessoryView!, attribute: .Top, relatedBy: .Equal, toItem: self, attribute: .Top, multiplier: 1.0, constant: 7.0)
-        let activityViewWidthConstraint = NSLayoutConstraint(item: activityIndicator, attribute: .Width, relatedBy: .Equal, toItem: nil, attribute: .NotAnAttribute, multiplier: 1.0, constant: 20.0)
-        let activityViewHeightConstraint = NSLayoutConstraint(item: activityIndicator, attribute: .Height, relatedBy: .Equal, toItem: nil, attribute: .NotAnAttribute, multiplier: 1.0, constant: 20.0)
-        let rightActivityViewMarginConstraint = NSLayoutConstraint(item: activityIndicator, attribute: .Right, relatedBy: .Equal, toItem: accessoryView, attribute: .Left, multiplier: 1.0, constant: -8.0)
-        let topActivityViewMarginConstraint = NSLayoutConstraint(item: activityIndicator, attribute: .CenterY, relatedBy: .Equal, toItem: accessoryView!, attribute: .CenterY, multiplier: 1.0, constant: 0.0)
+        let rightAccessoryViewMarginConstraint = NSLayoutConstraint(item: accessoryView!, attribute: .right, relatedBy: .equal, toItem: self, attribute: .right, multiplier: 1.0, constant: -14.0)
+        let topAccessoryViewMarginConstraint = NSLayoutConstraint(item: accessoryView!, attribute: .top, relatedBy: .equal, toItem: self, attribute: .top, multiplier: 1.0, constant: 7.0)
+        let activityViewWidthConstraint = NSLayoutConstraint(item: activityIndicator, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1.0, constant: 20.0)
+        let activityViewHeightConstraint = NSLayoutConstraint(item: activityIndicator, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1.0, constant: 20.0)
+        let rightActivityViewMarginConstraint = NSLayoutConstraint(item: activityIndicator, attribute: .right, relatedBy: .equal, toItem: accessoryView, attribute: .left, multiplier: 1.0, constant: -8.0)
+        let topActivityViewMarginConstraint = NSLayoutConstraint(item: activityIndicator, attribute: .centerY, relatedBy: .equal, toItem: accessoryView!, attribute: .centerY, multiplier: 1.0, constant: 0.0)
 
         addConstraints([rightAccessoryViewMarginConstraint,
                         topAccessoryViewMarginConstraint,
@@ -59,6 +59,6 @@ class NATOperationCell : UITableViewCell
     override func layoutSubviews() {
         super.layoutSubviews()
         
-        self.contentView.bringSubviewToFront(activityIndicator)
+        self.contentView.bringSubview(toFront: activityIndicator)
     }
 }

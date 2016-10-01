@@ -56,7 +56,7 @@ protocol NATMonitoringOperationDelegate
 
         :param: region The region that the monitoring operation detected.
      */
-    func monitoringOperationDidDetectEnteringRegion(region: CLBeaconRegion)
+    func monitoringOperationDidDetectEnteringRegion(_ region: CLBeaconRegion)
 }
 
 /// NATMonitoringOperation contains all the process logic required to successfully monitor for events related to
@@ -80,19 +80,19 @@ class NATMonitoringOperation: NATOperation
             return
         }
 
-        if !(CLLocationManager.isMonitoringAvailableForClass(CLBeaconRegion)) {
+        if !(CLLocationManager.isMonitoringAvailable(for: CLBeaconRegion.self)) {
             print("Couldn't turn on region monitoring: Region monitoring is not available for CLBeaconRegion class.")
             delegate?.monitoringOperationDidFailToStart()
             return
         }
 
         switch CLLocationManager.authorizationStatus() {
-        case .AuthorizedAlways:
+        case .authorizedAlways:
             turnOnMonitoring()
-        case .AuthorizedWhenInUse, .Denied, .Restricted:
+        case .authorizedWhenInUse, .denied, .restricted:
             print("Couldn't turn on monitoring: Required Location Access (Always) missing.")
             delegate?.monitoringOperationDidFailToStartDueToAuthorization()
-        case .NotDetermined:
+        case .notDetermined:
             locationManager.requestAlwaysAuthorization()
         }
     }
@@ -101,7 +101,7 @@ class NATMonitoringOperation: NATOperation
         Turns on monitoring (after all the checks have been passed).
      */
     func turnOnMonitoring() {
-        locationManager.startMonitoringForRegion(beaconRegion)
+        locationManager.startMonitoring(for: beaconRegion)
         print("Monitoring turned on for region: \(beaconRegion)")
         delegate?.monitoringOperationDidStartSuccessfully()
     }
@@ -110,7 +110,7 @@ class NATMonitoringOperation: NATOperation
         Stops the monitoring process.
      */
     func stopMonitoringForBeacons() {
-        locationManager.stopMonitoringForRegion(beaconRegion)
+        locationManager.stopMonitoring(for: beaconRegion)
         print("Turned off monitoring")
         delegate?.monitoringOperationDidStopSuccessfully()
     }
@@ -119,35 +119,35 @@ class NATMonitoringOperation: NATOperation
 // MARK: - Location manager delegate methods
 extension NATMonitoringOperation
 {
-    func locationManager(manager: CLLocationManager!, didChangeAuthorizationStatus status: CLAuthorizationStatus) {
-        if status == .AuthorizedAlways {
+    func locationManager(_ manager: CLLocationManager!, didChangeAuthorizationStatus status: CLAuthorizationStatus) {
+        if status == .authorizedAlways {
             print("Location Access (Always) granted!")
             delegate?.monitoringOperationDidStartSuccessfully()
             turnOnMonitoring()
-        } else if status == .AuthorizedWhenInUse || status == .Denied || status == .Restricted {
+        } else if status == .authorizedWhenInUse || status == .denied || status == .restricted {
             print("Location Access (Always) denied!")
             delegate?.monitoringOperationDidFailToStart()
         }
     }
 
-    func locationManager(manager: CLLocationManager!, didEnterRegion region: CLRegion!) {
+    func locationManager(_ manager: CLLocationManager!, didEnterRegion region: CLRegion!) {
         print("Entered region: \(region)")
         delegate?.monitoringOperationDidDetectEnteringRegion(region as! CLBeaconRegion)
     }
 
-    func locationManager(manager: CLLocationManager!, didExitRegion region: CLRegion!) {
+    func locationManager(_ manager: CLLocationManager!, didExitRegion region: CLRegion!) {
         print("Exited region: \(region)")
     }
 
-    func locationManager(manager: CLLocationManager!, didDetermineState state: CLRegionState, forRegion region: CLRegion!) {
+    func locationManager(_ manager: CLLocationManager!, didDetermineState state: CLRegionState, forRegion region: CLRegion!) {
         var stateString: String
 
         switch state {
-        case .Inside:
+        case .inside:
             stateString = "inside"
-        case .Outside:
+        case .outside:
             stateString = "outside"
-        case .Unknown:
+        case .unknown:
             stateString = "unknown"
         }
 

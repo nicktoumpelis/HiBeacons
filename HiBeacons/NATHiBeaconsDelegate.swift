@@ -29,7 +29,7 @@ import UIKit
 import WatchConnectivity
 
 ///  The app delegate
-@UIApplicationMain class NATHiBeaconsDelegate: UIResponder, UIApplicationDelegate, WCSessionDelegate
+@UIApplicationMain class NATHiBeaconsDelegate: UIResponder, UIApplicationDelegate
 {
     /// The notification name for any watch-originating operation
     static let NATHiBeaconsWatchNotificationName = "NATHiBeaconsWatchNotificationName"
@@ -38,19 +38,42 @@ import WatchConnectivity
     var window: UIWindow?
     var mainSession: WCSession!
 
-    func application(application: UIApplication, willFinishLaunchingWithOptions launchOptions: [NSObject : AnyObject]?) -> Bool {
+    func application(_ application: UIApplication, willFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         if WCSession.isSupported() {
-            mainSession = WCSession.defaultSession()
+            mainSession = WCSession.default()
             mainSession.delegate = self
-            mainSession.activateSession()
+            mainSession.activate()
         }
         
         return true
     }
+}
 
-    // MARK: WCSessionDelegate methods
-    func session(session: WCSession, didReceiveMessage message: [String : AnyObject]) {
-        let notificationCenter = NSNotificationCenter.defaultCenter()
-        notificationCenter.postNotificationName(NATHiBeaconsDelegate.NATHiBeaconsWatchNotificationName, object: self, userInfo: message)
+// MARK: WCSessionDelegate methods
+extension NATHiBeaconsDelegate: WCSessionDelegate {
+    /** Called when all delegate callbacks for the previously selected watch has occurred. The session can be re-activated for the now selected watch using activateSession. */
+    @available(iOS 9.3, *)
+    public func sessionDidDeactivate(_ session: WCSession) {
+        // TODO: Do something useful here
     }
+
+    /** Called when the session can no longer be used to modify or add any new transfers and, all interactive messages will be cancelled, but delegate callbacks for background transfers can still occur. This will happen when the selected watch is being changed. */
+    @available(iOS 9.3, *)
+    public func sessionDidBecomeInactive(_ session: WCSession) {
+        // TODO: Do something useful here
+    }
+
+    /** Called when the session has completed activation. If session state is WCSessionActivationStateNotActivated there will be an error with more details. */
+    @available(iOS 9.3, *)
+    public func session(_ session: WCSession, activationDidCompleteWith activationState: WCSessionActivationState, error: Error?) {
+        // TODO: Do something useful here
+    }
+
+
+    func session(_ session: WCSession, didReceiveMessage message: [String : Any]) {
+        let notificationCenter = NotificationCenter.default
+        notificationCenter.post(name: Notification.Name(rawValue: NATHiBeaconsDelegate.NATHiBeaconsWatchNotificationName), object: self, userInfo: message)
+    }
+
+
 }

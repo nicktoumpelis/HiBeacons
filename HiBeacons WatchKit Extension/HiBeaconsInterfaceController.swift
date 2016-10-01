@@ -28,32 +28,32 @@ import WatchKit
 import WatchConnectivity
 import Foundation
 
-class HiBeaconsInterfaceController: WKInterfaceController, WCSessionDelegate
+class HiBeaconsInterfaceController: WKInterfaceController
 {
     @IBOutlet weak var monitoringButton: WKInterfaceButton?
     @IBOutlet weak var advertisingButton: WKInterfaceButton?
     @IBOutlet weak var rangingButton: WKInterfaceButton?
 
-    private var monitoringActive = false
-    private var advertisingActive = false
-    private var rangingActive = false
+    fileprivate var monitoringActive = false
+    fileprivate var advertisingActive = false
+    fileprivate var rangingActive = false
 
-    private var defaultSession: WCSession?
+    fileprivate var defaultSession: WCSession?
 
     let activeBackgroundColor = UIColor(red: 0.0, green: 0.5, blue: 1.0, alpha: 1.0)
     let inactiveBackgroundColor = UIColor(red: 0.2, green: 0.2, blue: 0.2, alpha: 1.0)
 
-    override func awakeWithContext(context: AnyObject?) {
-        super.awakeWithContext(context)
+    override func awake(withContext context: Any?) {
+        super.awake(withContext: context)
 
         monitoringButton?.setBackgroundColor(inactiveBackgroundColor)
         advertisingButton?.setBackgroundColor(inactiveBackgroundColor)
         rangingButton?.setBackgroundColor(inactiveBackgroundColor)
 
         if WCSession.isSupported() {
-            defaultSession = WCSession.defaultSession()
+            defaultSession = WCSession.default()
             defaultSession!.delegate = self
-            defaultSession!.activateSession()
+            defaultSession!.activate()
         }
     }
 
@@ -66,7 +66,7 @@ class HiBeaconsInterfaceController: WKInterfaceController, WCSessionDelegate
     }
 
     @IBAction func toggleMonitoring() {
-        if defaultSession!.reachable != true {
+        if defaultSession!.isReachable != true {
             return
         }
 
@@ -75,12 +75,12 @@ class HiBeaconsInterfaceController: WKInterfaceController, WCSessionDelegate
         let backgroundColor = monitoringActive ? activeBackgroundColor : inactiveBackgroundColor
         monitoringButton?.setBackgroundColor(backgroundColor)
 
-        let payload = ["Monitoring": NSNumber(bool: monitoringActive)]
+        let payload = ["Monitoring": NSNumber(value: monitoringActive as Bool)]
         defaultSession!.sendMessage(payload, replyHandler: nil, errorHandler: nil)
     }
 
     @IBAction func toggleAdvertising() {
-        if defaultSession!.reachable != true {
+        if defaultSession!.isReachable != true {
             return
         }
 
@@ -89,12 +89,12 @@ class HiBeaconsInterfaceController: WKInterfaceController, WCSessionDelegate
         let backgroundColor = advertisingActive ? activeBackgroundColor : inactiveBackgroundColor
         advertisingButton?.setBackgroundColor(backgroundColor)
 
-        let payload = ["Advertising": NSNumber(bool: advertisingActive)]
+        let payload = ["Advertising": NSNumber(value: advertisingActive as Bool)]
         defaultSession!.sendMessage(payload, replyHandler: nil, errorHandler: nil)
     }
 
     @IBAction func toggleRanging() {
-        if defaultSession!.reachable != true {
+        if defaultSession!.isReachable != true {
             return
         }
 
@@ -103,7 +103,14 @@ class HiBeaconsInterfaceController: WKInterfaceController, WCSessionDelegate
         let backgroundColor = rangingActive ? activeBackgroundColor : inactiveBackgroundColor
         rangingButton?.setBackgroundColor(backgroundColor)
 
-        let payload = ["Ranging": NSNumber(bool: rangingActive)]
+        let payload = ["Ranging": NSNumber(value: rangingActive as Bool)]
         defaultSession!.sendMessage(payload, replyHandler: nil, errorHandler: nil)
+    }
+}
+
+extension HiBeaconsInterfaceController: WCSessionDelegate {
+    @available(watchOS 2.2, *)
+    public func session(_ session: WCSession, activationDidCompleteWith activationState: WCSessionActivationState, error: Error?) {
+        // TODO: Do something useful with this
     }
 }

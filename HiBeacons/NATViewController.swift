@@ -40,16 +40,16 @@ class NATViewController: UIViewController
     // Constants
 
     /// The maximum number of table view sections (when ranged beacons are included).
-    private let kMaxNumberOfSections = 2
+    fileprivate let kMaxNumberOfSections = 2
     /// The number of possible operations.
-    private let kNumberOfAvailableOperations = 3
+    fileprivate let kNumberOfAvailableOperations = 3
 
     /// The title for the beacon ranging table view section.
-    private let kBeaconSectionTitle = "Ranging for beacons..."
+    fileprivate let kBeaconSectionTitle = "Ranging for beacons..."
     /// The position of the activity indicator in the ranging table view header.
-    private let kActivityIndicatorPosition = CGPoint(x: 205, y: 12)
+    fileprivate let kActivityIndicatorPosition = CGPoint(x: 205, y: 12)
     /// The identifier for the beacon ranging table view header.
-    private let kBeaconsHeaderViewIdentifier = "BeaconsHeader"
+    fileprivate let kBeaconsHeaderViewIdentifier = "BeaconsHeader"
 
 
     // Enumerations
@@ -60,9 +60,9 @@ class NATViewController: UIViewController
         - Operations: The first section contains the cells that can perform operations, and have switches.
         - DetectedBeacons: The second section lists cells, each with a ranged beacon.
      */
-    private enum NTSectionType: Int {
-        case Operations = 0
-        case DetectedBeacons
+    fileprivate enum NTSectionType: Int {
+        case operations = 0
+        case detectedBeacons
 
         /**
             Returns the table view cell identifier that corresponds to the section type.
@@ -71,9 +71,9 @@ class NATViewController: UIViewController
          */
         func cellIdentifier() -> String {
             switch self {
-            case .Operations:
+            case .operations:
                 return "OperationCell"
-            case .DetectedBeacons:
+            case .detectedBeacons:
                 return "BeaconCell"
             }
         }
@@ -85,9 +85,9 @@ class NATViewController: UIViewController
          */
         func tableViewCellHeight() -> CGFloat {
             switch self {
-            case .Operations:
+            case .operations:
                 return 44.0
-            case .DetectedBeacons:
+            case .detectedBeacons:
                 return 52.0
             }
         }
@@ -100,10 +100,10 @@ class NATViewController: UIViewController
         - Advertising: The advertising cell row.
         - Ranging: The ranging cell row.
      */
-    private enum NTOperationsRow: Int {
-        case Monitoring = 0
-        case Advertising
-        case Ranging
+    fileprivate enum NTOperationsRow: Int {
+        case monitoring = 0
+        case advertising
+        case ranging
 
         /**
             Returns the table view cell title that corresponds to the specific operations row.
@@ -112,11 +112,11 @@ class NATViewController: UIViewController
          */
         func tableViewCellTitle() -> String {
             switch self {
-            case .Monitoring:
+            case .monitoring:
                 return "Monitoring"
-            case .Advertising:
+            case .advertising:
                 return "Advertising"
-            case .Ranging:
+            case .ranging:
                 return "Ranging"
             }
         }
@@ -126,35 +126,35 @@ class NATViewController: UIViewController
     // The Operation objects
 
     /// The monitoring operation object.
-    private var monitoringOperation = NATMonitoringOperation()
+    fileprivate var monitoringOperation = NATMonitoringOperation()
     /// The advertising operation object.
-    private var advertisingOperation = NATAdvertisingOperation()
+    fileprivate var advertisingOperation = NATAdvertisingOperation()
     /// The ranging operation object.
-    private var rangingOperation = NATRangingOperation()
+    fileprivate var rangingOperation = NATRangingOperation()
 
 
     // Other
 
     /// An array of CLBeacon objects, typically those detected through ranging.
-    private var detectedBeacons = [CLBeacon]()
+    fileprivate var detectedBeacons = [CLBeacon]()
 
     /// The UISwitch instance associated with the monitoring cell.
-    private var monitoringSwitch: UISwitch!
+    fileprivate var monitoringSwitch: UISwitch!
     /// The UISwitch instance associated with the advertising cell.
-    private var advertisingSwitch: UISwitch!
+    fileprivate var advertisingSwitch: UISwitch!
     /// The UISwitch instance associated with the ranging cell.
-    private var rangingSwitch: UISwitch!
+    fileprivate var rangingSwitch: UISwitch!
 
     /// The UIActivityIndicatorView that shows whether monitoring is active.
-    private var monitoringActivityIndicator: UIActivityIndicatorView!
+    fileprivate var monitoringActivityIndicator: UIActivityIndicatorView!
     /// The UIActivityIndicatorView that shows whether advertising is active.
-    private var advertisingActivityIndicator: UIActivityIndicatorView!
+    fileprivate var advertisingActivityIndicator: UIActivityIndicatorView!
 
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
 
-        let notificationCenter = NSNotificationCenter.defaultCenter()
-        notificationCenter.addObserver(self, selector: #selector(performWatchAction(_:)), name: NATHiBeaconsDelegate.NATHiBeaconsWatchNotificationName, object: nil)
+        let notificationCenter = NotificationCenter.default
+        notificationCenter.addObserver(self, selector: #selector(performWatchAction(_:)), name: NSNotification.Name(rawValue: NATHiBeaconsDelegate.NATHiBeaconsWatchNotificationName), object: nil)
 
         // We need to assign self as a delegate here.
         monitoringOperation.delegate = self
@@ -163,7 +163,7 @@ class NATViewController: UIViewController
     }
 
     deinit {
-        let notificationCenter = NSNotificationCenter.defaultCenter()
+        let notificationCenter = NotificationCenter.default
         notificationCenter.removeObserver(self)
     }
 }
@@ -180,14 +180,14 @@ extension NATViewController
         :param: beacons An array of CLBeacon objects.
         :returns: An array of NSIndexPaths corresponding to positions in the table view where these beacons are.
      */
-    func indexPathsOfRemovedBeacons(beacons: [CLBeacon]) -> [NSIndexPath]? {
-        var indexPaths: [NSIndexPath]?
+    func indexPathsOfRemovedBeacons(_ beacons: [CLBeacon]) -> [IndexPath]? {
+        var indexPaths: [IndexPath]?
 
         var row = 0
         for existingBeacon in detectedBeacons {
             var stillExists = false
             for beacon in beacons {
-                if existingBeacon.major.integerValue == beacon.major.integerValue && existingBeacon.minor.integerValue == beacon.minor.integerValue {
+                if existingBeacon.major.intValue == beacon.major.intValue && existingBeacon.minor.intValue == beacon.minor.intValue {
                     stillExists = true
                     break
                 }
@@ -195,7 +195,7 @@ extension NATViewController
 
             if stillExists == false {
                 indexPaths = indexPaths ?? []
-                indexPaths!.append(NSIndexPath(forRow: row, inSection: NTSectionType.DetectedBeacons.rawValue))
+                indexPaths!.append(IndexPath(row: row, section: NTSectionType.detectedBeacons.rawValue))
             }
             row += 1
         }
@@ -212,14 +212,14 @@ extension NATViewController
         :param: beacons An array of CLBeacon objects.
         :returns: An array of NSIndexPaths corresponding to positions in the table view where these beacons are.
      */
-    func indexPathsOfInsertedBeacons(beacons: [CLBeacon]) -> [NSIndexPath]? {
-        var indexPaths: [NSIndexPath]?
+    func indexPathsOfInsertedBeacons(_ beacons: [CLBeacon]) -> [IndexPath]? {
+        var indexPaths: [IndexPath]?
 
         var row = 0
         for beacon in beacons {
             var isNewBeacon = true
             for existingBeacon in detectedBeacons {
-                if existingBeacon.major.integerValue == beacon.major.integerValue && existingBeacon.minor.integerValue == beacon.minor.integerValue {
+                if existingBeacon.major.intValue == beacon.major.intValue && existingBeacon.minor.intValue == beacon.minor.intValue {
                     isNewBeacon = false
                     break
                 }
@@ -227,7 +227,7 @@ extension NATViewController
 
             if isNewBeacon == true {
                 indexPaths = indexPaths ?? []
-                indexPaths!.append(NSIndexPath(forRow: row, inSection: NTSectionType.DetectedBeacons.rawValue))
+                indexPaths!.append(IndexPath(row: row, section: NTSectionType.detectedBeacons.rawValue))
             }
             row += 1
         }
@@ -241,11 +241,11 @@ extension NATViewController
         :param: beacons An array of CLBeacon objects.
         :returns: An array of NSIndexPaths corresponding to positions in the table view.
      */
-    func indexPathsForBeacons(beacons: [CLBeacon]) -> [NSIndexPath] {
-        var indexPaths = [NSIndexPath]()
+    func indexPathsForBeacons(_ beacons: [CLBeacon]) -> [IndexPath] {
+        var indexPaths = [IndexPath]()
 
         for row in 0..<beacons.count {
-            indexPaths.append(NSIndexPath(forRow: row, inSection: NTSectionType.DetectedBeacons.rawValue))
+            indexPaths.append(IndexPath(row: row, section: NTSectionType.detectedBeacons.rawValue))
         }
 
         return indexPaths
@@ -256,9 +256,9 @@ extension NATViewController
 
         :returns: An NSIndexSet instance or nil.
      */
-    func insertedSections() -> NSIndexSet? {
-        if rangingSwitch.on == true && beaconTableView.numberOfSections == kMaxNumberOfSections - 1 {
-            return NSIndexSet(index: 1)
+    func insertedSections() -> IndexSet? {
+        if rangingSwitch.isOn == true && beaconTableView.numberOfSections == kMaxNumberOfSections - 1 {
+            return IndexSet(integer: 1)
         } else {
             return nil
         }
@@ -269,9 +269,9 @@ extension NATViewController
 
         :returns: An NSIndexSet instance or nil.
      */
-    func deletedSections() -> NSIndexSet? {
-        if rangingSwitch.on == false && beaconTableView.numberOfSections == kMaxNumberOfSections {
-            return NSIndexSet(index: 1)
+    func deletedSections() -> IndexSet? {
+        if rangingSwitch.isOn == false && beaconTableView.numberOfSections == kMaxNumberOfSections {
+            return IndexSet(integer: 1)
         } else {
             return nil
         }
@@ -286,7 +286,7 @@ extension NATViewController
         :param: beacons An array of CLBeacon objects.
         :returns: An array of CLBeacon objects.
      */
-    func filteredBeacons(beacons: [CLBeacon]) -> [CLBeacon] {
+    func filteredBeacons(_ beacons: [CLBeacon]) -> [CLBeacon] {
         var filteredBeacons = beacons   // Copy
 
         var lookup = Set<String>()
@@ -295,7 +295,7 @@ extension NATViewController
             let identifier = "\(currentBeacon.major)/\(currentBeacon.minor)"
 
             if lookup.contains(identifier) {
-                filteredBeacons.removeAtIndex(index)
+                filteredBeacons.remove(at: index)
             } else {
                 lookup.insert(identifier)
             }
@@ -308,40 +308,40 @@ extension NATViewController
 // MARK: - Table view functionality
 extension NATViewController: UITableViewDataSource, UITableViewDelegate
 {
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cellIdentifier = NTSectionType(rawValue: indexPath.section)?.cellIdentifier()
-        var cell: UITableViewCell? = tableView.dequeueReusableCellWithIdentifier(cellIdentifier!)
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cellIdentifier = NTSectionType(rawValue: (indexPath as NSIndexPath).section)?.cellIdentifier()
+        var cell: UITableViewCell? = tableView.dequeueReusableCell(withIdentifier: cellIdentifier!)
 
-        switch indexPath.section {
-        case NTSectionType.Operations.rawValue:
+        switch (indexPath as NSIndexPath).section {
+        case NTSectionType.operations.rawValue:
             let operationCell = cell as! NATOperationCell
-            cell?.textLabel?.text = NTOperationsRow(rawValue: indexPath.row)?.tableViewCellTitle()
+            cell?.textLabel?.text = NTOperationsRow(rawValue: (indexPath as NSIndexPath).row)?.tableViewCellTitle()
 
-            switch indexPath.row {
-            case NTOperationsRow.Monitoring.rawValue:
+            switch (indexPath as NSIndexPath).row {
+            case NTOperationsRow.monitoring.rawValue:
                 monitoringSwitch = operationCell.accessoryView as? UISwitch
                 monitoringActivityIndicator = operationCell.activityIndicator
-                monitoringSwitch.addTarget(self, action: #selector(changeMonitoringState(_:)), forControlEvents: UIControlEvents.ValueChanged)
-                monitoringSwitch.on ? monitoringActivityIndicator.startAnimating() : monitoringActivityIndicator.stopAnimating()
-            case NTOperationsRow.Advertising.rawValue:
+                monitoringSwitch.addTarget(self, action: #selector(changeMonitoringState(_:)), for: UIControlEvents.valueChanged)
+                monitoringSwitch.isOn ? monitoringActivityIndicator.startAnimating() : monitoringActivityIndicator.stopAnimating()
+            case NTOperationsRow.advertising.rawValue:
                 advertisingSwitch = operationCell.accessoryView as? UISwitch
                 advertisingActivityIndicator = operationCell.activityIndicator
-                advertisingSwitch.addTarget(self, action: #selector(changeAdvertisingState(_:)), forControlEvents: UIControlEvents.ValueChanged)
-                advertisingSwitch.on ? advertisingActivityIndicator.startAnimating() : advertisingActivityIndicator.stopAnimating()
-            case NTOperationsRow.Ranging.rawValue:
+                advertisingSwitch.addTarget(self, action: #selector(changeAdvertisingState(_:)), for: UIControlEvents.valueChanged)
+                advertisingSwitch.isOn ? advertisingActivityIndicator.startAnimating() : advertisingActivityIndicator.stopAnimating()
+            case NTOperationsRow.ranging.rawValue:
                 rangingSwitch = cell?.accessoryView as? UISwitch
-                rangingSwitch.addTarget(self, action: #selector(changeRangingState(_:)), forControlEvents: UIControlEvents.ValueChanged)
+                rangingSwitch.addTarget(self, action: #selector(changeRangingState(_:)), for: UIControlEvents.valueChanged)
             default:
                 break
             }
-        case NTSectionType.DetectedBeacons.rawValue:
-            let beacon = detectedBeacons[indexPath.row]
+        case NTSectionType.detectedBeacons.rawValue:
+            let beacon = detectedBeacons[(indexPath as NSIndexPath).row]
 
-            cell = cell ?? UITableViewCell(style: UITableViewCellStyle.Subtitle, reuseIdentifier: cellIdentifier)
+            cell = cell ?? UITableViewCell(style: UITableViewCellStyle.subtitle, reuseIdentifier: cellIdentifier)
 
-            cell!.textLabel?.text = beacon.proximityUUID.UUIDString
+            cell!.textLabel?.text = beacon.proximityUUID.uuidString
             cell!.detailTextLabel?.text = beacon.fullDetails()
-            cell!.detailTextLabel?.textColor = UIColor.grayColor()
+            cell!.detailTextLabel?.textColor = UIColor.gray
         default:
             break
         }
@@ -354,45 +354,45 @@ extension NATViewController: UITableViewDataSource, UITableViewDelegate
         return cell!
     }
 
-    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        if rangingSwitch?.on == true {
+    func numberOfSections(in tableView: UITableView) -> Int {
+        if rangingSwitch?.isOn == true {
             return kMaxNumberOfSections            // All sections visible
         } else {
             return kMaxNumberOfSections - 1        // Beacons section not visible
         }
     }
 
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         switch section {
-        case NTSectionType.Operations.rawValue:
+        case NTSectionType.operations.rawValue:
             return kNumberOfAvailableOperations
-        case NTSectionType.DetectedBeacons.rawValue:
+        case NTSectionType.detectedBeacons.rawValue:
             return self.detectedBeacons.count
         default:
             return 0
         }
     }
 
-    func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         switch (section) {
-        case NTSectionType.Operations.rawValue:
+        case NTSectionType.operations.rawValue:
             return nil
-        case NTSectionType.DetectedBeacons.rawValue:
+        case NTSectionType.detectedBeacons.rawValue:
             return kBeaconSectionTitle
         default:
             return nil
         }
     }
 
-    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        return NTSectionType(rawValue: indexPath.section)!.tableViewCellHeight()
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return NTSectionType(rawValue: (indexPath as NSIndexPath).section)!.tableViewCellHeight()
     }
 
-    func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let headerView = UITableViewHeaderFooterView(reuseIdentifier: kBeaconsHeaderViewIdentifier)
 
         // Adds an activity indicator view to the section header
-        let indicatorView = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.Gray)
+        let indicatorView = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.gray)
         headerView.addSubview(indicatorView)
 
         indicatorView.frame = CGRect(origin: kActivityIndicatorPosition, size: indicatorView.frame.size)
@@ -411,8 +411,8 @@ extension NATViewController
 
         :param: monitoringSwitch The monitoring UISwitch instance.
      */
-    func changeMonitoringState(monitoringSwitch: UISwitch) {
-        monitoringSwitch.on ? monitoringOperation.startMonitoringForBeacons() : monitoringOperation.stopMonitoringForBeacons()
+    func changeMonitoringState(_ monitoringSwitch: UISwitch) {
+        monitoringSwitch.isOn ? monitoringOperation.startMonitoringForBeacons() : monitoringOperation.stopMonitoringForBeacons()
     }
 
     /**
@@ -420,8 +420,8 @@ extension NATViewController
 
         :param: advertisingSwitch The advertising UISwitch instance.
      */
-    func changeAdvertisingState(advertisingSwitch: UISwitch) {
-        advertisingSwitch.on ? advertisingOperation.startAdvertisingBeacon() : advertisingOperation.stopAdvertisingBeacon()
+    func changeAdvertisingState(_ advertisingSwitch: UISwitch) {
+        advertisingSwitch.isOn ? advertisingOperation.startAdvertisingBeacon() : advertisingOperation.stopAdvertisingBeacon()
     }
 
     /**
@@ -429,8 +429,8 @@ extension NATViewController
 
         :param: rangingSwitch The ranging UISwitch instance.
      */
-    func changeRangingState(rangingSwitch: UISwitch) {
-        rangingSwitch.on ? rangingOperation.startRangingForBeacons() : rangingOperation.stopRangingForBeacons()
+    func changeRangingState(_ rangingSwitch: UISwitch) {
+        rangingSwitch.isOn ? rangingOperation.startRangingForBeacons() : rangingOperation.stopRangingForBeacons()
     }
 }
 
@@ -442,8 +442,8 @@ extension NATViewController: NATMonitoringOperationDelegate
         activity indicator on.
      */
     func monitoringOperationDidStartSuccessfully() {
-        dispatch_async(dispatch_get_main_queue()) { () -> Void in
-            self.monitoringSwitch.on = true
+        DispatchQueue.main.async { () -> Void in
+            self.monitoringSwitch.isOn = true
             self.monitoringActivityIndicator.startAnimating()
         }
     }
@@ -452,7 +452,7 @@ extension NATViewController: NATMonitoringOperationDelegate
         Triggered by the monitoring operation when it has stopped successfully and turns the activity indicator off.
      */
     func monitoringOperationDidStopSuccessfully() {
-        dispatch_async(dispatch_get_main_queue()) { () -> Void in
+        DispatchQueue.main.async { () -> Void in
             self.monitoringActivityIndicator.stopAnimating()
         }
     }
@@ -461,8 +461,8 @@ extension NATViewController: NATMonitoringOperationDelegate
         Triggered by the monitoring operation whe it has failed to start and turns the monitoring switch off.
      */
     func monitoringOperationDidFailToStart() {
-        dispatch_async(dispatch_get_main_queue()) { () -> Void in
-            self.monitoringSwitch.on = false
+        DispatchQueue.main.async { () -> Void in
+            self.monitoringSwitch.isOn = false
         }
     }
 
@@ -478,18 +478,18 @@ extension NATViewController: NATMonitoringOperationDelegate
         let cancelButtonTitle = "Cancel"
         let settingsButtonTitle = "Settings"
 
-        let alertController = UIAlertController.init(title: title, message: message, preferredStyle: UIAlertControllerStyle.Alert)
-        let cancelAction = UIAlertAction.init(title: cancelButtonTitle, style: UIAlertActionStyle.Cancel, handler: nil)
-        let settingsAction = UIAlertAction.init(title: settingsButtonTitle, style: UIAlertActionStyle.Default) {
+        let alertController = UIAlertController.init(title: title, message: message, preferredStyle: UIAlertControllerStyle.alert)
+        let cancelAction = UIAlertAction.init(title: cancelButtonTitle, style: UIAlertActionStyle.cancel, handler: nil)
+        let settingsAction = UIAlertAction.init(title: settingsButtonTitle, style: UIAlertActionStyle.default) {
                 (action: UIAlertAction) -> Void in
-            UIApplication.sharedApplication().openURL(NSURL(string: UIApplicationOpenSettingsURLString)!)
+            UIApplication.shared.openURL(URL(string: UIApplicationOpenSettingsURLString)!)
         }
         alertController.addAction(cancelAction);
         alertController.addAction(settingsAction);
-        self.presentViewController(alertController, animated: true, completion: nil)
+        self.present(alertController, animated: true, completion: nil)
 
-        dispatch_async(dispatch_get_main_queue()) { () -> Void in
-            self.monitoringSwitch.on = false
+        DispatchQueue.main.async { () -> Void in
+            self.monitoringSwitch.isOn = false
         }
     }
 
@@ -499,7 +499,7 @@ extension NATViewController: NATMonitoringOperationDelegate
         
         :param: region The provided region that the monitoring operation detected.
      */
-    func monitoringOperationDidDetectEnteringRegion(region: CLBeaconRegion) {
+    func monitoringOperationDidDetectEnteringRegion(_ region: CLBeaconRegion) {
         sendLocalNotificationForBeaconRegion(region)
     }
 
@@ -510,14 +510,14 @@ extension NATViewController: NATMonitoringOperationDelegate
     
         :param: region The given CLBeaconRegion instance.
      */
-    func sendLocalNotificationForBeaconRegion(region: CLBeaconRegion) {
+    func sendLocalNotificationForBeaconRegion(_ region: CLBeaconRegion) {
         let notification = UILocalNotification()
 
-        notification.alertBody = "Entered beacon region for UUID: " + region.proximityUUID.UUIDString
+        notification.alertBody = "Entered beacon region for UUID: " + region.proximityUUID.uuidString
         notification.alertAction = "View Details"
         notification.soundName = UILocalNotificationDefaultSoundName
 
-        UIApplication.sharedApplication().presentLocalNotificationNow(notification)
+        UIApplication.shared.presentLocalNotificationNow(notification)
     }
 }
 
@@ -529,8 +529,8 @@ extension NATViewController: NATAdvertisingOperationDelegate
         activity indicator on.
      */
     func advertisingOperationDidStartSuccessfully() {
-        dispatch_async(dispatch_get_main_queue()) { () -> Void in
-            self.advertisingSwitch.on = true
+        DispatchQueue.main.async { () -> Void in
+            self.advertisingSwitch.isOn = true
             self.advertisingActivityIndicator.startAnimating()
         }
     }
@@ -539,7 +539,7 @@ extension NATViewController: NATAdvertisingOperationDelegate
         Triggered by the advertising operation when it has stopped successfully and turns the activity indicator off.
      */
     func advertisingOperationDidStopSuccessfully() {
-        dispatch_async(dispatch_get_main_queue()) { () -> Void in
+        DispatchQueue.main.async { () -> Void in
             self.advertisingActivityIndicator.stopAnimating()
         }
     }
@@ -552,13 +552,13 @@ extension NATViewController: NATAdvertisingOperationDelegate
         let message = "It seems that Bluetooth is off. For advertising to work, please turn Bluetooth on."
         let cancelButtonTitle = "OK"
 
-        let alertController = UIAlertController.init(title: title, message: message, preferredStyle: UIAlertControllerStyle.Alert)
-        let cancelAction = UIAlertAction.init(title: cancelButtonTitle, style: UIAlertActionStyle.Cancel, handler: nil)
+        let alertController = UIAlertController.init(title: title, message: message, preferredStyle: UIAlertControllerStyle.alert)
+        let cancelAction = UIAlertAction.init(title: cancelButtonTitle, style: UIAlertActionStyle.cancel, handler: nil)
         alertController.addAction(cancelAction);
-        self.presentViewController(alertController, animated: true, completion: nil)
+        self.present(alertController, animated: true, completion: nil)
 
-        dispatch_async(dispatch_get_main_queue()) { () -> Void in
-            self.advertisingSwitch.on = false
+        DispatchQueue.main.async { () -> Void in
+            self.advertisingSwitch.isOn = false
         }
     }
 }
@@ -573,8 +573,8 @@ extension NATViewController: NATRangingOperationDelegate
     func rangingOperationDidStartSuccessfully() {
         detectedBeacons = []
 
-        dispatch_async(dispatch_get_main_queue()) { () -> Void in
-            self.rangingSwitch.on = true
+        DispatchQueue.main.async { () -> Void in
+            self.rangingSwitch.isOn = true
         }
     }
 
@@ -582,8 +582,8 @@ extension NATViewController: NATRangingOperationDelegate
         Triggered by the ranging operation when it has failed to start and turns the ranging switch off.
      */
     func rangingOperationDidFailToStart() {
-        dispatch_async(dispatch_get_main_queue()) { () -> Void in
-            self.rangingSwitch.on = false
+        DispatchQueue.main.async { () -> Void in
+            self.rangingSwitch.isOn = false
         }
     }
 
@@ -599,18 +599,18 @@ extension NATViewController: NATRangingOperationDelegate
         let cancelButtonTitle = "Cancel"
         let settingsButtonTitle = "Settings"
 
-        let alertController = UIAlertController.init(title: title, message: message, preferredStyle: UIAlertControllerStyle.Alert)
-        let cancelAction = UIAlertAction.init(title: cancelButtonTitle, style: UIAlertActionStyle.Cancel, handler: nil)
-        let settingsAction = UIAlertAction.init(title: settingsButtonTitle, style: UIAlertActionStyle.Default) {
+        let alertController = UIAlertController.init(title: title, message: message, preferredStyle: UIAlertControllerStyle.alert)
+        let cancelAction = UIAlertAction.init(title: cancelButtonTitle, style: UIAlertActionStyle.cancel, handler: nil)
+        let settingsAction = UIAlertAction.init(title: settingsButtonTitle, style: UIAlertActionStyle.default) {
             (action: UIAlertAction) -> Void in
-            UIApplication.sharedApplication().openURL(NSURL(string: UIApplicationOpenSettingsURLString)!)
+            UIApplication.shared.openURL(URL(string: UIApplicationOpenSettingsURLString)!)
         }
         alertController.addAction(cancelAction);
         alertController.addAction(settingsAction);
-        self.presentViewController(alertController, animated: true, completion: nil)
+        self.present(alertController, animated: true, completion: nil)
 
-        dispatch_async(dispatch_get_main_queue()) { () -> Void in
-            self.rangingSwitch.on = false
+        DispatchQueue.main.async { () -> Void in
+            self.rangingSwitch.isOn = false
         }
     }
 
@@ -621,10 +621,10 @@ extension NATViewController: NATRangingOperationDelegate
     func rangingOperationDidStopSuccessfully() {
         detectedBeacons = []
 
-        dispatch_async(dispatch_get_main_queue()) { () -> Void in
+        DispatchQueue.main.async { () -> Void in
             self.beaconTableView.beginUpdates()
             if let deletedSections = self.deletedSections() {
-                self.beaconTableView.deleteSections(deletedSections, withRowAnimation: UITableViewRowAnimation.Fade)
+                self.beaconTableView.deleteSections(deletedSections, with: UITableViewRowAnimation.fade)
             }
             self.beaconTableView.endUpdates()
         }
@@ -638,8 +638,8 @@ extension NATViewController: NATRangingOperationDelegate
         :param: beacons An array of provided beacons that the ranging operation detected.
         :param: region A provided region whose beacons the operation is trying to range.
      */
-    func rangingOperationDidRangeBeacons(beacons: [AnyObject]!, inRegion region: CLBeaconRegion!) {
-        dispatch_async(dispatch_get_main_queue()) { () -> Void in
+    func rangingOperationDidRangeBeacons(_ beacons: [AnyObject]!, inRegion region: CLBeaconRegion!) {
+        DispatchQueue.main.async { () -> Void in
             let filteredBeacons = self.filteredBeacons(beacons as! [CLBeacon])
 
             if filteredBeacons.isEmpty {
@@ -657,7 +657,7 @@ extension NATViewController: NATRangingOperationDelegate
 
             let insertedRows = self.indexPathsOfInsertedBeacons(filteredBeacons)
             let deletedRows = self.indexPathsOfRemovedBeacons(filteredBeacons)
-            var reloadedRows: [NSIndexPath]?
+            var reloadedRows: [IndexPath]?
             if deletedRows == nil && insertedRows == nil {
                 reloadedRows = self.indexPathsForBeacons(filteredBeacons)
             }
@@ -666,19 +666,19 @@ extension NATViewController: NATRangingOperationDelegate
 
             self.beaconTableView.beginUpdates()
             if self.insertedSections() != nil {
-                self.beaconTableView.insertSections(self.insertedSections()!, withRowAnimation: UITableViewRowAnimation.Fade)
+                self.beaconTableView.insertSections(self.insertedSections()!, with: UITableViewRowAnimation.fade)
             }
             if self.deletedSections() != nil {
-                self.beaconTableView.deleteSections(self.deletedSections()!, withRowAnimation: UITableViewRowAnimation.Fade)
+                self.beaconTableView.deleteSections(self.deletedSections()!, with: UITableViewRowAnimation.fade)
             }
             if insertedRows != nil {
-                self.beaconTableView.insertRowsAtIndexPaths(insertedRows!, withRowAnimation: UITableViewRowAnimation.Fade)
+                self.beaconTableView.insertRows(at: insertedRows!, with: UITableViewRowAnimation.fade)
             }
             if deletedRows != nil {
-                self.beaconTableView.deleteRowsAtIndexPaths(deletedRows!, withRowAnimation: UITableViewRowAnimation.Fade)
+                self.beaconTableView.deleteRows(at: deletedRows!, with: UITableViewRowAnimation.fade)
             }
             if reloadedRows != nil {
-                self.beaconTableView.reloadRowsAtIndexPaths(reloadedRows!, withRowAnimation: UITableViewRowAnimation.Fade)
+                self.beaconTableView.reloadRows(at: reloadedRows!, with: UITableViewRowAnimation.fade)
             }
             self.beaconTableView.endUpdates()
         }
@@ -694,21 +694,21 @@ extension NATViewController
     
         :param: notification The notification object that caused this method to be called.
      */
-    func performWatchAction(notification: NSNotification) {
-        var payload = notification.userInfo as! [String : NSNumber]
+    func performWatchAction(_ notification: Notification) {
+        var payload = (notification as NSNotification).userInfo as! [String : NSNumber]
 
         if let monitoringState = payload["Monitoring"] {
-            dispatch_async(dispatch_get_main_queue(), { () -> Void in
+            DispatchQueue.main.async(execute: { () -> Void in
                 self.monitoringSwitch.setOn(monitoringState.boolValue, animated: true)
             })
             changeMonitoringState(monitoringSwitch)
         } else if let advertisingState = payload["Advertising"] {
-            dispatch_async(dispatch_get_main_queue(), { () -> Void in
+            DispatchQueue.main.async(execute: { () -> Void in
                 self.advertisingSwitch.setOn(advertisingState.boolValue, animated: true)
             })
             changeAdvertisingState(advertisingSwitch)
         } else if let rangingState = payload["Ranging"] {
-            dispatch_async(dispatch_get_main_queue(), { () -> Void in
+            DispatchQueue.main.async(execute: { () -> Void in
                 self.rangingSwitch.setOn(rangingState.boolValue, animated: true)
                 self.changeRangingState(self.rangingSwitch)
             })
@@ -728,13 +728,13 @@ extension CLBeacon
         let proximityText: String
 
         switch proximity {
-        case .Near:
+        case .near:
             proximityText = "Near"
-        case .Immediate:
+        case .immediate:
             proximityText = "Immediate"
-        case .Far:
+        case .far:
             proximityText = "Far"
-        case .Unknown:
+        case .unknown:
             proximityText = "Unknown"
         }
 
