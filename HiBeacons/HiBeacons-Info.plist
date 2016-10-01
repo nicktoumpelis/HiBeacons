@@ -24,6 +24,8 @@
 	<string>1.0</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSBluetoothPeripheralUsageDescription</key>
+	<string>HiBeacons will only use Bluetooth when it needs to advertise itself as a beacon.</string>
 	<key>NSLocationAlwaysUsageDescription</key>
 	<string>This is required for monitoring.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>

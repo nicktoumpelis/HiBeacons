@@ -27,6 +27,7 @@
 import Foundation
 import UIKit
 import CoreLocation
+import UserNotifications
 
 /// The main view controller, which basically manages the UI, triggers operations and updates its views.
 class NATViewController: UIViewController
@@ -482,7 +483,7 @@ extension NATViewController: NATMonitoringOperationDelegate
         let cancelAction = UIAlertAction.init(title: cancelButtonTitle, style: UIAlertActionStyle.cancel, handler: nil)
         let settingsAction = UIAlertAction.init(title: settingsButtonTitle, style: UIAlertActionStyle.default) {
                 (action: UIAlertAction) -> Void in
-            UIApplication.shared.openURL(URL(string: UIApplicationOpenSettingsURLString)!)
+            UIApplication.shared.open(URL(string: UIApplicationOpenSettingsURLString)!, options: [:], completionHandler: nil)
         }
         alertController.addAction(cancelAction);
         alertController.addAction(settingsAction);
@@ -511,13 +512,14 @@ extension NATViewController: NATMonitoringOperationDelegate
         :param: region The given CLBeaconRegion instance.
      */
     func sendLocalNotificationForBeaconRegion(_ region: CLBeaconRegion) {
-        let notification = UILocalNotification()
+        let mutableNotificationContent = UNMutableNotificationContent()
+        mutableNotificationContent.title = "Beacon Region Entered"
+        mutableNotificationContent.body = "Entered beacon region for UUID: " + region.proximityUUID.uuidString
+        mutableNotificationContent.sound = UNNotificationSound.default()
 
-        notification.alertBody = "Entered beacon region for UUID: " + region.proximityUUID.uuidString
-        notification.alertAction = "View Details"
-        notification.soundName = UILocalNotificationDefaultSoundName
+        let notificationRequest = UNNotificationRequest(identifier: "RegionEntered", content: mutableNotificationContent, trigger: nil)
 
-        UIApplication.shared.presentLocalNotificationNow(notification)
+        UNUserNotificationCenter.current().add(notificationRequest)
     }
 }
 
@@ -603,7 +605,7 @@ extension NATViewController: NATRangingOperationDelegate
         let cancelAction = UIAlertAction.init(title: cancelButtonTitle, style: UIAlertActionStyle.cancel, handler: nil)
         let settingsAction = UIAlertAction.init(title: settingsButtonTitle, style: UIAlertActionStyle.default) {
             (action: UIAlertAction) -> Void in
-            UIApplication.shared.openURL(URL(string: UIApplicationOpenSettingsURLString)!)
+            UIApplication.shared.open(URL(string: UIApplicationOpenSettingsURLString)!, options: [:], completionHandler: nil)
         }
         alertController.addAction(cancelAction);
         alertController.addAction(settingsAction);
