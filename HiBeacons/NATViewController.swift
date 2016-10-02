@@ -697,7 +697,7 @@ extension NATViewController
         :param: notification The notification object that caused this method to be called.
      */
     func performWatchAction(_ notification: Notification) {
-        var payload = (notification as NSNotification).userInfo as! [String : NSNumber]
+        var payload = notification.userInfo as! [String : NSNumber]
 
         if let monitoringState = payload["Monitoring"] {
             DispatchQueue.main.async(execute: { () -> Void in
