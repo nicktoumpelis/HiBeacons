@@ -108,9 +108,13 @@ class HiBeaconsInterfaceController: WKInterfaceController
     }
 }
 
-extension HiBeaconsInterfaceController: WCSessionDelegate {
-    @available(watchOS 2.2, *)
-    public func session(_ session: WCSession, activationDidCompleteWith activationState: WCSessionActivationState, error: Error?) {
-        // TODO: Do something useful with this
+extension HiBeaconsInterfaceController: WCSessionDelegate
+{
+    public func session(_ session: WCSession,
+                        activationDidCompleteWith activationState: WCSessionActivationState,
+                        error: Error?) {
+        if error != nil {
+            print("Session failed to activate with error: \(error.debugDescription)")
+        }
     }
 }
