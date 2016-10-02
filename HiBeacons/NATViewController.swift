@@ -501,17 +501,17 @@ extension NATViewController: NATMonitoringOperationDelegate
         :param: region The provided region that the monitoring operation detected.
      */
     func monitoringOperationDidDetectEnteringRegion(_ region: CLBeaconRegion) {
-        sendLocalNotificationForBeaconRegion(region)
+        queueNotificationRequestForBeaconRegion(region)
     }
 
     /**
-        Emits a UILocalNotification with information about the given region.
+        Queues a UNNotificationRequest with information about the given region.
     
-        Note that major and minor are not available at the monitoring stage.
+        Note that major and minor integers are not available at the monitoring stage.
     
         :param: region The given CLBeaconRegion instance.
      */
-    func sendLocalNotificationForBeaconRegion(_ region: CLBeaconRegion) {
+    func queueNotificationRequestForBeaconRegion(_ region: CLBeaconRegion) {
         let mutableNotificationContent = UNMutableNotificationContent()
         mutableNotificationContent.title = "Beacon Region Entered"
         mutableNotificationContent.body = "Entered beacon region for UUID: " + region.proximityUUID.uuidString
