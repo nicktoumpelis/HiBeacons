@@ -447,7 +447,7 @@ extension NATViewController
     }
 }
 
-// MARK: WCSessionDelegate methods
+// MARK: - WCSessionDelegate methods
 extension NATViewController: WCSessionDelegate
 {
     public func session(_ session: WCSession,
@@ -720,7 +720,7 @@ extension NATViewController: NATRangingOperationDelegate
     }
 }
 
-// MARK: - Notifications
+// MARK: - Watch Notifications
 extension NATViewController
 {
     /**
