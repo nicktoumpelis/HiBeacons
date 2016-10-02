@@ -26,7 +26,6 @@
 
 import Foundation
 import UIKit
-import WatchConnectivity
 
 ///  The app delegate
 @UIApplicationMain class NATHiBeaconsDelegate: UIResponder, UIApplicationDelegate
@@ -36,36 +35,8 @@ import WatchConnectivity
 
     /// The main window
     var window: UIWindow?
-    var mainSession: WCSession!
 
     func application(_ application: UIApplication, willFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
-        if WCSession.isSupported() {
-            mainSession = WCSession.default()
-            mainSession.delegate = self
-            mainSession.activate()
-        }
-        
         return true
     }
-}
-
-// MARK: WCSessionDelegate methods
-extension NATHiBeaconsDelegate: WCSessionDelegate
-{
-    public func session(_ session: WCSession,
-                        activationDidCompleteWith activationState: WCSessionActivationState,
-                        error: Error?) {
-        if error != nil {
-            print("Session failed to activate with error: \(error.debugDescription)")
-        }
-    }
-
-    func session(_ session: WCSession, didReceiveMessage message: [String : Any]) {
-        let notificationCenter = NotificationCenter.default
-        notificationCenter.post(name: Notification.Name(rawValue: NATHiBeaconsDelegate.NATHiBeaconsWatchNotificationName), object: self, userInfo: message)
-    }
-
-    public func sessionDidDeactivate(_ session: WCSession) { }
-
-    public func sessionDidBecomeInactive(_ session: WCSession) { }
 }

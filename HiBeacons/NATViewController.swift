@@ -28,6 +28,7 @@ import Foundation
 import UIKit
 import CoreLocation
 import UserNotifications
+import WatchConnectivity
 
 /// The main view controller, which basically manages the UI, triggers operations and updates its views.
 class NATViewController: UIViewController
@@ -41,16 +42,16 @@ class NATViewController: UIViewController
     // Constants
 
     /// The maximum number of table view sections (when ranged beacons are included).
-    fileprivate let kMaxNumberOfSections = 2
+    let kMaxNumberOfSections = 2
     /// The number of possible operations.
-    fileprivate let kNumberOfAvailableOperations = 3
+    let kNumberOfAvailableOperations = 3
 
     /// The title for the beacon ranging table view section.
-    fileprivate let kBeaconSectionTitle = "Ranging for beacons..."
+    let kBeaconSectionTitle = "Ranging for beacons..."
     /// The position of the activity indicator in the ranging table view header.
-    fileprivate let kActivityIndicatorPosition = CGPoint(x: 205, y: 12)
+    let kActivityIndicatorPosition = CGPoint(x: 205, y: 12)
     /// The identifier for the beacon ranging table view header.
-    fileprivate let kBeaconsHeaderViewIdentifier = "BeaconsHeader"
+    let kBeaconsHeaderViewIdentifier = "BeaconsHeader"
 
 
     // Enumerations
@@ -61,7 +62,7 @@ class NATViewController: UIViewController
         - Operations: The first section contains the cells that can perform operations, and have switches.
         - DetectedBeacons: The second section lists cells, each with a ranged beacon.
      */
-    fileprivate enum NTSectionType: Int {
+    enum NTSectionType: Int {
         case operations = 0
         case detectedBeacons
 
@@ -101,7 +102,7 @@ class NATViewController: UIViewController
         - Advertising: The advertising cell row.
         - Ranging: The ranging cell row.
      */
-    fileprivate enum NTOperationsRow: Int {
+    enum NTOperationsRow: Int {
         case monitoring = 0
         case advertising
         case ranging
@@ -127,29 +128,29 @@ class NATViewController: UIViewController
     // The Operation objects
 
     /// The monitoring operation object.
-    fileprivate var monitoringOperation = NATMonitoringOperation()
+    var monitoringOperation = NATMonitoringOperation()
     /// The advertising operation object.
-    fileprivate var advertisingOperation = NATAdvertisingOperation()
+    var advertisingOperation = NATAdvertisingOperation()
     /// The ranging operation object.
-    fileprivate var rangingOperation = NATRangingOperation()
+    var rangingOperation = NATRangingOperation()
 
 
     // Other
 
     /// An array of CLBeacon objects, typically those detected through ranging.
-    fileprivate var detectedBeacons = [CLBeacon]()
+    var detectedBeacons = [CLBeacon]()
 
     /// The UISwitch instance associated with the monitoring cell.
-    fileprivate var monitoringSwitch: UISwitch!
+    var monitoringSwitch: UISwitch!
     /// The UISwitch instance associated with the advertising cell.
-    fileprivate var advertisingSwitch: UISwitch!
+    var advertisingSwitch: UISwitch!
     /// The UISwitch instance associated with the ranging cell.
-    fileprivate var rangingSwitch: UISwitch!
+    var rangingSwitch: UISwitch!
 
     /// The UIActivityIndicatorView that shows whether monitoring is active.
-    fileprivate var monitoringActivityIndicator: UIActivityIndicatorView!
+    var monitoringActivityIndicator: UIActivityIndicatorView!
     /// The UIActivityIndicatorView that shows whether advertising is active.
-    fileprivate var advertisingActivityIndicator: UIActivityIndicatorView!
+    var advertisingActivityIndicator: UIActivityIndicatorView!
 
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
@@ -166,6 +167,17 @@ class NATViewController: UIViewController
     deinit {
         let notificationCenter = NotificationCenter.default
         notificationCenter.removeObserver(self)
+    }
+
+    /// The main WCSession instance
+    var mainSession: WCSession?
+
+    override func viewDidAppear(_ animated: Bool) {
+        if WCSession.isSupported() {
+            mainSession = WCSession.default()
+            mainSession!.delegate = self
+            mainSession!.activate()
+        }
     }
 }
 
@@ -435,6 +447,27 @@ extension NATViewController
     }
 }
 
+// MARK: WCSessionDelegate methods
+extension NATViewController: WCSessionDelegate
+{
+    public func session(_ session: WCSession,
+                        activationDidCompleteWith activationState: WCSessionActivationState,
+                        error: Error?) {
+        if error != nil {
+            print("Session failed to activate with error: \(error.debugDescription)")
+        }
+    }
+
+    func session(_ session: WCSession, didReceiveMessage message: [String : Any]) {
+        let notificationCenter = NotificationCenter.default
+        notificationCenter.post(name: Notification.Name(rawValue: NATHiBeaconsDelegate.NATHiBeaconsWatchNotificationName), object: self, userInfo: message)
+    }
+
+    public func sessionDidDeactivate(_ session: WCSession) { }
+
+    public func sessionDidBecomeInactive(_ session: WCSession) { }
+}
+
 // MARK: - Monitoring delegate methods and helpers
 extension NATViewController: NATMonitoringOperationDelegate
 {
@@ -697,23 +730,23 @@ extension NATViewController
         :param: notification The notification object that caused this method to be called.
      */
     func performWatchAction(_ notification: Notification) {
-        var payload = notification.userInfo as! [String : NSNumber]
+        var payload = notification.userInfo as! [String : Bool]
 
         if let monitoringState = payload["Monitoring"] {
-            DispatchQueue.main.async(execute: { () -> Void in
-                self.monitoringSwitch.setOn(monitoringState.boolValue, animated: true)
-            })
+            DispatchQueue.main.async { () -> Void in
+                self.monitoringSwitch.setOn(monitoringState, animated: true)
+            }
             changeMonitoringState(monitoringSwitch)
         } else if let advertisingState = payload["Advertising"] {
-            DispatchQueue.main.async(execute: { () -> Void in
-                self.advertisingSwitch.setOn(advertisingState.boolValue, animated: true)
-            })
+            DispatchQueue.main.async { () -> Void in
+                self.advertisingSwitch.setOn(advertisingState, animated: true)
+            }
             changeAdvertisingState(advertisingSwitch)
         } else if let rangingState = payload["Ranging"] {
-            DispatchQueue.main.async(execute: { () -> Void in
-                self.rangingSwitch.setOn(rangingState.boolValue, animated: true)
+            DispatchQueue.main.async{ () -> Void in
+                self.rangingSwitch.setOn(rangingState, animated: true)
                 self.changeRangingState(self.rangingSwitch)
-            })
+            }
         }
     }
 }

@@ -1,6 +1,6 @@
 //
-//  HiBeaconsInterfaceController.swift
-//  HiBeacons WatchKit Extension
+//  NATHiBeaconsInterfaceController.swift
+//  HiBeacons Watch App Extension
 //
 //  Created by Nick Toumpelis on 2015-08-06.
 //  Copyright (c) 2015 Nick Toumpelis.
@@ -28,19 +28,19 @@ import WatchKit
 import WatchConnectivity
 import Foundation
 
-class HiBeaconsInterfaceController: WKInterfaceController
+class NATHiBeaconsInterfaceController: WKInterfaceController
 {
     @IBOutlet weak var monitoringButton: WKInterfaceButton?
     @IBOutlet weak var advertisingButton: WKInterfaceButton?
     @IBOutlet weak var rangingButton: WKInterfaceButton?
 
-    fileprivate var monitoringActive = false
-    fileprivate var advertisingActive = false
-    fileprivate var rangingActive = false
+    var monitoringActive = false
+    var advertisingActive = false
+    var rangingActive = false
 
-    fileprivate var defaultSession: WCSession?
+    var defaultSession: WCSession?
 
-    let activeBackgroundColor = UIColor(red: 0.0, green: 0.5, blue: 1.0, alpha: 1.0)
+    let activeBackgroundColor = UIColor(red: 0.34, green: 0.7, blue: 0.36, alpha: 1.0)
     let inactiveBackgroundColor = UIColor(red: 0.2, green: 0.2, blue: 0.2, alpha: 1.0)
 
     override func awake(withContext context: Any?) {
@@ -56,15 +56,7 @@ class HiBeaconsInterfaceController: WKInterfaceController
             defaultSession!.activate()
         }
     }
-
-    override func willActivate() {
-        super.willActivate()
-    }
-
-    override func didDeactivate() {
-        super.didDeactivate()
-    }
-
+    
     @IBAction func toggleMonitoring() {
         if defaultSession!.isReachable != true {
             return
@@ -75,7 +67,7 @@ class HiBeaconsInterfaceController: WKInterfaceController
         let backgroundColor = monitoringActive ? activeBackgroundColor : inactiveBackgroundColor
         monitoringButton?.setBackgroundColor(backgroundColor)
 
-        let payload = ["Monitoring": NSNumber(value: monitoringActive as Bool)]
+        let payload = ["Monitoring": monitoringActive]
         defaultSession!.sendMessage(payload, replyHandler: nil, errorHandler: nil)
     }
 
@@ -89,7 +81,7 @@ class HiBeaconsInterfaceController: WKInterfaceController
         let backgroundColor = advertisingActive ? activeBackgroundColor : inactiveBackgroundColor
         advertisingButton?.setBackgroundColor(backgroundColor)
 
-        let payload = ["Advertising": NSNumber(value: advertisingActive as Bool)]
+        let payload = ["Advertising": advertisingActive]
         defaultSession!.sendMessage(payload, replyHandler: nil, errorHandler: nil)
     }
 
@@ -103,12 +95,12 @@ class HiBeaconsInterfaceController: WKInterfaceController
         let backgroundColor = rangingActive ? activeBackgroundColor : inactiveBackgroundColor
         rangingButton?.setBackgroundColor(backgroundColor)
 
-        let payload = ["Ranging": NSNumber(value: rangingActive as Bool)]
+        let payload = ["Ranging": rangingActive]
         defaultSession!.sendMessage(payload, replyHandler: nil, errorHandler: nil)
     }
 }
 
-extension HiBeaconsInterfaceController: WCSessionDelegate
+extension NATHiBeaconsInterfaceController: WCSessionDelegate
 {
     public func session(_ session: WCSession,
                         activationDidCompleteWith activationState: WCSessionActivationState,

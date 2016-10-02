@@ -8,9 +8,9 @@
         <!--HiBeacons-->
         <scene sceneID="aou-V4-d1y">
             <objects>
-                <controller title="HiBeacons" id="AgC-eL-Hgc" customClass="HiBeaconsInterfaceController" customModule="HiBeacons_WatchKit_Extension">
+                <controller title="HiBeacons" hidesWhenLoading="NO" id="AgC-eL-Hgc" customClass="NATHiBeaconsInterfaceController" customModule="HiBeacons_Watch_App_Extension">
                     <items>
-                        <group width="1" alignment="left" layout="vertical" spacing="8" id="63r-Mh-aBp">
+                        <group width="1" alignment="left" layout="vertical" spacing="11" id="63r-Mh-aBp">
                             <items>
                                 <button width="1" alignment="left" title="Monitoring" id="KG5-eF-VLt">
                                     <connections>
@@ -28,7 +28,7 @@
                                     </connections>
                                 </button>
                             </items>
-                            <edgeInsets key="margins" left="0.0" right="0.0" top="6" bottom="6"/>
+                            <edgeInsets key="margins" left="0.0" right="0.0" top="11" bottom="11"/>
                         </group>
                     </items>
                     <connections>
@@ -38,31 +38,8 @@
                     </connections>
                 </controller>
             </objects>
-            <point key="canvasLocation" x="235" y="347"/>
-        </scene>
-        <!--Static Notification Interface Controller-->
-        <scene sceneID="AEw-b0-oYE">
-            <objects>
-                <notificationController id="YCC-NB-fut">
-                    <items>
-                        <label alignment="left" text="Alert Label" id="XkS-y5-khE"/>
-                    </items>
-                    <notificationCategory key="notificationCategory" identifier="myCategory" id="JfB-70-Muf"/>
-                    <connections>
-                        <outlet property="notificationAlertLabel" destination="XkS-y5-khE" id="49B-RR-99y"/>
-                        <segue destination="gdX-wl-uQE" kind="relationship" relationship="dynamicNotificationInterface" id="fKh-qV-3T2"/>
-                    </connections>
-                </notificationController>
-            </objects>
-            <point key="canvasLocation" x="235" y="1001"/>
-        </scene>
-        <!--Notification Controller-->
-        <scene sceneID="KIl-fV-djm">
-            <objects>
-                <controller id="gdX-wl-uQE" customClass="NotificationController" customModule="HiBeacons_WatchKit_App" customModuleProvider="target"/>
-            </objects>
-            <point key="canvasLocation" x="553" y="1001"/>
+            <point key="canvasLocation" x="140" y="118"/>
         </scene>
     </scenes>
-    <color key="tintColor" red="0.0" green="0.50196081399917603" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+    <color key="tintColor" red="0.46158705028447089" green="1" blue="0.48950683032543074" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
 </document>
