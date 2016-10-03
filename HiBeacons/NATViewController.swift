@@ -54,6 +54,32 @@ class NATViewController: UIViewController
     let kBeaconsHeaderViewIdentifier = "BeaconsHeader"
 
 
+    // Operation states
+    var monitoringActive: Bool = false {
+        didSet {
+            if monitoringActive != oldValue {
+                monitoringSwitch.setOn(monitoringActive, animated: true)
+            }
+        }
+    }
+
+    var advertisingActive: Bool = false {
+        didSet {
+            if advertisingActive != oldValue {
+                advertisingSwitch.setOn(advertisingActive, animated: true)
+            }
+        }
+    }
+
+    var rangingActive: Bool = false {
+        didSet {
+            if rangingActive != oldValue {
+                rangingSwitch.setOn(rangingActive, animated: true)
+            }
+        }
+    }
+
+
     // Enumerations
 
     /**
@@ -223,7 +249,7 @@ extension NATViewController
         :returns: An NSIndexSet instance or nil.
      */
     func insertedSections() -> IndexSet? {
-        if rangingSwitch.isOn == true && beaconTableView.numberOfSections == kMaxNumberOfSections - 1 {
+        if rangingActive == true && beaconTableView.numberOfSections == kMaxNumberOfSections - 1 {
             return IndexSet(integer: 1)
         } else {
             return nil
@@ -235,7 +261,7 @@ extension NATViewController
         :returns: An NSIndexSet instance or nil.
      */
     func deletedSections() -> IndexSet? {
-        if rangingSwitch.isOn == false && beaconTableView.numberOfSections == kMaxNumberOfSections {
+        if rangingActive == false && beaconTableView.numberOfSections == kMaxNumberOfSections {
             return IndexSet(integer: 1)
         } else {
             return nil
@@ -284,16 +310,14 @@ extension NATViewController: UITableViewDataSource, UITableViewDelegate
             case NATOperationType.monitoring.index():
                 monitoringSwitch = operationCell.accessoryView as? UISwitch
                 monitoringActivityIndicator = operationCell.activityIndicator
-                monitoringSwitch.addTarget(self, action: #selector(changeMonitoringState(_:)), for: UIControlEvents.valueChanged)
-                monitoringSwitch.isOn ? monitoringActivityIndicator.startAnimating() : monitoringActivityIndicator.stopAnimating()
+                monitoringSwitch.addTarget(self, action: #selector(changeMonitoringState), for: UIControlEvents.valueChanged)
             case NATOperationType.advertising.index():
                 advertisingSwitch = operationCell.accessoryView as? UISwitch
                 advertisingActivityIndicator = operationCell.activityIndicator
-                advertisingSwitch.addTarget(self, action: #selector(changeAdvertisingState(_:)), for: UIControlEvents.valueChanged)
-                advertisingSwitch.isOn ? advertisingActivityIndicator.startAnimating() : advertisingActivityIndicator.stopAnimating()
+                advertisingSwitch.addTarget(self, action: #selector(changeAdvertisingState), for: UIControlEvents.valueChanged)
             case NATOperationType.ranging.index():
                 rangingSwitch = cell?.accessoryView as? UISwitch
-                rangingSwitch.addTarget(self, action: #selector(changeRangingState(_:)), for: UIControlEvents.valueChanged)
+                rangingSwitch.addTarget(self, action: #selector(changeRangingState), for: UIControlEvents.valueChanged)
             default:
                 break
             }
@@ -337,7 +361,7 @@ extension NATViewController: UITableViewDataSource, UITableViewDelegate
     }
 
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        switch (section) {
+        switch section {
         case NATSectionType.operations.rawValue:
             return nil
         case NATSectionType.detectedBeacons.rawValue:
@@ -357,9 +381,7 @@ extension NATViewController: UITableViewDataSource, UITableViewDelegate
         // Adds an activity indicator view to the section header
         let indicatorView = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.gray)
         headerView.addSubview(indicatorView)
-
         indicatorView.frame = CGRect(origin: kActivityIndicatorPosition, size: indicatorView.frame.size)
-
         indicatorView.startAnimating()
 
         return headerView
@@ -369,28 +391,36 @@ extension NATViewController: UITableViewDataSource, UITableViewDelegate
 // MARK: - Operation methods
 extension NATViewController
 {
-    /**
-        Starts/stops the monitoring operation, depending on the state of the given switch.
-        :param: monitoringSwitch The monitoring UISwitch instance.
-     */
-    func changeMonitoringState(_ monitoringSwitch: UISwitch) {
-        monitoringSwitch.isOn ? monitoringOperation.startMonitoringForBeacons() : monitoringOperation.stopMonitoringForBeacons()
+    func changeMonitoringState() {
+        monitoringActive = monitoringSwitch.isOn
+        updateMonitoringState()
     }
 
-    /**
-        Starts/stops the advertising operation, depending on the state of the given switch.
-        :param: advertisingSwitch The advertising UISwitch instance.
-     */
-    func changeAdvertisingState(_ advertisingSwitch: UISwitch) {
-        advertisingSwitch.isOn ? advertisingOperation.startAdvertisingBeacon() : advertisingOperation.stopAdvertisingBeacon()
+    func changeAdvertisingState() {
+        advertisingActive = advertisingSwitch.isOn
+        updateAdvertisingState()
     }
 
-    /**
-        Starts/stops the ranging operation, depending on the state of the given switch.
-        :param: rangingSwitch The ranging UISwitch instance.
-     */
-    func changeRangingState(_ rangingSwitch: UISwitch) {
-        rangingSwitch.isOn ? rangingOperation.startRangingForBeacons() : rangingOperation.stopRangingForBeacons()
+    func changeRangingState() {
+        rangingActive = rangingSwitch.isOn
+        updateRangingState()
+    }
+
+    /// Starts/stops the monitoring operation, depending on the state of monitoringActive.
+    func updateMonitoringState() {
+        monitoringActive ? monitoringActivityIndicator.startAnimating() : monitoringActivityIndicator.stopAnimating()
+        monitoringActive ? monitoringOperation.startMonitoringForBeacons() : monitoringOperation.stopMonitoringForBeacons()
+    }
+
+    /// Starts/stops the advertising operation, depending on the state of advertisingActive.
+    func updateAdvertisingState() {
+        advertisingActive ? advertisingActivityIndicator.startAnimating() : advertisingActivityIndicator.stopAnimating()
+        advertisingActive ? advertisingOperation.startAdvertisingBeacon() : advertisingOperation.stopAdvertisingBeacon()
+    }
+
+    /// Starts/stops the ranging operation, depending on the state of rangingActive.
+    func updateRangingState() {
+        rangingActive ? rangingOperation.startRangingForBeacons() : rangingOperation.stopRangingForBeacons()
     }
 }
 
@@ -403,7 +433,7 @@ extension NATViewController: NATMonitoringOperationDelegate
      */
     func monitoringOperationDidStartSuccessfully() {
         DispatchQueue.main.async { () -> Void in
-            self.monitoringSwitch.isOn = true
+            self.monitoringActive = true
             self.monitoringActivityIndicator.startAnimating()
             self.sendMessageFor(operation: NATOperationType.monitoring, withState: true)
         }
@@ -420,7 +450,7 @@ extension NATViewController: NATMonitoringOperationDelegate
     /// Triggered by the monitoring operation whe it has failed to start and turns the monitoring switch off.
     func monitoringOperationDidFailToStart() {
         DispatchQueue.main.async { () -> Void in
-            self.monitoringSwitch.isOn = false
+            self.monitoringActive = false
             self.sendMessageFor(operation: NATOperationType.monitoring, withState: false)
         }
     }
@@ -447,7 +477,7 @@ extension NATViewController: NATMonitoringOperationDelegate
         self.present(alertController, animated: true, completion: nil)
 
         DispatchQueue.main.async { () -> Void in
-            self.monitoringSwitch.isOn = false
+            self.monitoringActive = false
             self.sendMessageFor(operation: NATOperationType.monitoring, withState: false)
         }
     }
@@ -487,7 +517,7 @@ extension NATViewController: NATAdvertisingOperationDelegate
      */
     func advertisingOperationDidStartSuccessfully() {
         DispatchQueue.main.async { () -> Void in
-            self.advertisingSwitch.isOn = true
+            self.advertisingActive = true
             self.advertisingActivityIndicator.startAnimating()
             self.sendMessageFor(operation: NATOperationType.advertising, withState: true)
         }
@@ -513,7 +543,7 @@ extension NATViewController: NATAdvertisingOperationDelegate
         self.present(alertController, animated: true, completion: nil)
 
         DispatchQueue.main.async { () -> Void in
-            self.advertisingSwitch.isOn = false
+            self.advertisingActive = false
             self.sendMessageFor(operation: NATOperationType.advertising, withState: false)
         }
     }
@@ -530,7 +560,7 @@ extension NATViewController: NATRangingOperationDelegate
         detectedBeacons = []
 
         DispatchQueue.main.async { () -> Void in
-            self.rangingSwitch.isOn = true
+            self.rangingActive = true
             self.sendMessageFor(operation: NATOperationType.ranging, withState: true)
         }
     }
@@ -538,7 +568,7 @@ extension NATViewController: NATRangingOperationDelegate
     /// Triggered by the ranging operation when it has failed to start and turns the ranging switch off.
     func rangingOperationDidFailToStart() {
         DispatchQueue.main.async { () -> Void in
-            self.rangingSwitch.isOn = false
+            self.rangingActive = false
             self.sendMessageFor(operation: NATOperationType.ranging, withState: false)
         }
     }
@@ -565,7 +595,7 @@ extension NATViewController: NATRangingOperationDelegate
         self.present(alertController, animated: true, completion: nil)
 
         DispatchQueue.main.async { () -> Void in
-            self.rangingSwitch.isOn = false
+            self.rangingActive = false
             self.sendMessageFor(operation: NATOperationType.ranging, withState: false)
         }
     }
@@ -672,18 +702,18 @@ extension NATViewController
     func performActionFor(message: [String: Bool]) {
         if let monitoringState = message[NATOperationType.monitoring.rawValue] {
             DispatchQueue.main.async { () -> Void in
-                self.monitoringSwitch.setOn(monitoringState, animated: true)
+                self.monitoringActive = monitoringState
+                self.updateMonitoringState()
             }
-            changeMonitoringState(monitoringSwitch)
         } else if let advertisingState = message[NATOperationType.advertising.rawValue] {
             DispatchQueue.main.async { () -> Void in
-                self.advertisingSwitch.setOn(advertisingState, animated: true)
+                self.advertisingActive = advertisingState
+                self.updateAdvertisingState()
             }
-            changeAdvertisingState(advertisingSwitch)
         } else if let rangingState = message[NATOperationType.ranging.rawValue] {
             DispatchQueue.main.async{ () -> Void in
-                self.rangingSwitch.setOn(rangingState, animated: true)
-                self.changeRangingState(self.rangingSwitch)
+                self.rangingActive = rangingState
+                self.updateRangingState()
             }
         }
     }
