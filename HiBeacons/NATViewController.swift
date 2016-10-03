@@ -451,7 +451,7 @@ extension NATViewController: NATMonitoringOperationDelegate
             self.monitoringSwitch.isOn = true
             self.monitoringActivityIndicator.startAnimating()
 
-            let payload = ["monitoring": true]
+            let payload = [NATOperationType.monitoring.rawValue: true]
             self.mainSession?.sendMessage(payload, replyHandler: nil, errorHandler: nil)
         }
     }
@@ -463,7 +463,7 @@ extension NATViewController: NATMonitoringOperationDelegate
         DispatchQueue.main.async { () -> Void in
             self.monitoringActivityIndicator.stopAnimating()
 
-            let payload = ["monitoring": false]
+            let payload = [NATOperationType.monitoring.rawValue: false]
             self.mainSession?.sendMessage(payload, replyHandler: nil, errorHandler: nil)
         }
     }
@@ -545,7 +545,7 @@ extension NATViewController: NATAdvertisingOperationDelegate
             self.advertisingSwitch.isOn = true
             self.advertisingActivityIndicator.startAnimating()
 
-            let payload = ["advertising": true]
+            let payload = [NATOperationType.advertising.rawValue: true]
             self.mainSession?.sendMessage(payload, replyHandler: nil, errorHandler: nil)
         }
     }
@@ -557,7 +557,7 @@ extension NATViewController: NATAdvertisingOperationDelegate
         DispatchQueue.main.async { () -> Void in
             self.advertisingActivityIndicator.stopAnimating()
 
-            let payload = ["advertising": false]
+            let payload = [NATOperationType.advertising.rawValue: false]
             self.mainSession?.sendMessage(payload, replyHandler: nil, errorHandler: nil)
         }
     }
@@ -594,7 +594,7 @@ extension NATViewController: NATRangingOperationDelegate
         DispatchQueue.main.async { () -> Void in
             self.rangingSwitch.isOn = true
 
-            let payload = ["ranging": true]
+            let payload = [NATOperationType.ranging.rawValue: true]
             self.mainSession?.sendMessage(payload, replyHandler: nil, errorHandler: nil)
         }
     }
@@ -649,7 +649,7 @@ extension NATViewController: NATRangingOperationDelegate
             }
             self.beaconTableView.endUpdates()
 
-            let payload = ["ranging": false]
+            let payload = [NATOperationType.ranging.rawValue: false]
             self.mainSession?.sendMessage(payload, replyHandler: nil, errorHandler: nil)
         }
     }
@@ -739,17 +739,17 @@ extension NATViewController
         :param: message The message that caused this method to be called.
      */
     func performActionFor(message: [String: Bool]) {
-        if let monitoringState = message["monitoring"] {
+        if let monitoringState = message[NATOperationType.monitoring.rawValue] {
             DispatchQueue.main.async { () -> Void in
                 self.monitoringSwitch.setOn(monitoringState, animated: true)
             }
             changeMonitoringState(monitoringSwitch)
-        } else if let advertisingState = message["advertising"] {
+        } else if let advertisingState = message[NATOperationType.advertising.rawValue] {
             DispatchQueue.main.async { () -> Void in
                 self.advertisingSwitch.setOn(advertisingState, animated: true)
             }
             changeAdvertisingState(advertisingSwitch)
-        } else if let rangingState = message["ranging"] {
+        } else if let rangingState = message[NATOperationType.ranging.rawValue] {
             DispatchQueue.main.async{ () -> Void in
                 self.rangingSwitch.setOn(rangingState, animated: true)
                 self.changeRangingState(self.rangingSwitch)

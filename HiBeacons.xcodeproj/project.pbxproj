@@ -17,6 +17,8 @@
 		CF36DDF71DA1A1C200E3A52D /* HiBeacons Watch App.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = CF36DDD91DA1A1C100E3A52D /* HiBeacons Watch App.app */; };
 		CF36DE001DA1A39000E3A52D /* NATHiBeaconsInterfaceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF36DDFF1DA1A39000E3A52D /* NATHiBeaconsInterfaceController.swift */; };
 		CF36DE031DA1A41100E3A52D /* Interface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CF36DE011DA1A41100E3A52D /* Interface.storyboard */; };
+		CF557C301DA284800026F42D /* NATOperationType.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF557C2F1DA284800026F42D /* NATOperationType.swift */; };
+		CF557C311DA284800026F42D /* NATOperationType.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF557C2F1DA284800026F42D /* NATOperationType.swift */; };
 		CF96E4C71B5ED80E00285986 /* NATHiBeaconsDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF96E4C61B5ED80E00285986 /* NATHiBeaconsDelegate.swift */; };
 		CF96E4CB1B5EE7F800285986 /* Launch Screen.xib in Resources */ = {isa = PBXBuildFile; fileRef = CF96E4CA1B5EE7F800285986 /* Launch Screen.xib */; };
 		CF96E4CD1B5F152700285986 /* NATViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF96E4CC1B5F152700285986 /* NATViewController.swift */; };
@@ -84,6 +86,7 @@
 		CF36DDF41DA1A1C200E3A52D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CF36DDFF1DA1A39000E3A52D /* NATHiBeaconsInterfaceController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NATHiBeaconsInterfaceController.swift; sourceTree = "<group>"; };
 		CF36DE021DA1A41100E3A52D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Interface.storyboard; sourceTree = "<group>"; };
+		CF557C2F1DA284800026F42D /* NATOperationType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NATOperationType.swift; sourceTree = "<group>"; };
 		CF96E4C61B5ED80E00285986 /* NATHiBeaconsDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NATHiBeaconsDelegate.swift; sourceTree = "<group>"; };
 		CF96E4CA1B5EE7F800285986 /* Launch Screen.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "Launch Screen.xib"; sourceTree = "<group>"; };
 		CF96E4CC1B5F152700285986 /* NATViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NATViewController.swift; sourceTree = "<group>"; };
@@ -138,6 +141,7 @@
 				CF96E4C61B5ED80E00285986 /* NATHiBeaconsDelegate.swift */,
 				CF96E4CC1B5F152700285986 /* NATViewController.swift */,
 				CFE8B47D1B6538EC008CB9A4 /* NATOperationCell.swift */,
+				CF557C2F1DA284800026F42D /* NATOperationType.swift */,
 				CFE8B4871B65AD35008CB9A4 /* NATOperation Hierarchy */,
 				CF96E4C91B5EE7DB00285986 /* Resources */,
 				CF2BC92918019D6100C66D15 /* Supporting Files */,
@@ -366,6 +370,7 @@
 				CFE8B4821B655DB6008CB9A4 /* NATMonitoringOperation.swift in Sources */,
 				CFE8B47E1B6538EC008CB9A4 /* NATOperationCell.swift in Sources */,
 				CF96E4C71B5ED80E00285986 /* NATHiBeaconsDelegate.swift in Sources */,
+				CF557C301DA284800026F42D /* NATOperationType.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -373,6 +378,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CF557C311DA284800026F42D /* NATOperationType.swift in Sources */,
 				CF36DE001DA1A39000E3A52D /* NATHiBeaconsInterfaceController.swift in Sources */,
 				CF36DDEF1DA1A1C200E3A52D /* NATHiBeaconsExtensionDelegate.swift in Sources */,
 			);
@@ -679,6 +685,7 @@
 				CF36DDFA1DA1A1C200E3A52D /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		CF36DDFC1DA1A1C200E3A52D /* Build configuration list for PBXNativeTarget "HiBeacons Watch App" */ = {
 			isa = XCConfigurationList;
@@ -687,6 +694,7 @@
 				CF36DDFE1DA1A1C200E3A52D /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

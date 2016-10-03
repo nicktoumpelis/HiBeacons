@@ -43,24 +43,13 @@ class NATHiBeaconsInterfaceController: WKInterfaceController
     let activeBackgroundColor = UIColor(red: 0.34, green: 0.7, blue: 0.36, alpha: 1.0)
     let inactiveBackgroundColor = UIColor(red: 0.2, green: 0.2, blue: 0.2, alpha: 1.0)
 
-    /// MARK: Operation (nested enumeration)
-
-    /**
-        `NATHiBeaconsOperation` encapsulates the three kinds of operations possible to perform in HiBeacons.
-     */
-    enum NATHiBeaconsOperation: String {
-        case monitoring         /// The monitoring operation.
-        case advertising        /// The advertising operation.
-        case ranging            /// The ranging operation.
-    }
-
     /**
         Helper method that returns the WKInterfaceButton instance associated with a given operation.
         
         :param: operation A given operation.
         :returns: An instance of a WKInterfaceButton.
      */
-    func buttonFor(operation: NATHiBeaconsOperation) -> WKInterfaceButton? {
+    func buttonFor(operation: NATOperationType) -> WKInterfaceButton? {
         switch operation {
         case .monitoring:
             return monitoringButton
@@ -92,7 +81,7 @@ class NATHiBeaconsInterfaceController: WKInterfaceController
         :param: value The new value of the active state for the given operation.
         :param: operation The operation for which the active state should be changed.
      */
-    func setActiveState(_ value: Bool, forOperation operation: NATHiBeaconsOperation) {
+    func setActiveState(_ value: Bool, forOperation operation: NATOperationType) {
         if defaultSession!.isReachable != true {
             return
         }
@@ -117,7 +106,7 @@ class NATHiBeaconsInterfaceController: WKInterfaceController
         :param: operation The operation for which the state should be changed.
         :param: state The new state for the given operation.
      */
-    func sendMessageFor(operation: NATHiBeaconsOperation, withState state: Bool) {
+    func sendMessageFor(operation: NATOperationType, withState state: Bool) {
         let payload = [operation.rawValue: state]
         defaultSession!.sendMessage(payload, replyHandler: nil, errorHandler: nil)
     }
@@ -126,24 +115,24 @@ class NATHiBeaconsInterfaceController: WKInterfaceController
         Toggles the state of the monitoring operation.
      */
     @IBAction func toggleMonitoring() {
-        setActiveState(!monitoringActive, forOperation: NATHiBeaconsOperation.monitoring)
-        sendMessageFor(operation: NATHiBeaconsOperation.monitoring, withState: monitoringActive)
+        setActiveState(!monitoringActive, forOperation: NATOperationType.monitoring)
+        sendMessageFor(operation: NATOperationType.monitoring, withState: monitoringActive)
     }
 
     /**
         Toggles the state of the advertising operation.
      */
     @IBAction func toggleAdvertising() {
-        setActiveState(!advertisingActive, forOperation: NATHiBeaconsOperation.advertising)
-        sendMessageFor(operation: NATHiBeaconsOperation.advertising, withState: advertisingActive)
+        setActiveState(!advertisingActive, forOperation: NATOperationType.advertising)
+        sendMessageFor(operation: NATOperationType.advertising, withState: advertisingActive)
     }
 
     /**
         Toggles the state of the ranging operation.
      */
     @IBAction func toggleRanging() {
-        setActiveState(!rangingActive, forOperation: NATHiBeaconsOperation.ranging)
-        sendMessageFor(operation: NATHiBeaconsOperation.ranging, withState: rangingActive)
+        setActiveState(!rangingActive, forOperation: NATOperationType.ranging)
+        sendMessageFor(operation: NATOperationType.ranging, withState: rangingActive)
     }
 }
 
@@ -162,12 +151,12 @@ extension NATHiBeaconsInterfaceController: WCSessionDelegate
         the active state of an operation to reflect the state on the phone.
      */
     func session(_ session: WCSession, didReceiveMessage message: [String : Any]) {
-        if let state = message[NATHiBeaconsOperation.monitoring.rawValue] as? Bool {
-            setActiveState(state, forOperation: NATHiBeaconsOperation.monitoring)
-        } else if let state = message[NATHiBeaconsOperation.advertising.rawValue] as? Bool {
-            setActiveState(state, forOperation: NATHiBeaconsOperation.advertising)
-        } else if let state = message[NATHiBeaconsOperation.ranging.rawValue] as? Bool {
-            setActiveState(state, forOperation: NATHiBeaconsOperation.ranging)
+        if let state = message[NATOperationType.monitoring.rawValue] as? Bool {
+            setActiveState(state, forOperation: NATOperationType.monitoring)
+        } else if let state = message[NATOperationType.advertising.rawValue] as? Bool {
+            setActiveState(state, forOperation: NATOperationType.advertising)
+        } else if let state = message[NATOperationType.ranging.rawValue] as? Bool {
+            setActiveState(state, forOperation: NATOperationType.ranging)
         }
     }
 }
