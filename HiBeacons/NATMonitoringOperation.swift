@@ -31,29 +31,20 @@ import CoreLocation
 /// Lists the methods that a monitoring delegate should implement to be notified for all monitoring operation events.
 protocol NATMonitoringOperationDelegate
 {
-    /** 
-        Triggered when the monitoring operation has started successfully.
-     */
+    /// Triggered when the monitoring operation has started successfully.
     func monitoringOperationDidStartSuccessfully()
 
-    /**
-        Triggered by the monitoring operation when it has stopped successfully.
-     */
+    /// Triggered by the monitoring operation when it has stopped successfully.
     func monitoringOperationDidStopSuccessfully()
 
-    /** 
-        Triggered when the monitoring operation has failed to start.
-     */
+    /// Triggered when the monitoring operation has failed to start.
     func monitoringOperationDidFailToStart()
 
-    /**
-        Triggered when the monitoring operation has failed to start due to the last authorization denial.
-     */
+    /// Triggered when the monitoring operation has failed to start due to the last authorization denial.
     func monitoringOperationDidFailToStartDueToAuthorization()
 
     /**
         Triggered when the monitoring operation has detected entering the given region.
-
         :param: region The region that the monitoring operation detected.
      */
     func monitoringOperationDidDetectEnteringRegion(_ region: CLBeaconRegion)
@@ -66,9 +57,7 @@ class NATMonitoringOperation: NATOperation
     /// The delegate for a monitoring operation.
     var delegate: NATMonitoringOperationDelegate?
 
-    /**
-        Starts the beacon region monitoring process.
-     */
+    /// Starts the beacon region monitoring process.
     func startMonitoringForBeacons() {
         activateLocationManagerNotifications()
 
@@ -97,18 +86,14 @@ class NATMonitoringOperation: NATOperation
         }
     }
 
-    /**
-        Turns on monitoring (after all the checks have been passed).
-     */
+    /// Turns on monitoring (after all the checks have been passed).
     func turnOnMonitoring() {
         locationManager.startMonitoring(for: beaconRegion)
         print("Monitoring turned on for region: \(beaconRegion)")
         delegate?.monitoringOperationDidStartSuccessfully()
     }
 
-    /**
-        Stops the monitoring process.
-     */
+    /// Stops the monitoring process.
     func stopMonitoringForBeacons() {
         locationManager.stopMonitoring(for: beaconRegion)
         print("Turned off monitoring")

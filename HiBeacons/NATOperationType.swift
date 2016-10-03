@@ -25,13 +25,14 @@
 //
 
 /**
-    `NATOperationType` encapsulates the three kinds of operations possible to perform in HiBeacons.
+    Encapsulates the three kinds of operations possible to perform in HiBeacons.
  */
 enum NATOperationType: String {
     case monitoring         /// The monitoring operation.
     case advertising        /// The advertising operation.
     case ranging            /// The ranging operation.
 
+    /// Failable initializer that takes an index argument.
     init?(index: Int) {
         switch index {
         case 0:
@@ -45,6 +46,7 @@ enum NATOperationType: String {
         }
     }
 
+    /// Returns the index value for an operation type.
     func index() -> Int {
         switch self {
         case .monitoring:
@@ -56,6 +58,7 @@ enum NATOperationType: String {
         }
     }
 
+    /// Returns the capitalized raw value for an operation type.
     func capitalizedRawValue() -> String {
         return self.rawValue.capitalized
     }

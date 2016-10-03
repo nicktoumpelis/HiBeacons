@@ -31,19 +31,13 @@ import CoreBluetooth
 /// Lists the methods that an advertising delegate should implement to be notified for all advertising operation events.
 protocol NATAdvertisingOperationDelegate
 {
-    /** 
-        Triggered when the advertising operation has started successfully.
-     */
+    /// Triggered when the advertising operation has started successfully.
     func advertisingOperationDidStartSuccessfully()
 
-    /**
-        Triggered by the advertising operation when it has stopped successfully.
-     */
+    /// Triggered by the advertising operation when it has stopped successfully.
     func advertisingOperationDidStopSuccessfully()
 
-    /** 
-        Triggered when the advertising operation has failed to start.
-     */
+    /// Triggered when the advertising operation has failed to start.
     func advertisingOperationDidFailToStart()
 }
 
@@ -58,9 +52,7 @@ class NATAdvertisingOperation: NATOperation
     /// An instance of a CBPeripheralManager, which is used for advertising a beacon to nearby devices.
     var peripheralManager = CBPeripheralManager(delegate: nil, queue: nil, options: nil)
 
-    /**
-        Starts the beacon advertising process.
-     */
+    /// Starts the beacon advertising process.
     func startAdvertisingBeacon() {
         print("Turning on advertising...")
         
@@ -75,9 +67,7 @@ class NATAdvertisingOperation: NATOperation
         turnOnAdvertising()
     }
 
-    /**
-        Turns on advertising (after all the checks have been passed).
-     */
+    /// Turns on advertising (after all the checks have been passed).
     func turnOnAdvertising() {
         let major: CLBeaconMajorValue = CLBeaconMajorValue(arc4random_uniform(5000))
         let minor: CLBeaconMinorValue = CLBeaconMajorValue(arc4random_uniform(5000))
@@ -89,9 +79,7 @@ class NATAdvertisingOperation: NATOperation
         print("Turning on advertising for region: \(region).")
     }
 
-    /**
-        Stops the monitoring process.
-     */
+    /// Stops the monitoring process.
     func stopAdvertisingBeacon() {
         peripheralManager.stopAdvertising()
         deactivatePeripheralManagerNotifications();
@@ -102,7 +90,7 @@ class NATAdvertisingOperation: NATOperation
     /**
         Sets the peripheral manager delegate to self. It is called when an instance is ready to process peripheral
         manager delegate calls.
-    */
+     */
     func activatePeripheralManagerNotifications() {
         peripheralManager.delegate = self;
     }
@@ -110,7 +98,7 @@ class NATAdvertisingOperation: NATOperation
     /**
         Sets the peripheral manager delegate to nil. It is called when an instance is ready to stop processing 
         peripheral manager delegate calls.
-    */
+     */
     func deactivatePeripheralManagerNotifications() {
         peripheralManager.delegate = nil;
     }

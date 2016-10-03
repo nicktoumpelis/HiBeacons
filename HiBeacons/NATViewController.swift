@@ -58,7 +58,6 @@ class NATViewController: UIViewController
 
     /**
         The type of the table view section.
-        
         - Operations: The first section contains the cells that can perform operations, and have switches.
         - DetectedBeacons: The second section lists cells, each with a ranged beacon.
      */
@@ -68,7 +67,6 @@ class NATViewController: UIViewController
 
         /**
             Returns the table view cell identifier that corresponds to the section type.
-        
             :returns: The table view cell identifier.
          */
         func cellIdentifier() -> String {
@@ -82,7 +80,6 @@ class NATViewController: UIViewController
 
         /**
             Returns the table view cell height that corresponds to the section type.
-        
             :returns: The table view cell height.
          */
         func tableViewCellHeight() -> CGFloat {
@@ -148,10 +145,8 @@ extension NATViewController
 {
     /**
         Returns an array of NSIndexPath instances for the given beacons, which are to be removed from the table view.
-
         Not all of the given beacons will actually be removed. It will be determined by comparing with the currently
         detected beacons.
-
         :param: beacons An array of CLBeacon objects.
         :returns: An array of NSIndexPaths corresponding to positions in the table view where these beacons are.
      */
@@ -180,10 +175,8 @@ extension NATViewController
 
     /**
         Returns an array of NSIndexPath instances for the given beacons, which are to be inserted in the table view.
-
         Not all of the given beacons will actually be inserted. It will be determined by comparing with all the 
         currently detected beacons.
-
         :param: beacons An array of CLBeacon objects.
         :returns: An array of NSIndexPaths corresponding to positions in the table view where these beacons are.
      */
@@ -212,7 +205,6 @@ extension NATViewController
 
     /**
         Returns an array of NSIndexPath instances for the given beacons.
-
         :param: beacons An array of CLBeacon objects.
         :returns: An array of NSIndexPaths corresponding to positions in the table view.
      */
@@ -228,7 +220,6 @@ extension NATViewController
 
     /**
         Returns an NSIndexSet instance of the inserted sections in the table view or nil.
-
         :returns: An NSIndexSet instance or nil.
      */
     func insertedSections() -> IndexSet? {
@@ -241,7 +232,6 @@ extension NATViewController
 
     /**
         Returns an NSIndexSet instance of the deleted sections in the table view or nil.
-
         :returns: An NSIndexSet instance or nil.
      */
     func deletedSections() -> IndexSet? {
@@ -254,10 +244,8 @@ extension NATViewController
 
     /**
         Returns an array of CLBeacon instances that has been all its duplicates filtered out.
-    
         Duplicates may appear during ranging; this may happen temporarily if the originating device changes its 
         Bluetooth ID.
-
         :param: beacons An array of CLBeacon objects.
         :returns: An array of CLBeacon objects.
      */
@@ -383,7 +371,6 @@ extension NATViewController
 {
     /**
         Starts/stops the monitoring operation, depending on the state of the given switch.
-
         :param: monitoringSwitch The monitoring UISwitch instance.
      */
     func changeMonitoringState(_ monitoringSwitch: UISwitch) {
@@ -392,7 +379,6 @@ extension NATViewController
 
     /**
         Starts/stops the advertising operation, depending on the state of the given switch.
-
         :param: advertisingSwitch The advertising UISwitch instance.
      */
     func changeAdvertisingState(_ advertisingSwitch: UISwitch) {
@@ -401,7 +387,6 @@ extension NATViewController
 
     /**
         Starts/stops the ranging operation, depending on the state of the given switch.
-
         :param: rangingSwitch The ranging UISwitch instance.
      */
     func changeRangingState(_ rangingSwitch: UISwitch) {
@@ -424,9 +409,7 @@ extension NATViewController: NATMonitoringOperationDelegate
         }
     }
 
-    /**
-        Triggered by the monitoring operation when it has stopped successfully and turns the activity indicator off.
-     */
+    /// Triggered by the monitoring operation when it has stopped successfully and turns the activity indicator off.
     func monitoringOperationDidStopSuccessfully() {
         DispatchQueue.main.async { () -> Void in
             self.monitoringActivityIndicator.stopAnimating()
@@ -434,9 +417,7 @@ extension NATViewController: NATMonitoringOperationDelegate
         }
     }
 
-    /**
-        Triggered by the monitoring operation whe it has failed to start and turns the monitoring switch off.
-     */
+    /// Triggered by the monitoring operation whe it has failed to start and turns the monitoring switch off.
     func monitoringOperationDidFailToStart() {
         DispatchQueue.main.async { () -> Void in
             self.monitoringSwitch.isOn = false
@@ -446,7 +427,6 @@ extension NATViewController: NATMonitoringOperationDelegate
 
     /**
         Triggered by the monitoring operation when it has failed to start due to the last authorization denial.
-    
         It turns the monitoring switch off and presents a UIAlertView to prompt the user to change their location 
         access settings.
      */
@@ -475,7 +455,6 @@ extension NATViewController: NATMonitoringOperationDelegate
     /**
         Triggered by the monitoring operation when it has detected entering the provided region. It emits 
         a local notification.
-        
         :param: region The provided region that the monitoring operation detected.
      */
     func monitoringOperationDidDetectEnteringRegion(_ region: CLBeaconRegion) {
@@ -484,9 +463,7 @@ extension NATViewController: NATMonitoringOperationDelegate
 
     /**
         Queues a UNNotificationRequest with information about the given region.
-    
         Note that major and minor integers are not available at the monitoring stage.
-    
         :param: region The given CLBeaconRegion instance.
      */
     func queueNotificationRequestForBeaconRegion(_ region: CLBeaconRegion) {
@@ -516,9 +493,7 @@ extension NATViewController: NATAdvertisingOperationDelegate
         }
     }
 
-    /**
-        Triggered by the advertising operation when it has stopped successfully and turns the activity indicator off.
-     */
+    /// Triggered by the advertising operation when it has stopped successfully and turns the activity indicator off.
     func advertisingOperationDidStopSuccessfully() {
         DispatchQueue.main.async { () -> Void in
             self.advertisingActivityIndicator.stopAnimating()
@@ -526,9 +501,7 @@ extension NATViewController: NATAdvertisingOperationDelegate
         }
     }
 
-    /**
-        Triggered by the advertising operation when ithas failed to start and turns the advertising switch off.
-     */
+    /// Triggered by the advertising operation when ithas failed to start and turns the advertising switch off.
     func advertisingOperationDidFailToStart() {
         let title = "Bluetooth is off"
         let message = "It seems that Bluetooth is off. For advertising to work, please turn Bluetooth on."
@@ -562,9 +535,7 @@ extension NATViewController: NATRangingOperationDelegate
         }
     }
 
-    /**
-        Triggered by the ranging operation when it has failed to start and turns the ranging switch off.
-     */
+    /// Triggered by the ranging operation when it has failed to start and turns the ranging switch off.
     func rangingOperationDidFailToStart() {
         DispatchQueue.main.async { () -> Void in
             self.rangingSwitch.isOn = false
@@ -574,7 +545,6 @@ extension NATViewController: NATRangingOperationDelegate
 
     /**
         Triggered by the ranging operation when it has failed to start due to the last authorization denial.
-
         It turns the ranging switch off and presents a UIAlertView to prompt the user to change their location
         access settings.
      */
@@ -620,9 +590,7 @@ extension NATViewController: NATRangingOperationDelegate
 
     /**
         Triggered by the ranging operation when it has detected beacons belonging to a specific given beacon region.
-        
         It updates the table view to show the newly-found beacons.
-
         :param: beacons An array of provided beacons that the ranging operation detected.
         :param: region A provided region whose beacons the operation is trying to range.
      */
@@ -699,7 +667,6 @@ extension NATViewController
     /**
         Triggers any of the three operations in the app. It effectively reflects the actions taken on the watch
         by updating the action UI and triggering the operations, based on the updated UI.
-    
         :param: message The message that caused this method to be called.
      */
     func performActionFor(message: [String: Bool]) {
@@ -724,7 +691,6 @@ extension NATViewController
     /**
         Prepares and sends a message to trigger a change to a given state of the given operation
         on the phone.
-
         :param: operation The operation for which the state should be changed.
         :param: state The new state for the given operation.
      */
@@ -739,7 +705,6 @@ extension CLBeacon
 {
     /**
         Returns a specially-formatted description of the beacon's characteristics.
-    
         :returns: The beacon's description.
      */
     func fullDetails() -> String {

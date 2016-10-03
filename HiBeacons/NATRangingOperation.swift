@@ -30,29 +30,20 @@ import CoreLocation
 /// Lists the methods that a ranging delegate should implement to be notified for all ranging operation events.
 protocol NATRangingOperationDelegate
 {
-    /**
-        Triggered when the ranging operation has started successfully.
-     */
+    /// Triggered when the ranging operation has started successfully.
     func rangingOperationDidStartSuccessfully()
 
-    /**
-        Triggered when the ranging operation has failed to start.
-     */
+    /// Triggered when the ranging operation has failed to start.
     func rangingOperationDidFailToStart()
 
-    /**
-        Triggered when the ranging operation has failed to start due to the last authorization denial.
-     */
+    /// Triggered when the ranging operation has failed to start due to the last authorization denial.
     func rangingOperationDidFailToStartDueToAuthorization()
 
-    /**
-        Triggered when the ranging operation has stopped successfully.
-     */
+    /// Triggered when the ranging operation has stopped successfully.
     func rangingOperationDidStopSuccessfully()
 
     /**
         Triggered when the ranging operation has detected beacons belonging to a specific given beacon region.
-        
         :param: beacons An array of provided beacons that the ranging operation detected.
         :param: region A provided region whose beacons the operation is trying to range.
      */
@@ -66,9 +57,7 @@ class NATRangingOperation: NATOperation
     /// The delegate for a ranging operation.
     var delegate: NATRangingOperationDelegate?
 
-    /**
-        Starts the beacon ranging process.
-     */
+    /// Starts the beacon ranging process.
     func startRangingForBeacons() {
         activateLocationManagerNotifications()
 
@@ -111,9 +100,7 @@ class NATRangingOperation: NATOperation
         delegate?.rangingOperationDidStartSuccessfully()
     }
 
-    /**
-        Stops the ranging process.
-     */
+    /// Stops the ranging process.
     func stopRangingForBeacons() {
         if locationManager.rangedRegions.isEmpty {
             print("Didn't turn off ranging: Ranging already off.")
