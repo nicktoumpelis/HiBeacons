@@ -58,45 +58,57 @@ class NATHiBeaconsInterfaceController: WKInterfaceController
     }
     
     @IBAction func toggleMonitoring() {
-        if defaultSession!.isReachable != true {
-            return
-        }
-
-        monitoringActive = !monitoringActive
-
-        let backgroundColor = monitoringActive ? activeBackgroundColor : inactiveBackgroundColor
-        monitoringButton?.setBackgroundColor(backgroundColor)
+        setMonitoringActive(to: !monitoringActive)
 
         let payload = ["Monitoring": monitoringActive]
         defaultSession!.sendMessage(payload, replyHandler: nil, errorHandler: nil)
     }
 
-    @IBAction func toggleAdvertising() {
+    func setMonitoringActive(to value: Bool) {
         if defaultSession!.isReachable != true {
             return
         }
 
-        advertisingActive = !advertisingActive
+        monitoringActive = value
 
-        let backgroundColor = advertisingActive ? activeBackgroundColor : inactiveBackgroundColor
-        advertisingButton?.setBackgroundColor(backgroundColor)
+        let backgroundColor = monitoringActive ? activeBackgroundColor : inactiveBackgroundColor
+        monitoringButton?.setBackgroundColor(backgroundColor)
+    }
+
+    @IBAction func toggleAdvertising() {
+        setAdvertisingActive(to: !advertisingActive)
 
         let payload = ["Advertising": advertisingActive]
         defaultSession!.sendMessage(payload, replyHandler: nil, errorHandler: nil)
     }
 
-    @IBAction func toggleRanging() {
+    func setAdvertisingActive(to value: Bool) {
         if defaultSession!.isReachable != true {
             return
         }
 
-        rangingActive = !rangingActive
+        advertisingActive = value
 
-        let backgroundColor = rangingActive ? activeBackgroundColor : inactiveBackgroundColor
-        rangingButton?.setBackgroundColor(backgroundColor)
+        let backgroundColor = advertisingActive ? activeBackgroundColor : inactiveBackgroundColor
+        advertisingButton?.setBackgroundColor(backgroundColor)
+    }
+
+    @IBAction func toggleRanging() {
+        setRangingActive(to: !rangingActive)
 
         let payload = ["Ranging": rangingActive]
         defaultSession!.sendMessage(payload, replyHandler: nil, errorHandler: nil)
+    }
+
+    func setRangingActive(to value: Bool) {
+        if defaultSession!.isReachable != true {
+            return
+        }
+
+        rangingActive = value
+
+        let backgroundColor = rangingActive ? activeBackgroundColor : inactiveBackgroundColor
+        rangingButton?.setBackgroundColor(backgroundColor)
     }
 }
 
@@ -107,6 +119,16 @@ extension NATHiBeaconsInterfaceController: WCSessionDelegate
                         error: Error?) {
         if error != nil {
             print("Session failed to activate with error: \(error.debugDescription)")
+        }
+    }
+
+    func session(_ session: WCSession, didReceiveMessage message: [String : Any]) {
+        if let value = message["Monitoring"] as? Bool {
+            setMonitoringActive(to: value)
+        } else if let value = message["Advertising"] as? Bool {
+            setAdvertisingActive(to: value)
+        } else if let value = message["Ranging"] as? Bool {
+            setRangingActive(to: value)
         }
     }
 }

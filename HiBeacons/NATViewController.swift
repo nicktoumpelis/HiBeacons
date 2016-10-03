@@ -479,6 +479,9 @@ extension NATViewController: NATMonitoringOperationDelegate
         DispatchQueue.main.async { () -> Void in
             self.monitoringSwitch.isOn = true
             self.monitoringActivityIndicator.startAnimating()
+
+            let payload = ["Monitoring": true]
+            self.mainSession?.sendMessage(payload, replyHandler: nil, errorHandler: nil)
         }
     }
 
@@ -488,6 +491,9 @@ extension NATViewController: NATMonitoringOperationDelegate
     func monitoringOperationDidStopSuccessfully() {
         DispatchQueue.main.async { () -> Void in
             self.monitoringActivityIndicator.stopAnimating()
+
+            let payload = ["Monitoring": false]
+            self.mainSession?.sendMessage(payload, replyHandler: nil, errorHandler: nil)
         }
     }
 
@@ -567,6 +573,9 @@ extension NATViewController: NATAdvertisingOperationDelegate
         DispatchQueue.main.async { () -> Void in
             self.advertisingSwitch.isOn = true
             self.advertisingActivityIndicator.startAnimating()
+
+            let payload = ["Advertising": true]
+            self.mainSession?.sendMessage(payload, replyHandler: nil, errorHandler: nil)
         }
     }
 
@@ -576,6 +585,9 @@ extension NATViewController: NATAdvertisingOperationDelegate
     func advertisingOperationDidStopSuccessfully() {
         DispatchQueue.main.async { () -> Void in
             self.advertisingActivityIndicator.stopAnimating()
+
+            let payload = ["Advertising": false]
+            self.mainSession?.sendMessage(payload, replyHandler: nil, errorHandler: nil)
         }
     }
 
@@ -610,6 +622,9 @@ extension NATViewController: NATRangingOperationDelegate
 
         DispatchQueue.main.async { () -> Void in
             self.rangingSwitch.isOn = true
+
+            let payload = ["Ranging": true]
+            self.mainSession?.sendMessage(payload, replyHandler: nil, errorHandler: nil)
         }
     }
 
@@ -662,6 +677,9 @@ extension NATViewController: NATRangingOperationDelegate
                 self.beaconTableView.deleteSections(deletedSections, with: UITableViewRowAnimation.fade)
             }
             self.beaconTableView.endUpdates()
+
+            let payload = ["Ranging": false]
+            self.mainSession?.sendMessage(payload, replyHandler: nil, errorHandler: nil)
         }
     }
 
