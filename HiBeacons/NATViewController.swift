@@ -155,18 +155,10 @@ class NATViewController: UIViewController
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
 
-        let notificationCenter = NotificationCenter.default
-        notificationCenter.addObserver(self, selector: #selector(performWatchAction(_:)), name: NSNotification.Name(rawValue: NATHiBeaconsDelegate.NATHiBeaconsWatchNotificationName), object: nil)
-
         // We need to assign self as a delegate here.
         monitoringOperation.delegate = self
         advertisingOperation.delegate = self
         rangingOperation.delegate = self
-    }
-
-    deinit {
-        let notificationCenter = NotificationCenter.default
-        notificationCenter.removeObserver(self)
     }
 
     /// The main WCSession instance
@@ -447,27 +439,6 @@ extension NATViewController
     }
 }
 
-// MARK: - WCSessionDelegate methods
-extension NATViewController: WCSessionDelegate
-{
-    public func session(_ session: WCSession,
-                        activationDidCompleteWith activationState: WCSessionActivationState,
-                        error: Error?) {
-        if error != nil {
-            print("Session failed to activate with error: \(error.debugDescription)")
-        }
-    }
-
-    func session(_ session: WCSession, didReceiveMessage message: [String : Any]) {
-        let notificationCenter = NotificationCenter.default
-        notificationCenter.post(name: Notification.Name(rawValue: NATHiBeaconsDelegate.NATHiBeaconsWatchNotificationName), object: self, userInfo: message)
-    }
-
-    public func sessionDidDeactivate(_ session: WCSession) { }
-
-    public func sessionDidBecomeInactive(_ session: WCSession) { }
-}
-
 // MARK: - Monitoring delegate methods and helpers
 extension NATViewController: NATMonitoringOperationDelegate
 {
@@ -738,29 +709,47 @@ extension NATViewController: NATRangingOperationDelegate
     }
 }
 
-// MARK: - Watch Notifications
+// MARK: - WCSessionDelegate methods
+extension NATViewController: WCSessionDelegate
+{
+    public func session(_ session: WCSession,
+                        activationDidCompleteWith activationState: WCSessionActivationState,
+                        error: Error?) {
+        if error != nil {
+            print("Session failed to activate with error: \(error.debugDescription)")
+        }
+    }
+
+    func session(_ session: WCSession, didReceiveMessage message: [String : Any]) {
+        performActionFor(message: message as! [String: Bool])
+    }
+
+    public func sessionDidDeactivate(_ session: WCSession) { }
+
+    public func sessionDidBecomeInactive(_ session: WCSession) { }
+}
+
+// MARK: - Watch Actions
 extension NATViewController
 {
     /**
         Triggers any of the three operations in the app. It effectively reflects the actions taken on the watch
         by updating the action UI and triggering the operations, based on the updated UI.
     
-        :param: notification The notification object that caused this method to be called.
+        :param: message The message that caused this method to be called.
      */
-    func performWatchAction(_ notification: Notification) {
-        var payload = notification.userInfo as! [String : Bool]
-
-        if let monitoringState = payload["monitoring"] {
+    func performActionFor(message: [String: Bool]) {
+        if let monitoringState = message["monitoring"] {
             DispatchQueue.main.async { () -> Void in
                 self.monitoringSwitch.setOn(monitoringState, animated: true)
             }
             changeMonitoringState(monitoringSwitch)
-        } else if let advertisingState = payload["advertising"] {
+        } else if let advertisingState = message["advertising"] {
             DispatchQueue.main.async { () -> Void in
                 self.advertisingSwitch.setOn(advertisingState, animated: true)
             }
             changeAdvertisingState(advertisingSwitch)
-        } else if let rangingState = payload["ranging"] {
+        } else if let rangingState = message["ranging"] {
             DispatchQueue.main.async{ () -> Void in
                 self.rangingSwitch.setOn(rangingState, animated: true)
                 self.changeRangingState(self.rangingSwitch)

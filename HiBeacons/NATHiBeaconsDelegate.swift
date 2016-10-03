@@ -30,9 +30,6 @@ import UIKit
 ///  The app delegate
 @UIApplicationMain class NATHiBeaconsDelegate: UIResponder, UIApplicationDelegate
 {
-    /// The notification name for any watch-originating operation
-    static let NATHiBeaconsWatchNotificationName = "NATHiBeaconsWatchNotificationName"
-
     /// The main window
     var window: UIWindow?
 
