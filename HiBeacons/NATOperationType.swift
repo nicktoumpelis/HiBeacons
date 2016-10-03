@@ -31,4 +31,32 @@ enum NATOperationType: String {
     case monitoring         /// The monitoring operation.
     case advertising        /// The advertising operation.
     case ranging            /// The ranging operation.
+
+    init?(index: Int) {
+        switch index {
+        case 0:
+            self = .monitoring
+        case 1:
+            self = .advertising
+        case 2:
+            self = .ranging
+        default:
+            return nil
+        }
+    }
+
+    func index() -> Int {
+        switch self {
+        case .monitoring:
+            return 0
+        case .advertising:
+            return 1
+        case .ranging:
+            return 2
+        }
+    }
+
+    func capitalizedRawValue() -> String {
+        return self.rawValue.capitalized
+    }
 }

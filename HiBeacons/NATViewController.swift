@@ -62,7 +62,7 @@ class NATViewController: UIViewController
         - Operations: The first section contains the cells that can perform operations, and have switches.
         - DetectedBeacons: The second section lists cells, each with a ranged beacon.
      */
-    enum NTSectionType: Int {
+    enum NATSectionType: Int {
         case operations = 0
         case detectedBeacons
 
@@ -94,36 +94,6 @@ class NATViewController: UIViewController
             }
         }
     }
-
-    /**
-        The rows contained in the operations table view section.
-    
-        - Monitoring: The monitoring cell row.
-        - Advertising: The advertising cell row.
-        - Ranging: The ranging cell row.
-     */
-    enum NTOperationsRow: Int {
-        case monitoring = 0
-        case advertising
-        case ranging
-
-        /**
-            Returns the table view cell title that corresponds to the specific operations row.
-            
-            :returns: A title for the table view cell label.
-         */
-        func tableViewCellTitle() -> String {
-            switch self {
-            case .monitoring:
-                return "Monitoring"
-            case .advertising:
-                return "Advertising"
-            case .ranging:
-                return "Ranging"
-            }
-        }
-    }
-
 
     // The Operation objects
 
@@ -200,7 +170,7 @@ extension NATViewController
 
             if stillExists == false {
                 indexPaths = indexPaths ?? []
-                indexPaths!.append(IndexPath(row: row, section: NTSectionType.detectedBeacons.rawValue))
+                indexPaths!.append(IndexPath(row: row, section: NATSectionType.detectedBeacons.rawValue))
             }
             row += 1
         }
@@ -232,7 +202,7 @@ extension NATViewController
 
             if isNewBeacon == true {
                 indexPaths = indexPaths ?? []
-                indexPaths!.append(IndexPath(row: row, section: NTSectionType.detectedBeacons.rawValue))
+                indexPaths!.append(IndexPath(row: row, section: NATSectionType.detectedBeacons.rawValue))
             }
             row += 1
         }
@@ -250,7 +220,7 @@ extension NATViewController
         var indexPaths = [IndexPath]()
 
         for row in 0..<beacons.count {
-            indexPaths.append(IndexPath(row: row, section: NTSectionType.detectedBeacons.rawValue))
+            indexPaths.append(IndexPath(row: row, section: NATSectionType.detectedBeacons.rawValue))
         }
 
         return indexPaths
@@ -314,32 +284,32 @@ extension NATViewController
 extension NATViewController: UITableViewDataSource, UITableViewDelegate
 {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cellIdentifier = NTSectionType(rawValue: (indexPath as NSIndexPath).section)?.cellIdentifier()
+        let cellIdentifier = NATSectionType(rawValue: (indexPath as NSIndexPath).section)?.cellIdentifier()
         var cell: UITableViewCell? = tableView.dequeueReusableCell(withIdentifier: cellIdentifier!)
 
         switch (indexPath as NSIndexPath).section {
-        case NTSectionType.operations.rawValue:
+        case NATSectionType.operations.rawValue:
             let operationCell = cell as! NATOperationCell
-            cell?.textLabel?.text = NTOperationsRow(rawValue: (indexPath as NSIndexPath).row)?.tableViewCellTitle()
+            cell?.textLabel?.text = NATOperationType(index: (indexPath as NSIndexPath).row)?.capitalizedRawValue()
 
             switch (indexPath as NSIndexPath).row {
-            case NTOperationsRow.monitoring.rawValue:
+            case NATOperationType.monitoring.index():
                 monitoringSwitch = operationCell.accessoryView as? UISwitch
                 monitoringActivityIndicator = operationCell.activityIndicator
                 monitoringSwitch.addTarget(self, action: #selector(changeMonitoringState(_:)), for: UIControlEvents.valueChanged)
                 monitoringSwitch.isOn ? monitoringActivityIndicator.startAnimating() : monitoringActivityIndicator.stopAnimating()
-            case NTOperationsRow.advertising.rawValue:
+            case NATOperationType.advertising.index():
                 advertisingSwitch = operationCell.accessoryView as? UISwitch
                 advertisingActivityIndicator = operationCell.activityIndicator
                 advertisingSwitch.addTarget(self, action: #selector(changeAdvertisingState(_:)), for: UIControlEvents.valueChanged)
                 advertisingSwitch.isOn ? advertisingActivityIndicator.startAnimating() : advertisingActivityIndicator.stopAnimating()
-            case NTOperationsRow.ranging.rawValue:
+            case NATOperationType.ranging.index():
                 rangingSwitch = cell?.accessoryView as? UISwitch
                 rangingSwitch.addTarget(self, action: #selector(changeRangingState(_:)), for: UIControlEvents.valueChanged)
             default:
                 break
             }
-        case NTSectionType.detectedBeacons.rawValue:
+        case NATSectionType.detectedBeacons.rawValue:
             let beacon = detectedBeacons[(indexPath as NSIndexPath).row]
 
             cell = cell ?? UITableViewCell(style: UITableViewCellStyle.subtitle, reuseIdentifier: cellIdentifier)
@@ -369,9 +339,9 @@ extension NATViewController: UITableViewDataSource, UITableViewDelegate
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         switch section {
-        case NTSectionType.operations.rawValue:
+        case NATSectionType.operations.rawValue:
             return kNumberOfAvailableOperations
-        case NTSectionType.detectedBeacons.rawValue:
+        case NATSectionType.detectedBeacons.rawValue:
             return self.detectedBeacons.count
         default:
             return 0
@@ -380,9 +350,9 @@ extension NATViewController: UITableViewDataSource, UITableViewDelegate
 
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         switch (section) {
-        case NTSectionType.operations.rawValue:
+        case NATSectionType.operations.rawValue:
             return nil
-        case NTSectionType.detectedBeacons.rawValue:
+        case NATSectionType.detectedBeacons.rawValue:
             return kBeaconSectionTitle
         default:
             return nil
@@ -390,7 +360,7 @@ extension NATViewController: UITableViewDataSource, UITableViewDelegate
     }
 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return NTSectionType(rawValue: (indexPath as NSIndexPath).section)!.tableViewCellHeight()
+        return NATSectionType(rawValue: (indexPath as NSIndexPath).section)!.tableViewCellHeight()
     }
 
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
