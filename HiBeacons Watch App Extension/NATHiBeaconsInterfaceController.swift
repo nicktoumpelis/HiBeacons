@@ -115,24 +115,21 @@ class NATHiBeaconsInterfaceController: WKInterfaceController
         Toggles the state of the monitoring operation.
      */
     @IBAction func toggleMonitoring() {
-        setActiveState(!monitoringActive, forOperation: NATOperationType.monitoring)
-        sendMessageFor(operation: NATOperationType.monitoring, withState: monitoringActive)
+        sendMessageFor(operation: NATOperationType.monitoring, withState: !monitoringActive)
     }
 
     /**
         Toggles the state of the advertising operation.
      */
     @IBAction func toggleAdvertising() {
-        setActiveState(!advertisingActive, forOperation: NATOperationType.advertising)
-        sendMessageFor(operation: NATOperationType.advertising, withState: advertisingActive)
+        sendMessageFor(operation: NATOperationType.advertising, withState: !advertisingActive)
     }
 
     /**
         Toggles the state of the ranging operation.
      */
     @IBAction func toggleRanging() {
-        setActiveState(!rangingActive, forOperation: NATOperationType.ranging)
-        sendMessageFor(operation: NATOperationType.ranging, withState: rangingActive)
+        sendMessageFor(operation: NATOperationType.ranging, withState: !rangingActive)
     }
 }
 
