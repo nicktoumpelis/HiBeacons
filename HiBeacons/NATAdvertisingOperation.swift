@@ -1,5 +1,5 @@
 //
-//  NATAdvertising.swift
+//  NATAdvertisingOperation.swift
 //  HiBeacons
 //
 //  Created by Nick Toumpelis on 2015-07-26.
