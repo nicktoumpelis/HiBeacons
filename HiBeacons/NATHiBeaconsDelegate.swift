@@ -27,9 +27,10 @@
 import Foundation
 import UIKit
 
-///  The app delegate
+/// The main app delegate
 @UIApplicationMain class NATHiBeaconsDelegate: UIResponder, UIApplicationDelegate
 {
+    /// The window for the app.
     var window: UIWindow?
 
     func application(_ application: UIApplication, willFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {

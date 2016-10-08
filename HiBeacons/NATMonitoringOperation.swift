@@ -44,14 +44,16 @@ protocol NATMonitoringOperationDelegate
     func monitoringOperationDidFailToStartDueToAuthorization()
 
     /**
-        Triggered when the monitoring operation has detected entering the given region.
-        :param: region The region that the monitoring operation detected.
+     Triggered when the monitoring operation has detected entering the given region.
+     :param: region The region that the monitoring operation detected.
      */
     func monitoringOperationDidDetectEnteringRegion(_ region: CLBeaconRegion)
 }
 
-/// NATMonitoringOperation contains all the process logic required to successfully monitor for events related to
-/// detecting a specific beacon region.
+/**
+ NATMonitoringOperation contains all the process logic required to successfully monitor for events related to
+ detecting a specific beacon region.
+ */
 class NATMonitoringOperation: NATOperation
 {
     /// The delegate for a monitoring operation.
@@ -104,6 +106,7 @@ class NATMonitoringOperation: NATOperation
 // MARK: - Location manager delegate methods
 extension NATMonitoringOperation
 {
+    /// This method is triggered when there is a change in the authorization status for the location manager.
     func locationManager(_ manager: CLLocationManager!, didChangeAuthorizationStatus status: CLAuthorizationStatus) {
         if status == .authorizedAlways {
             print("Location Access (Always) granted!")
@@ -115,15 +118,18 @@ extension NATMonitoringOperation
         }
     }
 
+    /// Triggered when the location manager has detected entering a given region.
     func locationManager(_ manager: CLLocationManager!, didEnterRegion region: CLRegion!) {
         print("Entered region: \(region)")
         delegate?.monitoringOperationDidDetectEnteringRegion(region as! CLBeaconRegion)
     }
 
+    /// Triggered when the location manager has detected exiting a given region.
     func locationManager(_ manager: CLLocationManager!, didExitRegion region: CLRegion!) {
         print("Exited region: \(region)")
     }
 
+    /// Triggered when the state has been determined for a given region.
     func locationManager(_ manager: CLLocationManager!, didDetermineState state: CLRegionState, forRegion region: CLRegion!) {
         var stateString: String
 

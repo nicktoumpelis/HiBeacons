@@ -43,15 +43,17 @@ protocol NATRangingOperationDelegate
     func rangingOperationDidStopSuccessfully()
 
     /**
-        Triggered when the ranging operation has detected beacons belonging to a specific given beacon region.
-        :param: beacons An array of provided beacons that the ranging operation detected.
-        :param: region A provided region whose beacons the operation is trying to range.
+     Triggered when the ranging operation has detected beacons belonging to a specific given beacon region.
+     :param: beacons An array of provided beacons that the ranging operation detected.
+     :param: region A provided region whose beacons the operation is trying to range.
      */
     func rangingOperationDidRangeBeacons(_ beacons: [AnyObject]!, inRegion region: CLBeaconRegion!)
 }
 
-/// NATRangingOperation contains all the process logic required to successfully monitor for events related to
-/// ranging beacons belonging to a specific beacon region.
+/**
+ Contains all the process logic required to successfully monitor for events related to ranging beacons belonging to a 
+ specific beacon region.
+ */
 class NATRangingOperation: NATOperation
 {
     /// The delegate for a ranging operation.
@@ -91,9 +93,7 @@ class NATRangingOperation: NATOperation
         }
     }
 
-    /**
-        Turns on ranging (after all the checks have been passed).
-     */
+    /// Turns on ranging (after all the checks have been passed).
     func turnOnRanging() {
         locationManager.startRangingBeacons(in: beaconRegion)
         print("Ranging turned on for beacons in region: \(beaconRegion)")
@@ -118,6 +118,7 @@ class NATRangingOperation: NATOperation
 // MARK: Location manager delegate methods
 extension NATRangingOperation
 {
+    /// This method is triggered when there is a change in the authorization status for the location manager.
     func locationManager(_ manager: CLLocationManager!, didChangeAuthorizationStatus status: CLAuthorizationStatus) {
         if status == .authorizedAlways {
             print("Location Access (Always) granted!")
@@ -132,7 +133,8 @@ extension NATRangingOperation
             delegate?.rangingOperationDidFailToStart()
         }
     }
-    
+
+    /// This method gets triggered when the location manager is ranging beacons.
     func locationManager(_ manager: CLLocationManager!, didRangeBeacons beacons: [AnyObject]!, inRegion region: CLBeaconRegion!) {
         delegate?.rangingOperationDidRangeBeacons(beacons, inRegion: region)
     }

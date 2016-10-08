@@ -41,11 +41,12 @@ protocol NATAdvertisingOperationDelegate
     func advertisingOperationDidFailToStart()
 }
 
-/// NATAdvertisingOperation contains all the process logic required to successfully advertising the presence of a
-/// a specific beacon (and region) to nearby devices.
+/** 
+ Contains all the process logic required to successfully advertising the presence of a a specific beacon (and 
+ region) to nearby devices.
+ */
 class NATAdvertisingOperation: NATOperation
 {
-
     /// The delegate for an advertising operation.
     var delegate: NATAdvertisingOperationDelegate?
 
@@ -88,16 +89,16 @@ class NATAdvertisingOperation: NATOperation
     }
 
     /**
-        Sets the peripheral manager delegate to self. It is called when an instance is ready to process peripheral
-        manager delegate calls.
+     Sets the peripheral manager delegate to self. It is called when an instance is ready to process peripheral
+     manager delegate calls.
      */
     func activatePeripheralManagerNotifications() {
         peripheralManager.delegate = self;
     }
 
     /**
-        Sets the peripheral manager delegate to nil. It is called when an instance is ready to stop processing 
-        peripheral manager delegate calls.
+     Sets the peripheral manager delegate to nil. It is called when an instance is ready to stop processing
+     peripheral manager delegate calls.
      */
     func deactivatePeripheralManagerNotifications() {
         peripheralManager.delegate = nil;
@@ -107,6 +108,7 @@ class NATAdvertisingOperation: NATOperation
 // MARK: - CBPeripheralManagerDelegate methods
 extension NATAdvertisingOperation: CBPeripheralManagerDelegate
 {
+    /// Triggered when the peripheral manager starts advertising.
     func peripheralManagerDidStartAdvertising(_ peripheral: CBPeripheralManager, error: Error?) {
         if error != nil {
             print("Couldn't turn on advertising: \(error)")
@@ -119,6 +121,7 @@ extension NATAdvertisingOperation: CBPeripheralManagerDelegate
         }
     }
 
+    /// Triggered when the state of the peripheral manager is updated.
     func peripheralManagerDidUpdateState(_ peripheral: CBPeripheralManager) {
         if peripheralManager.state == .poweredOff {
             print("Peripheral manager is off.")

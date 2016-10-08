@@ -30,14 +30,15 @@ import UIKit
 /// The custom cell that is used for presenting the user with the three possible app operations.
 class NATOperationCell : UITableViewCell
 {
+    /// The activity indicator view, showing if an operation is working.
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
-    
+
+    /// Sets up the contraints for the various cell elements.
     override func updateConstraints() {
         // We wouldn't normally need this, since constraints can be set in Interface Builder. However, there seems
         // to be a bug that removes all constraints from our cells upon dequeueing, so we need to re-add them here.
 
         contentView.translatesAutoresizingMaskIntoConstraints = false
-
 
         let rightAccessoryViewMarginConstraint = NSLayoutConstraint(item: accessoryView!, attribute: .right, relatedBy: .equal, toItem: self, attribute: .right, multiplier: 1.0, constant: -14.0)
         let topAccessoryViewMarginConstraint = NSLayoutConstraint(item: accessoryView!, attribute: .top, relatedBy: .equal, toItem: self, attribute: .top, multiplier: 1.0, constant: 7.0)
@@ -56,6 +57,7 @@ class NATOperationCell : UITableViewCell
         super.updateConstraints()
     }
 
+    /// Ensures that the activity indicator is at the front of the cell.
     override func layoutSubviews() {
         super.layoutSubviews()
         

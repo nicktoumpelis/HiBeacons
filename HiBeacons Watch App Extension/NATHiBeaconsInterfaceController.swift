@@ -28,26 +28,44 @@ import WatchKit
 import WatchConnectivity
 import Foundation
 
+/// The main class for implementing the watch app interface.
 class NATHiBeaconsInterfaceController: WKInterfaceController
 {
+    /// The button for starting/stopping the monitoring operation.
     @IBOutlet weak var monitoringButton: WKInterfaceButton?
+
+    /// The button for starting/stopping the advertising operation.
     @IBOutlet weak var advertisingButton: WKInterfaceButton?
+
+    /// The button for starting/stopping the ranging operation.
     @IBOutlet weak var rangingButton: WKInterfaceButton?
 
+
+    /// The state of the monitoring operation.
     var monitoringActive = false
+
+    /// The state of the advertising operation.
     var advertisingActive = false
+
+    /// The state of the ranging operation.
     var rangingActive = false
 
+
+    /// The default Watch Connectivity session.
     var defaultSession: WCSession?
 
+
+    /// The color used for the active state of an operation button.
     let activeBackgroundColor = UIColor(red: 0.34, green: 0.7, blue: 0.36, alpha: 1.0)
+
+    /// The color used for the inactive state of an operation button.
     let inactiveBackgroundColor = UIColor(red: 0.2, green: 0.2, blue: 0.2, alpha: 1.0)
 
+    
     /**
-        Helper method that returns the WKInterfaceButton instance associated with a given operation.
-        
-        :param: operation A given operation.
-        :returns: An instance of a WKInterfaceButton.
+     Helper method that returns the WKInterfaceButton instance associated with a given operation.
+     :param: operation A given operation.
+     :returns: An instance of a WKInterfaceButton.
      */
     func buttonFor(operation: NATOperationType) -> WKInterfaceButton? {
         switch operation {
@@ -60,6 +78,7 @@ class NATHiBeaconsInterfaceController: WKInterfaceController
         }
     }
 
+    /// Finishes the interface initialization, and activates the default WCSession.
     override func awake(withContext context: Any?) {
         super.awake(withContext: context)
 
@@ -75,11 +94,10 @@ class NATHiBeaconsInterfaceController: WKInterfaceController
     }
 
     /**
-        Changes the local state to a given value for the given operation. (The local state should always reflect
-        the "reality" of the operations happening on the phone.)
-
-        :param: value The new value of the active state for the given operation.
-        :param: operation The operation for which the active state should be changed.
+     Changes the local state to a given value for the given operation. (The local state should always reflect
+     the "reality" of the operations happening on the phone.)
+     :param: value The new value of the active state for the given operation.
+     :param: operation The operation for which the active state should be changed.
      */
     func setActiveState(_ value: Bool, forOperation operation: NATOperationType) {
         if defaultSession!.isReachable != true {
@@ -100,34 +118,27 @@ class NATHiBeaconsInterfaceController: WKInterfaceController
     }
 
     /**
-        Prepares and sends a message to trigger a change to a given state of the given operation
-        on the phone.
-     
-        :param: operation The operation for which the state should be changed.
-        :param: state The new state for the given operation.
+     Prepares and sends a message to trigger a change to a given state of the given operation
+     on the phone.
+     :param: operation The operation for which the state should be changed.
+     :param: state The new state for the given operation.
      */
     func sendMessageFor(operation: NATOperationType, withState state: Bool) {
         let payload = [operation.rawValue: state]
         defaultSession!.sendMessage(payload, replyHandler: nil, errorHandler: nil)
     }
 
-    /**
-        Toggles the state of the monitoring operation.
-     */
+    /// Toggles the state of the monitoring operation.
     @IBAction func toggleMonitoring() {
         sendMessageFor(operation: NATOperationType.monitoring, withState: !monitoringActive)
     }
 
-    /**
-        Toggles the state of the advertising operation.
-     */
+    /// Toggles the state of the advertising operation.
     @IBAction func toggleAdvertising() {
         sendMessageFor(operation: NATOperationType.advertising, withState: !advertisingActive)
     }
 
-    /**
-        Toggles the state of the ranging operation.
-     */
+    /// Toggles the state of the ranging operation.
     @IBAction func toggleRanging() {
         sendMessageFor(operation: NATOperationType.ranging, withState: !rangingActive)
     }
@@ -144,8 +155,8 @@ extension NATHiBeaconsInterfaceController: WCSessionDelegate
     }
 
     /**
-        Called immediately when a message arrives. In this case, it processes each message to change
-        the active state of an operation to reflect the state on the phone.
+     Called immediately when a message arrives. In this case, it processes each message to change
+     the active state of an operation to reflect the state on the phone.
      */
     func session(_ session: WCSession, didReceiveMessage message: [String : Any]) {
         if let state = message[NATOperationType.monitoring.rawValue] as? Bool {

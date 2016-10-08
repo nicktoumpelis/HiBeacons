@@ -31,7 +31,7 @@ import CoreLocation
 class NATOperation: NSObject, CLLocationManagerDelegate
 {
     /// An instance of CLLocationManager to provide monitoring and ranging facilities.
-    lazy var locationManager: CLLocationManager = CLLocationManager()
+    lazy var locationManager = CLLocationManager()
 
     /// The beacon region that will be used as the reference for monitoring and ranging.
     let beaconRegion: CLBeaconRegion = {
@@ -41,8 +41,8 @@ class NATOperation: NSObject, CLLocationManagerDelegate
     }()
 
     /**
-        Sets the location manager delegate to self. It is called when an instance is ready to process location
-        manager delegate calls.
+     Sets the location manager delegate to self. It is called when an instance is ready to process location
+     manager delegate calls.
      */
     func activateLocationManagerNotifications() {
         locationManager.delegate = self

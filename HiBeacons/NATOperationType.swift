@@ -24,15 +24,22 @@
 //  THE SOFTWARE.
 //
 
-/**
-    Encapsulates the three kinds of operations possible to perform in HiBeacons.
- */
-enum NATOperationType: String {
-    case monitoring         /// The monitoring operation.
-    case advertising        /// The advertising operation.
-    case ranging            /// The ranging operation.
+/// Encapsulates the three kinds of operations possible to perform in the app.
+enum NATOperationType: String
+{
+    /// The monitoring operation.
+    case monitoring
 
-    /// Failable initializer that takes an index argument.
+    /// The advertising operation.
+    case advertising
+
+    /// The ranging operation.
+    case ranging
+
+    /** 
+     Initializes an operation type with an index. It is failable.
+     :param: index The index of the type.
+     */
     init?(index: Int) {
         switch index {
         case 0:
