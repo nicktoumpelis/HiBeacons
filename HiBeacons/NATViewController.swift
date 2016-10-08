@@ -118,11 +118,11 @@ class NATViewController: UIViewController
     // The Operation objects
 
     /// The monitoring operation object.
-    var monitoringOperation = NATMonitoringOperation()
+    let monitoringOperation = NATMonitoringOperation()
     /// The advertising operation object.
-    var advertisingOperation = NATAdvertisingOperation()
+    let advertisingOperation = NATAdvertisingOperation()
     /// The ranging operation object.
-    var rangingOperation = NATRangingOperation()
+    let rangingOperation = NATRangingOperation()
 
 
     // Other

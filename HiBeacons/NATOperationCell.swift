@@ -28,7 +28,7 @@ import Foundation
 import UIKit
 
 /// The custom cell that is used for presenting the user with the three possible app operations.
-class NATOperationCell : UITableViewCell
+final class NATOperationCell : UITableViewCell
 {
     /// The activity indicator view, showing if an operation is working.
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!

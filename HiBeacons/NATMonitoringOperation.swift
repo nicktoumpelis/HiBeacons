@@ -54,7 +54,7 @@ protocol NATMonitoringOperationDelegate
  NATMonitoringOperation contains all the process logic required to successfully monitor for events related to
  detecting a specific beacon region.
  */
-class NATMonitoringOperation: NATOperation
+final class NATMonitoringOperation: NATOperation
 {
     /// The delegate for a monitoring operation.
     var delegate: NATMonitoringOperationDelegate?
@@ -131,7 +131,7 @@ extension NATMonitoringOperation
 
     /// Triggered when the state has been determined for a given region.
     func locationManager(_ manager: CLLocationManager!, didDetermineState state: CLRegionState, forRegion region: CLRegion!) {
-        var stateString: String
+        let stateString: String
 
         switch state {
         case .inside:

@@ -45,13 +45,13 @@ protocol NATAdvertisingOperationDelegate
  Contains all the process logic required to successfully advertising the presence of a a specific beacon (and 
  region) to nearby devices.
  */
-class NATAdvertisingOperation: NATOperation
+final class NATAdvertisingOperation: NATOperation
 {
     /// The delegate for an advertising operation.
     var delegate: NATAdvertisingOperationDelegate?
 
     /// An instance of a CBPeripheralManager, which is used for advertising a beacon to nearby devices.
-    var peripheralManager = CBPeripheralManager(delegate: nil, queue: nil, options: nil)
+    let peripheralManager = CBPeripheralManager(delegate: nil, queue: nil, options: nil)
 
     /// Starts the beacon advertising process.
     func startAdvertisingBeacon() {

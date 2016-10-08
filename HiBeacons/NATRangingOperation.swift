@@ -54,7 +54,7 @@ protocol NATRangingOperationDelegate
  Contains all the process logic required to successfully monitor for events related to ranging beacons belonging to a 
  specific beacon region.
  */
-class NATRangingOperation: NATOperation
+final class NATRangingOperation: NATOperation
 {
     /// The delegate for a ranging operation.
     var delegate: NATRangingOperationDelegate?
